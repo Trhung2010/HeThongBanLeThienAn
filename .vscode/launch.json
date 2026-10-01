@@ -2,19 +2,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "API (HTTPS)",
+      "name": "API (HTTP)",
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/HeThongBanLeThienAn.API/bin/Debug/net8.0/HeThongBanLeThienAn.API.dll",
       "cwd": "${workspaceFolder}/HeThongBanLeThienAn.API",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "https://localhost:7163;http://localhost:5167"
+        "ASPNETCORE_URLS": "http://localhost:5167"
       },
       "preLaunchTask": "API: prepare"
     },
     {
-      "name": "WinForms Client (API HTTPS)",
+      "name": "WinForms Client (API HTTP)",
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/HeThongBanLeThienAn.WinForms/bin/Debug/net8.0-windows/HeThongBanLeThienAn.WinForms.dll",
@@ -24,7 +24,7 @@
   "compounds": [
     {
       "name": "API + WinForms",
-      "configurations": ["API (HTTPS)", "WinForms Client (API HTTPS)"],
+      "configurations": ["API (HTTP)", "WinForms Client (API HTTP)"],
       "stopAll": true
     }
   ]

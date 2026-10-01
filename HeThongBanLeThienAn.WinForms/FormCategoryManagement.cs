@@ -19,7 +19,7 @@ namespace MiniSupermarket.WinForms
     {
         private static readonly HttpClient _client = new HttpClient
         {
-            BaseAddress = new Uri("https://localhost:7163/api/")
+            BaseAddress = new Uri("http://localhost:5167/api/")
         };
 
         public FormCategoryManagement()
@@ -40,7 +40,7 @@ namespace MiniSupermarket.WinForms
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:7163/api/")
+                BaseAddress = new Uri("http://localhost:5167/api/")
             };
 
             // Gắn Bearer Token vào Header

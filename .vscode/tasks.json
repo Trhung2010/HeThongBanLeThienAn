@@ -10,18 +10,18 @@
         "-ExecutionPolicy",
         "Bypass",
         "-Command",
-        "$connections = Get-NetTCPConnection -LocalPort 7163 -State Listen -ErrorAction SilentlyContinue; $processIds = @($connections.OwningProcess); $apiProcesses = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq 'HeThongBanLeThienAn.API.exe' -or $_.CommandLine -like '*HeThongBanLeThienAn.API*' }; $processIds += @($apiProcesses.ProcessId); $processIds | Where-Object { $_ } | Select-Object -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }"
+        "$connections = Get-NetTCPConnection -LocalPort 5167 -State Listen -ErrorAction SilentlyContinue; $processIds = @($connections.OwningProcess); $apiProcesses = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq 'HeThongBanLeThienAn.API.exe' -or $_.CommandLine -like '*HeThongBanLeThienAn.API*' }; $processIds += @($apiProcesses.ProcessId); $processIds | Where-Object { $_ } | Select-Object -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }"
       ],
       "problemMatcher": []
     },
     {
-      "label": "API: start HTTPS",
+      "label": "API: start HTTP",
       "type": "process",
       "command": "dotnet",
       "args": [
         "run",
         "--launch-profile",
-        "https",
+        "http",
         "--project",
         "${workspaceFolder}/HeThongBanLeThienAn.API/HeThongBanLeThienAn.API.csproj"
       ],
@@ -37,7 +37,7 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": "Building|Starting",
-          "endsPattern": "Now listening on: https://localhost:7163"
+          "endsPattern": "Now listening on: http://localhost:5167"
         }
       }
     },

@@ -8,7 +8,7 @@ namespace MiniSupermarket.WinForms
         // Khởi tạo HttpClient để kết nối đến Web API
         private static readonly HttpClient _client = new HttpClient
         {
-            BaseAddress = new Uri("https://localhost:7163/api/")
+            BaseAddress = new Uri("http://localhost:5167/api/")
         };
 
         // Hàm khởi tạo FormLogin

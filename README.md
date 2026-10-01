@@ -253,13 +253,13 @@ Hoặc mở project trong Visual Studio và chọn `HeThongBanLeThienAn.API` là
 API chạy mặc định tại:
 
 ```text
-https://localhost:7163
+http://localhost:5167
 ```
 
 Swagger UI:
 
 ```text
-https://localhost:7163/swagger
+http://localhost:5167/swagger
 ```
 
 ### 3. Chạy WinForms
