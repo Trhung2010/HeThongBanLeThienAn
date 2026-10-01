@@ -1,0 +1,71 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "API: stop existing",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$connections = Get-NetTCPConnection -LocalPort 7163 -State Listen -ErrorAction SilentlyContinue; $processIds = @($connections.OwningProcess); $apiProcesses = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq 'HeThongBanLeThienAn.API.exe' -or $_.CommandLine -like '*HeThongBanLeThienAn.API*' }; $processIds += @($apiProcesses.ProcessId); $processIds | Where-Object { $_ } | Select-Object -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "API: start HTTPS",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--launch-profile",
+        "https",
+        "--project",
+        "${workspaceFolder}/HeThongBanLeThienAn.API/HeThongBanLeThienAn.API.csproj"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/HeThongBanLeThienAn.API"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "custom",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Building|Starting",
+          "endsPattern": "Now listening on: https://localhost:7163"
+        }
+      }
+    },
+    {
+      "label": "API: build",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/HeThongBanLeThienAn.API/HeThongBanLeThienAn.API.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "API: prepare",
+      "dependsOn": ["API: stop existing", "API: build"],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "WinForms: build",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/HeThongBanLeThienAn.WinForms/HeThongBanLeThienAn.WinForms.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

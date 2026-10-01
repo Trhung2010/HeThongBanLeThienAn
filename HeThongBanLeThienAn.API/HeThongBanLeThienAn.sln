@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37411.7 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeThongBanLeThienAn.API", "HeThongBanLeThienAn.API.csproj", "{C032348D-FED1-4507-8DA7-78E7D1F11477}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeThongBanLeThienAn.WinForms", "..\HeThongBanLeThienAn.WinForms\HeThongBanLeThienAn.WinForms.csproj", "{BCC08111-29E0-400B-A59A-94940E8E95B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C032348D-FED1-4507-8DA7-78E7D1F11477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C032348D-FED1-4507-8DA7-78E7D1F11477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C032348D-FED1-4507-8DA7-78E7D1F11477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C032348D-FED1-4507-8DA7-78E7D1F11477}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCC08111-29E0-400B-A59A-94940E8E95B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC08111-29E0-400B-A59A-94940E8E95B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC08111-29E0-400B-A59A-94940E8E95B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC08111-29E0-400B-A59A-94940E8E95B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {249A4C52-4684-4D66-A7E3-11716FC7952D}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,9 @@
+# Visual Studio and build output
+.vs/
+**/bin/
+**/obj/
+
+# Per-user Visual Studio settings
+*.user
+*.suo
+*.slnLaunch.user
