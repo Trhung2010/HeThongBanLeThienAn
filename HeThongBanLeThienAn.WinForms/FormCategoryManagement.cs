@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,6 +30,10 @@ namespace MiniSupermarket.WinForms
         // Khi Form mở
         private async void FormCategoryManagement_Load(object sender, EventArgs e)
         {
+            var menu = NavigationManager.CreateAppMenu(this);
+            this.Controls.Add(menu);
+            this.MainMenuStrip = menu;
+
             await LoadDataAsync();
         }
 

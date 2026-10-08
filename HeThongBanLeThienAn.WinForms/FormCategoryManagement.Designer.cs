@@ -1,4 +1,4 @@
-﻿namespace MiniSupermarket.WinForms
+namespace MiniSupermarket.WinForms
 {
     partial class FormCategoryManagement
     {
@@ -164,7 +164,7 @@
             grpSearch.Controls.Add(txtKeyword);
             grpSearch.Controls.Add(btnSearch);
             grpSearch.Controls.Add(btnLoad);
-            grpSearch.Location = new Point(23, 20);
+            grpSearch.Location = new Point(23, 38);
             grpSearch.Margin = new Padding(3, 4, 3, 4);
             grpSearch.Name = "grpSearch";
             grpSearch.Padding = new Padding(3, 4, 3, 4);
@@ -176,11 +176,11 @@
             // grpCategoryList
             // 
             grpCategoryList.Controls.Add(dgvCategories);
-            grpCategoryList.Location = new Point(23, 113);
+            grpCategoryList.Location = new Point(23, 126);
             grpCategoryList.Margin = new Padding(3, 4, 3, 4);
             grpCategoryList.Name = "grpCategoryList";
             grpCategoryList.Padding = new Padding(3, 4, 3, 4);
-            grpCategoryList.Size = new Size(571, 460);
+            grpCategoryList.Size = new Size(571, 490);
             grpCategoryList.TabIndex = 4;
             grpCategoryList.TabStop = false;
             grpCategoryList.Text = "Danh sách Nhóm hàng";
@@ -199,14 +199,14 @@
             grpCategoryInfo.Controls.Add(btnAdd);
             grpCategoryInfo.Controls.Add(btnUpdate);
             grpCategoryInfo.Controls.Add(btnDelete);
-            grpCategoryInfo.Location = new Point(611, 113);
+            grpCategoryInfo.Location = new Point(611, 126);
             grpCategoryInfo.Margin = new Padding(3, 4, 3, 4);
             grpCategoryInfo.Name = "grpCategoryInfo";
             grpCategoryInfo.Padding = new Padding(3, 4, 3, 4);
-            grpCategoryInfo.Size = new Size(280, 500);
+            grpCategoryInfo.Size = new Size(280, 490);
             grpCategoryInfo.TabIndex = 5;
             grpCategoryInfo.TabStop = false;
-            grpCategoryInfo.Text = "Thông tin Sản phẩm";
+            grpCategoryInfo.Text = "Thông tin Nhóm hàng";
             // 
             // lblId
             // 
@@ -224,7 +224,7 @@
             lblCategoryName.Name = "lblCategoryName";
             lblCategoryName.Size = new Size(230, 20);
             lblCategoryName.TabIndex = 2;
-            lblCategoryName.Text = "Tên sản phẩm";
+            lblCategoryName.Text = "Tên nhóm hàng";
             // 
             // lblDescription
             // 
@@ -256,14 +256,14 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(914, 600);
+            ClientSize = new Size(914, 630);
             Controls.Add(grpSearch);
             Controls.Add(grpCategoryList);
             Controls.Add(grpCategoryInfo);
             Margin = new Padding(3, 4, 3, 4);
             Name = "FormCategoryManagement";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Quản lý Sản phẩm và Tồn kho - Thiên Ân";
+            Text = "Quản lý Danh mục (Categories) - Thiên Ân";
             Load += FormCategoryManagement_Load;
             ((System.ComponentModel.ISupportInitialize)dgvCategories).EndInit();
             grpSearch.ResumeLayout(false);

@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace MiniSupermarket.WinForms
@@ -77,13 +77,11 @@ namespace MiniSupermarket.WinForms
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
-                    // Mở Form quản lý danh mục
-                    FormCategoryManagement mainForm =
-                        new FormCategoryManagement();
-
-                    this.Hide();
-
-                    mainForm.ShowDialog();
+                    // Mở Form quản lý sản phẩm
+                    FormProductManagement mainForm = new FormProductManagement();
+                    mainForm.StartPosition = FormStartPosition.CenterScreen;
+                    Program.AppContext.MainForm = mainForm;
+                    mainForm.Show();
 
                     this.Close();
                 }

@@ -39,7 +39,7 @@ namespace HeThongBanLeThienAn.Tests
 
             var customers = result.Value as List<Customer>;
             Assert.NotNull(customers);
-            Assert.Equal(3, customers.Count); // 3 seeded customers
+            Assert.Equal(15, customers.Count); // 15 seeded customers
         }
 
         [Fact]
