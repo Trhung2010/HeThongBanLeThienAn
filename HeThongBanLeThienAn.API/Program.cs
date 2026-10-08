@@ -6,13 +6,14 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Cấu hình Entity Framework Core DbContext với SQL Server
+// Cấu hình Entity Framework Core DbContext với SQLite
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<SupermarketDbContext>(options =>
 {
     if (!string.IsNullOrEmpty(connectionString))
     {
-        options.UseSqlServer(connectionString);
+        // ĐÃ SỬA: Dùng UseSqlite thay cho UseSqlServer
+        options.UseSqlite(connectionString);
     }
     else
     {
@@ -55,7 +56,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch
     {
-        // Fallback for isolated build environments if SQL Server is not running locally
+        // Fallback for isolated build environments if DB is not running locally
     }
 }
 
