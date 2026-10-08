@@ -18,7 +18,7 @@ Dự án được xây dựng theo mô hình phân tầng hiện đại, tách b
 - **Ngôn ngữ**: C# (.NET 8.0)
 - **Backend**: ASP.NET Core Web API, Controllers, JWT Bearer Authentication, In-Memory Data, LINQ
 - **Frontend**: Windows Forms (.NET 8.0), `System.Net.Http.Json`, `System.IdentityModel.Tokens.Jwt`
-- **Công cụ kiểm thử & phát triển**: Visual Studio 2022, Swagger UI, xUnit Test Framework
+- **Công cụ phát triển & kiểm thử**: Visual Studio Code (VS Code), C# Dev Kit Extension, Swagger UI, xUnit Test Framework
 
 ---
 
@@ -27,6 +27,10 @@ Dự án được xây dựng theo mô hình phân tầng hiện đại, tách b
 ```text
 c:\HeThongBanLeThienAn
 ├── README.md
+├── .vscode/                             # Cấu hình Run & Debug cho VS Code
+│   ├── launch.json                      # Cấu hình khởi chạy API, WinForms và Compound API + WinForms
+│   ├── tasks.json                       # Cấu hình Build và Stop process tự động
+│   └── settings.json
 ├── HeThongBanLeThienAn.sln
 ├── HeThongBanLeThienAn.API/             # Dự án Web API (Backend)
 │   ├── Controllers/                     # Chứa AuthController, CategoriesController (JWT, CRUD & Search)
@@ -52,29 +56,64 @@ c:\HeThongBanLeThienAn
 
 ---
 
-## 🚀 5. Hướng dẫn Chạy và Kiểm thử Dự án trong Visual Studio
+## 🚀 5. Hướng dẫn Chạy và Kiểm thử Dự án trong Visual Studio Code (VS Code)
 
-### Bước 1: Mở Solution bằng Visual Studio
-1. Mở Visual Studio 2022.
-2. Chọn **Open a project or solution** và chọn mở file solution `HeThongBanLeThienAn.sln` (hoặc `HeThongBanLeThienAn.API/HeThongBanLeThienAn.sln`).
+### Bước 1: Mở dự án trong VS Code
+1. Mở Visual Studio Code.
+2. Chọn **File** -> **Open Folder...** và chọn thư mục gốc dự án (`HeThongBanLeThienAn`).
+3. Khuyến nghị cài đặt Extension **C#** hoặc **C# Dev Kit** từ Microsoft.
 
-### Bước 2: Chạy phía Backend (Web API)
-1. Nhấp chuột phải vào project **HeThongBanLeThienAn.API** chọn **Set as Startup Project**.
-2. Nhấn **F5** (hoặc nút **Start**) để chạy.
-3. Trình duyệt sẽ tự động mở giao diện Swagger UI (mặc định tại `http://localhost:5167/swagger`) để kiểm tra các phương thức GET, POST, PUT, DELETE với JWT Bearer Authentication.
+---
 
-### Bước 3: Chạy phía Frontend (WinForms Client)
-1. Đảm bảo cổng (Port) của Web API đang chạy là `http://localhost:5167`.
-2. Trong Visual Studio, nhấp chuột phải vào project **HeThongBanLeThienAn.WinForms** chọn **Debug** -> **Start new instance** (hoặc cấu hình Multiple Startup Projects trong Solution Properties).
-3. Màn hình đăng nhập `FormLogin` hiển thị:
-   - Nhập tài khoản `admin` / `123456` (Admin) hoặc `cashier` / `123456` (Cashier).
-   - Đăng nhập thành công, token JWT được lưu và tự động mở `FormCategoryManagement`.
-4. Thử nghiệm các chức năng: Tải danh sách, Thêm mới, Sửa, Xóa và Tìm kiếm nhóm hàng (Giao diện tự động phân quyền theo vai trò).
+### Cách 1: Chạy trực tiếp bằng Run & Debug trong VS Code (Khuyến nghị)
+1. Bấm tổ hợp phím **`Ctrl + Shift + D`** (hoặc chọn biểu tượng **Run and Debug** trên thanh bên trái).
+2. Tại menu thả xuống phía trên, chọn cấu hình: **`API + WinForms`** (Compound run cả Backend và Frontend cùng lúc).
+3. Nhấn **F5** hoặc nút **Play**:
+   - VS Code sẽ tự động build và khởi chạy **Web API** (`http://localhost:5167`).
+   - Màn hình Swagger UI sẽ sẵn sàng tại `http://localhost:5167/swagger`.
+   - Ứng dụng **WinForms Client** (`FormLogin`) sẽ tự động mở lên.
 
-### Bước 4: Chạy Kiểm thử Đơn vị (Unit Tests)
-1. Mở cửa sổ **Test Explorer** trong Visual Studio (`Test` -> `Test Explorer`).
-2. Chọn **Run All Tests in View** (hoặc nhấn phím tắt `Ctrl+R, A`).
-3. Kiểm tra kết quả 17 bài test tự động cho AuthController và CategoriesController đều vượt qua.
+---
+
+### Cách 2: Chạy qua Terminal bằng .NET CLI
+
+#### 1. Restore các package
+Mở Terminal trong VS Code (**`Ctrl + ~`**) và chạy:
+```bash
+dotnet restore
+```
+
+#### 2. Chạy Backend Web API
+Mở Terminal 1 và chạy:
+```bash
+dotnet run --project ./HeThongBanLeThienAn.API/HeThongBanLeThienAn.API.csproj
+```
+> Web API sẽ lắng nghe tại `http://localhost:5167`. Bạn có thể truy cập Swagger UI qua trình duyệt: `http://localhost:5167/swagger`.
+
+#### 3. Chạy Frontend WinForms Client
+Mở Terminal 2 và chạy:
+```bash
+dotnet run --project ./HeThongBanLeThienAn.WinForms/HeThongBanLeThienAn.WinForms.csproj
+```
+
+---
+
+### Bước 2: Thử nghiệm ứng dụng WinForms
+1. Nhập tài khoản:
+   - `admin` / `123456` (Quyền Admin - toàn quyền CRUD)
+   - `cashier` / `123456` (Quyền Cashier - chỉ xem và tìm kiếm)
+2. Sau khi đăng nhập thành công, token JWT sẽ được lưu và mở giao diện `FormCategoryManagement`.
+3. Thử nghiệm các tính năng: Tải lại dữ liệu, Thêm sản phẩm, Sửa sản phẩm, Xóa sản phẩm, Tìm kiếm theo từ khóa.
+
+---
+
+### Bước 3: Chạy Kiểm thử Đơn vị (Unit Tests)
+
+Trong Terminal của VS Code, chạy lệnh sau:
+```bash
+dotnet test
+```
+Hoặc mở phím tắt trong VS Code **Testing Tab** (Test Explorer) để xem và chạy toàn bộ 17 bài test tự động cho `AuthController` và `CategoriesController`.
 
 ---
 
