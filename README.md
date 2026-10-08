@@ -33,18 +33,21 @@ c:\HeThongBanLeThienAn
 │   └── tasks.json                       # Cấu hình Build và Stop process tự động
 ├── HeThongBanLeThienAn.sln
 ├── HeThongBanLeThienAn.API/             # Dự án Web API (Backend)
-│   ├── Controllers/                     # AuthController, CategoriesController, CustomersController
+│   ├── Controllers/                     # AuthController, CategoriesController, ProductsController, CustomersController
 │   ├── Data/                            # SupermarketDbContext & Data Seeding
 │   ├── Models/                          # Category.cs, Product.cs, Customer.cs
-│   └── Program.cs                       # Cấu hình EF Core SQL Server, JWT Bearer, Swagger
+│   └── Program.cs                       # Cấu hình EF Core SQLite, JWT Bearer, Swagger
 ├── HeThongBanLeThienAn.WinForms/        # Dự án Windows Forms (Frontend Client)
 │   ├── FormLogin.cs                     # Đăng nhập lấy JWT Token
-│   ├── FormCategoryManagement.cs        # Quản lý danh mục & tồn kho
+│   ├── FormProductManagement.cs         # Quản lý sản phẩm, mã vạch, giá và tồn kho
+│   ├── FormCategoryManagement.cs        # Quản lý danh mục & nhóm hàng
 │   ├── FormCustomerManagement.cs        # Quản lý thông tin khách hàng & tích điểm
+│   ├── NavigationManager.cs             # Thanh menu điều hướng chuyển đổi linh hoạt giữa các form
 │   └── SessionManager.cs                # Quản lý phiên làm việc & JWT Token
-└── HeThongBanLeThienAn.Tests/           # Dự án Unit Test (xUnit)
+└── HeThongBanLeThienAn.Tests/           # Dự án Unit Test (xUnit - 30 tests)
     ├── AuthControllerTests.cs           # Kiểm thử đăng nhập & xác thực JWT
     ├── CategoriesControllerTests.cs     # Kiểm thử API Danh mục CRUD & Phân quyền
+    ├── ProductsControllerTests.cs       # Kiểm thử API Sản phẩm CRUD & Tìm kiếm
     └── CustomersControllerTests.cs      # Kiểm thử API Khách hàng CRUD & Tìm kiếm
 ```
 
