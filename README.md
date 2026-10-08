@@ -1,329 +1,138 @@
-# Hệ thống quản lý siêu thị mini
+# 🛒 HỆ THỐNG QUẢN LÝ SIÊU THỊ MINI (MINISUPERMARKET SYSTEM)
 
-Dự án này là một mẫu kiến trúc Client - Server sử dụng ASP.NET Core Web API và Windows Forms để triển khai xác thực JWT, phân quyền theo vai trò và quản lý danh mục hàng hóa.
-
-## Tổng quan
-
-- Backend: `HeThongBanLeThienAn.API`
-- Frontend: `HeThongBanLeThienAn.WinForms`
-- Công nghệ: .NET 8, ASP.NET Core, JWT Bearer Authentication, Windows Forms
-- Chức năng chính:
-  - Đăng nhập bằng tài khoản mẫu
-  - Trả về JWT token
-  - Bảo vệ các endpoint bằng `[Authorize]`
-  - Phân quyền `Admin` và `Cashier`
-  - Gửi `Bearer Token` từ WinForms đến API
-  - Quản lý dữ liệu danh mục sản phẩm trong UI
+- **Môn học**: Lập trình Ứng dụng .NET Core (Mã môn: 229162)
+- **Đồ án**: Phát triển Hệ thống Quản lý Bán lẻ và Theo dõi Hàng tồn kho theo thời gian thực
 
 ---
 
-## Kiến trúc hệ thống
+## 🏗️ 1. Mô hình Kiến trúc Hệ thống (Client - Server)
 
-```text
-Người dùng
-  │
-  ▼
-FormLogin (WinForms)
-  │
-  ├─ gửi username + password đến API /api/auth/login
-  │
-  ▼
-AuthController
-  │
-  ├─ xác thực tài khoản mẫu
-  ├─ tạo JWT token
-  └─ trả về token + role
-  │
-  ▼
-SessionManager
-  │
-  ├─ lưu JwtToken
-  └─ lưu CurrentRole
-  │
-  ▼
-FormCategoryManagement
-  │
-  └─ gọi API /api/categories với Authorization: Bearer <token>
-  │
-  ▼
-CategoriesController
-  │
-  ├─ [Authorize]
-  ├─ Admin: thêm, sửa, xóa, xem toàn bộ
-  └─ Cashier: xem và tìm kiếm, không được sửa/xóa
-```
+Dự án được xây dựng theo mô hình phân tầng hiện đại, tách biệt hoàn toàn giữa Backend và Frontend:
+- **HeThongBanLeThienAn.API (Backend)**: Dự án ASP.NET Core Web API sử dụng Entity Framework Core Code-First (SQL Server), chịu trách nhiệm xử lý logic nghiệp vụ, xác thực JWT (JSON Web Token), phân quyền theo vai trò (Admin / Cashier) và cung cấp các RESTful API chuẩn hóa.
+- **HeThongBanLeThienAn.WinForms (Frontend Client)**: Ứng dụng Windows Forms đóng vai trò là máy trạm POS tại quầy, sử dụng `HttpClient` đính kèm Bearer Token để giao tiếp với API, quản lý Danh mục, Sản phẩm và Khách hàng trực quan trên `DataGridView`.
 
 ---
 
-## Công nghệ sử dụng
+## 🛠️ 2. Công nghệ Sử dụng
 
-- C# / .NET 8
-- ASP.NET Core Web API
-- JWT Bearer Authentication
-- Windows Forms (.NET 8)
-- Swagger UI cho kiểm thử API
-- `HttpClient` trong WinForms
-- `System.IdentityModel.Tokens.Jwt`
-- `Microsoft.AspNetCore.Authentication.JwtBearer`
+- **Ngôn ngữ**: C# (.NET 8.0)
+- **Backend**: ASP.NET Core Web API, Entity Framework Core 8.0 (SQL Server), Controllers, JWT Bearer Authentication, LINQ Async/Await
+- **Frontend**: Windows Forms (.NET 8.0), `System.Net.Http.Json`, `System.IdentityModel.Tokens.Jwt`
+- **Công cụ phát triển & kiểm thử**: Visual Studio Code (VS Code), C# Dev Kit Extension, Postman, Swagger UI, xUnit Test Framework
 
 ---
 
-## Cấu trúc thư mục
+## 📂 3. Cấu trúc Solution
 
 ```text
 c:\HeThongBanLeThienAn
 ├── README.md
-├── HeThongBanLeThienAn.API/
-│   ├── Controllers/
-│   │   ├── AuthController.cs
-│   │   ├── CategoriesController.cs
-│   │   └── WeatherForecastController.cs
-│   ├── Models/
-│   │   └── Category.cs
-│   ├── Program.cs
-│   ├── appsettings.json
-│   ├── appsettings.Development.json
-│   ├── HeThongBanLeThienAn.API.csproj
-│   └── Properties/
-│       └── launchSettings.json
-├── HeThongBanLeThienAn.WinForms/
-│   ├── FormLogin.cs
-│   ├── FormLogin.Designer.cs
-│   ├── FormCategoryManagement.cs
-│   ├── FormCategoryManagement.Designer.cs
-│   ├── SessionManager.cs
-│   ├── Program.cs
-│   ├── HeThongBanLeThienAn.WinForms.csproj
-│   └── ...
-└── HeThongBanLeThienAn.sln
+├── MiniSupermarket.postman_collection.json # Bộ sưu tập kiểm thử API trên Postman
+├── .vscode/                             # Cấu hình Run & Debug cho VS Code
+│   ├── launch.json                      # Cấu hình khởi chạy API, WinForms và Compound API + WinForms
+│   └── tasks.json                       # Cấu hình Build và Stop process tự động
+├── HeThongBanLeThienAn.sln
+├── HeThongBanLeThienAn.API/             # Dự án Web API (Backend)
+│   ├── Controllers/                     # AuthController, CategoriesController, CustomersController
+│   ├── Data/                            # SupermarketDbContext & Data Seeding
+│   ├── Models/                          # Category.cs, Product.cs, Customer.cs
+│   └── Program.cs                       # Cấu hình EF Core SQL Server, JWT Bearer, Swagger
+├── HeThongBanLeThienAn.WinForms/        # Dự án Windows Forms (Frontend Client)
+│   ├── FormLogin.cs                     # Đăng nhập lấy JWT Token
+│   ├── FormCategoryManagement.cs        # Quản lý danh mục & tồn kho
+│   ├── FormCustomerManagement.cs        # Quản lý thông tin khách hàng & tích điểm
+│   └── SessionManager.cs                # Quản lý phiên làm việc & JWT Token
+└── HeThongBanLeThienAn.Tests/           # Dự án Unit Test (xUnit)
+    ├── AuthControllerTests.cs           # Kiểm thử đăng nhập & xác thực JWT
+    ├── CategoriesControllerTests.cs     # Kiểm thử API Danh mục CRUD & Phân quyền
+    └── CustomersControllerTests.cs      # Kiểm thử API Khách hàng CRUD & Tìm kiếm
 ```
-
-> Lưu ý: mã nguồn hiện tại đang sử dụng namespace `MiniSupermarket.*`, trong khi folder project hiển thị là `HeThongBanLeThienAn.*`. Đây là tên project và namespace có thể không trùng hoàn toàn về mặt naming, nhưng chức năng và cấu trúc ứng dụng vẫn đúng như mô tả.
 
 ---
 
-## Tài khoản mẫu
+## 🔑 4. Tài khoản Mẫu & Phân quyền
 
-API hiện có hai tài khoản demo để kiểm thử:
-
-| Tài khoản | Mật khẩu | Vai trò |
-| --------- | -------- | ------- |
-| `admin`   | `123456` | Admin   |
-| `cashier` | `123456` | Cashier |
+| Tài khoản | Mật khẩu | Vai trò | Quyền hạn |
+| --------- | -------- | ------- | --------- |
+| `admin`   | `123456` | Admin   | Toàn quyền xem, thêm, sửa, xóa sản phẩm/khách hàng và truy cập Admin Dashboard |
+| `cashier` | `123456` | Cashier | Quyền nhân viên: Xem danh sách, tìm kiếm, quản lý thông tin khách hàng & bán hàng POS |
 
 ---
 
-## API chính
+## 🚀 5. Hướng dẫn Chạy và Kiểm thử Dự án trong Visual Studio Code (VS Code)
 
-### 1. Đăng nhập
-
-Endpoint:
-
-```http
-POST /api/auth/login
-```
-
-Request body:
-
-```json
-{
-  "username": "admin",
-  "password": "123456"
-}
-```
-
-Response thành công:
-
-```json
-{
-  "success": true,
-  "token": "<jwt_token>",
-  "role": "Admin"
-}
-```
-
-### 2. Lấy danh sách danh mục
-
-Endpoint:
-
-```http
-GET /api/categories
-```
-
-- Yêu cầu xác thực JWT
-- `Admin` và `Cashier` đều có quyền truy cập
-
-### 3. Tìm kiếm danh mục
-
-Endpoint:
-
-```http
-GET /api/categories/search?keyword=nuoc
-```
-
-- Yêu cầu xác thực JWT
-- `Admin` và `Cashier` đều có quyền truy cập
-
-### 4. Thêm danh mục
-
-Endpoint:
-
-```http
-POST /api/categories
-```
-
-- Chỉ `Admin` được phép
-
-### 5. Cập nhật danh mục
-
-Endpoint:
-
-```http
-PUT /api/categories/{id}
-```
-
-- Chỉ `Admin` được phép
-
-### 6. Xóa danh mục
-
-Endpoint:
-
-```http
-DELETE /api/categories/{id}
-```
-
-- Chỉ `Admin` được phép
-
-### 7. Kiểm tra phân quyền
-
-```http
-GET /api/categories/admin-dashboard
-```
-
-- Chỉ `Admin`
-
-```http
-GET /api/categories/staff-pos
-```
-
-- `Admin` và `Cashier` đều được phép
+### Bước 1: Mở dự án trong VS Code
+1. Mở Visual Studio Code.
+2. Chọn **File** -> **Open Folder...** và chọn thư mục gốc dự án (`HeThongBanLeThienAn`).
+3. Khuyến nghị cài đặt Extension **C#** hoặc **C# Dev Kit** từ Microsoft.
 
 ---
 
-## Quy tắc phân quyền
-
-```csharp
-[Authorize(Roles = "Admin,Cashier")]
-```
-
-- `Admin` và `Cashier` đều có quyền xem danh mục
-
-```csharp
-[Authorize(Roles = "Admin")]
-```
-
-- Chỉ `Admin` mới có quyền thêm, sửa, xóa và truy cập trang quản trị
-
-Kết quả kiểm thử tiêu biểu:
-
-| Endpoint                              | Admin  | Cashier       |
-| ------------------------------------- | ------ | ------------- |
-| `GET /api/categories`                 | 200 OK | 200 OK        |
-| `GET /api/categories/staff-pos`       | 200 OK | 200 OK        |
-| `GET /api/categories/admin-dashboard` | 200 OK | 403 Forbidden |
+### Cách 1: Chạy trực tiếp bằng Run & Debug trong VS Code (Khuyến nghị)
+1. Bấm tổ hợp phím **`Ctrl + Shift + D`** (hoặc chọn biểu tượng **Run and Debug** trên thanh bên trái).
+2. Tại menu thả xuống phía trên, chọn cấu hình: **`API + WinForms`** (Compound run cả Backend và Frontend cùng lúc).
+3. Nhấn **F5** hoặc nút **Play**:
+   - VS Code sẽ tự động build và khởi chạy **Web API** (`http://localhost:5167`).
+   - Màn hình Swagger UI sẽ sẵn sàng tại `http://localhost:5167/swagger`.
+   - Ứng dụng **WinForms Client** (`FormLogin`) sẽ tự động mở lên.
 
 ---
 
-## Hướng dẫn chạy project
+### Cách 2: Chạy qua Terminal bằng .NET CLI
 
-### 1. Restore package
-
-```powershell
+#### 1. Restore các package
+Mở Terminal trong VS Code (**`Ctrl + ~`**) và chạy:
+```bash
 dotnet restore
 ```
 
-### 2. Chạy API
-
-```powershell
-dotnet run --project .\HeThongBanLeThienAn.API\HeThongBanLeThienAn.API.csproj
+#### 2. Chạy Backend Web API
+Mở Terminal 1 và chạy:
+```bash
+dotnet run --project ./HeThongBanLeThienAn.API/HeThongBanLeThienAn.API.csproj
 ```
+> Web API sẽ lắng nghe tại `http://localhost:5167`. Bạn có thể truy cập Swagger UI qua trình duyệt: `http://localhost:5167/swagger`.
 
-Hoặc mở project trong Visual Studio và chọn `HeThongBanLeThienAn.API` làm startup project.
-
-API chạy mặc định tại:
-
-```text
-http://localhost:5167
+#### 3. Chạy Frontend WinForms Client
+Mở Terminal 2 và chạy:
+```bash
+dotnet run --project ./HeThongBanLeThienAn.WinForms/HeThongBanLeThienAn.WinForms.csproj
 ```
-
-Swagger UI:
-
-```text
-http://localhost:5167/swagger
-```
-
-### 3. Chạy WinForms
-
-Mở project `HeThongBanLeThienAn.WinForms` trong Visual Studio và chạy ứng dụng.
-
-WinForms sẽ mở màn hình đăng nhập `FormLogin`.
 
 ---
 
-## Kiểm thử nhanh
-
-### Không có token
-
-Gọi:
-
-```http
-GET /api/categories
-```
-
-Kết quả mong đợi:
-
-```text
-401 Unauthorized
-```
-
-### Đăng nhập thành công
-
-```http
-POST /api/auth/login
-```
-
-Body:
-
-```json
-{
-  "username": "admin",
-  "password": "123456"
-}
-```
-
-Kết quả mong đợi: nhận được JWT token và role `Admin`.
-
-### Giao diện WinForms
-
-- Nhập `admin` / `123456`
-- Hệ thống lưu JWT vào `SessionManager`
-- Mở `FormCategoryManagement`
-- Gửi `Authorization: Bearer <token>` khi gọi API
-- Danh mục sản phẩm sẽ tải lên `DataGridView`
+### Bước 2: Kiểm thử API bằng Postman 📬
+1. Mở phần mềm **Postman**.
+2. Chọn **Import** -> Tìm và chọn file `MiniSupermarket.postman_collection.json` ở thư mục gốc của dự án.
+3. Thực hiện kiểm thử theo thứ tự:
+   - **Xác thực (Auth)**: Chạy `Đăng nhập Admin` hoặc `Đăng nhập Cashier` (Postman sẽ tự động lưu `adminToken` / `cashierToken` vào biến môi trường).
+   - **Quản lý Danh mục (Categories)**: Chạy các request Get All, Search, Create, Update, Delete.
+   - **Quản lý Khách hàng (Customers)**: Chạy các request Get All, Search, Create, Update, Delete.
 
 ---
 
-## Lưu ý triển khai
-
-- Dữ liệu hiện tại là dữ liệu mẫu, lưu trong bộ nhớ RAM, không có database.
-- Secret key JWT đang được cấu hình trong `Program.cs` và `appsettings.json`.
-- Đối với môi trường thực tế, nên thay thế bằng cơ sở dữ liệu và quản lý người dùng theo nghiệp vụ thực tế.
+### Bước 3: Thử nghiệm ứng dụng WinForms
+1. Nhập tài khoản:
+   - `admin` / `123456` (Quyền Admin - toàn quyền CRUD)
+   - `cashier` / `123456` (Quyền Cashier - xem, tìm kiếm, quản lý khách hàng)
+2. Sau khi đăng nhập thành công, token JWT sẽ được lưu và mở giao diện `FormCategoryManagement` / `FormCustomerManagement`.
+3. Thử nghiệm các tính năng: Tải lại dữ liệu, Thêm mới, Sửa, Xóa và Tìm kiếm theo từ khóa.
 
 ---
 
-## Tác giả
+### Bước 4: Chạy Kiểm thử Đơn vị (Unit Tests)
 
-- Mã sinh viên: 2124110111
-- Họ tên sinh viên: Vương Nguyễn Trường Hưng
-- Lớp học phần: CCQ2411D
-- Đề tài: Phát triển Hệ thống Quản lý Bán lẻ và Theo dõi Hàng tồn kho theo thời gian thực -- Cửa hàng Bách hóa Tổng hợp Thiên Ân
+Trong Terminal của VS Code, chạy lệnh sau:
+```bash
+dotnet test
+```
+Hoặc mở **Testing Tab** (Test Explorer) trong VS Code để xem và chạy toàn bộ 23 bài test tự động cho `AuthController`, `CategoriesController` và `CustomersController`.
+
+---
+
+## 👨‍💻 6. Tác giả
+
+- **Họ tên sinh viên**: Vương Nguyễn Trường Hưng
+- **Mã sinh viên**: 2124110111
+- **Lớp học phần**: CCQ2411D
+- **Đề tài**: Phát triển Hệ thống Quản lý Bán lẻ và Theo dõi Hàng tồn kho theo thời gian thực -- Cửa hàng Bách hóa Tổng hợp Thiên Ân

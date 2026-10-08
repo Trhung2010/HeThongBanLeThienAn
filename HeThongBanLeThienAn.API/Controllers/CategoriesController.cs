@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MiniSupermarket.API.Data;
 using MiniSupermarket.API.Models;
 
 namespace MiniSupermarket.API.Controllers
@@ -9,62 +11,30 @@ namespace MiniSupermarket.API.Controllers
     [Authorize]
     public class CategoriesController : ControllerBase
     {
-        // Dữ liệu mẫu lưu tạm trên bộ nhớ RAM
-        private static readonly List<Category> _categories = new()
+        private readonly SupermarketDbContext _context;
+
+        public CategoriesController(SupermarketDbContext context)
         {
-            new Category
-            {
-                CategoryId = 1,
-                CategoryName = "Bánh quy bơ",
-                Description = "Sản phẩm bánh kẹo",
-                StockQuantity = 120
-            },
-            new Category
-            {
-                CategoryId = 2,
-                CategoryName = "Nước suối 500ml",
-                Description = "Nước uống đóng chai",
-                StockQuantity = 240
-            },
-            new Category
-            {
-                CategoryId = 3,
-                CategoryName = "Sữa tươi hộp 1L",
-                Description = "Sản phẩm từ sữa",
-                StockQuantity = 85
-            },
-            new Category
-            {
-                CategoryId = 4,
-                CategoryName = "Mì ăn liền",
-                Description = "Thực phẩm đóng gói",
-                StockQuantity = 160
-            },
-            new Category
-            {
-                CategoryId = 5,
-                CategoryName = "Dầu ăn thực vật",
-                Description = "Gia vị và dầu ăn",
-                StockQuantity = 60
-            }
-        };
+            _context = context;
+        }
 
         // 1. READ: Lấy toàn bộ danh sách nhóm hàng
         // GET /api/categories
         [HttpGet]
         [Authorize(Roles = "Admin,Cashier")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_categories);
+            var categories = await _context.Categories.ToListAsync();
+            return Ok(categories);
         }
 
         // 2. READ: Lấy chi tiết một nhóm hàng theo ID
         // GET /api/categories/{id}
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin,Cashier")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var cat = _categories.FirstOrDefault(c => c.CategoryId == id);
+            var cat = await _context.Categories.FindAsync(id);
 
             if (cat == null)
             {
@@ -81,7 +51,7 @@ namespace MiniSupermarket.API.Controllers
         // GET /api/categories/search?keyword=...
         [HttpGet("search")]
         [Authorize(Roles = "Admin,Cashier")]
-        public IActionResult Search([FromQuery] string keyword)
+        public async Task<IActionResult> Search([FromQuery] string keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))
             {
@@ -91,11 +61,9 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            var result = _categories
-                .Where(c => c.CategoryName.Contains(
-                    keyword,
-                    StringComparison.OrdinalIgnoreCase))
-                .ToList();
+            var result = await _context.Categories
+                .Where(c => c.CategoryName.Contains(keyword))
+                .ToListAsync();
 
             return Ok(result);
         }
@@ -104,7 +72,7 @@ namespace MiniSupermarket.API.Controllers
         // POST /api/categories
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult Create([FromBody] Category newCat)
+        public async Task<IActionResult> Create([FromBody] Category newCat)
         {
             if (string.IsNullOrWhiteSpace(newCat.CategoryName))
             {
@@ -122,11 +90,8 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            newCat.CategoryId = _categories.Count > 0
-                ? _categories.Max(c => c.CategoryId) + 1
-                : 1;
-
-            _categories.Add(newCat);
+            await _context.Categories.AddAsync(newCat);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -138,12 +103,9 @@ namespace MiniSupermarket.API.Controllers
         // PUT /api/categories/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Update(
-            int id,
-            [FromBody] Category updateCat)
+        public async Task<IActionResult> Update(int id, [FromBody] Category updateCat)
         {
-            var cat = _categories.FirstOrDefault(
-                c => c.CategoryId == id);
+            var cat = await _context.Categories.FindAsync(id);
 
             if (cat == null)
             {
@@ -165,6 +127,8 @@ namespace MiniSupermarket.API.Controllers
             cat.Description = updateCat.Description;
             cat.StockQuantity = updateCat.StockQuantity;
 
+            await _context.SaveChangesAsync();
+
             return NoContent();
         }
 
@@ -172,10 +136,9 @@ namespace MiniSupermarket.API.Controllers
         // DELETE /api/categories/{id}
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var cat = _categories.FirstOrDefault(
-                c => c.CategoryId == id);
+            var cat = await _context.Categories.FindAsync(id);
 
             if (cat == null)
             {
@@ -185,7 +148,8 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            _categories.Remove(cat);
+            _context.Categories.Remove(cat);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -202,7 +166,6 @@ namespace MiniSupermarket.API.Controllers
         }
 
         // 8. Kiểm tra quyền chung cho nhân viên
-        // Admin và Cashier đều gọi được
         [HttpGet("staff-pos")]
         [Authorize(Roles = "Admin,Cashier")]
         public IActionResult GetStaffPos()
