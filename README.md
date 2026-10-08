@@ -1,24 +1,24 @@
 # 🛒 HỆ THỐNG QUẢN LÝ SIÊU THỊ MINI (MINISUPERMARKET SYSTEM)
 
 - **Môn học**: Lập trình Ứng dụng .NET Core (Mã môn: 229162)
-- **Buổi thực hành**: Buổi 1 - Xây dựng Web API quản lý danh mục và kết nối WinForms Client (CRUD)
+- **Đồ án**: Phát triển Hệ thống Quản lý Bán lẻ và Theo dõi Hàng tồn kho theo thời gian thực
 
 ---
 
 ## 🏗️ 1. Mô hình Kiến trúc Hệ thống (Client - Server)
 
 Dự án được xây dựng theo mô hình phân tầng hiện đại, tách biệt hoàn toàn giữa Backend và Frontend:
-- **HeThongBanLeThienAn.API (Backend)**: Dự án ASP.NET Core Web API chịu trách nhiệm xử lý logic nghiệp vụ, quản lý dữ liệu, xác thực JWT (JSON Web Token), phân quyền theo vai trò (Admin / Cashier) và cung cấp các RESTful API chuẩn hóa.
-- **HeThongBanLeThienAn.WinForms (Frontend Client)**: Ứng dụng Windows Forms đóng vai trò là máy trạm POS tại quầy, sử dụng `HttpClient` để kết nối và truyền nhận Bearer Token với API qua mạng, quản lý danh mục và tồn kho trực quan trên `DataGridView`.
+- **HeThongBanLeThienAn.API (Backend)**: Dự án ASP.NET Core Web API sử dụng Entity Framework Core Code-First (SQL Server), chịu trách nhiệm xử lý logic nghiệp vụ, xác thực JWT (JSON Web Token), phân quyền theo vai trò (Admin / Cashier) và cung cấp các RESTful API chuẩn hóa.
+- **HeThongBanLeThienAn.WinForms (Frontend Client)**: Ứng dụng Windows Forms đóng vai trò là máy trạm POS tại quầy, sử dụng `HttpClient` đính kèm Bearer Token để giao tiếp với API, quản lý Danh mục, Sản phẩm và Khách hàng trực quan trên `DataGridView`.
 
 ---
 
 ## 🛠️ 2. Công nghệ Sử dụng
 
 - **Ngôn ngữ**: C# (.NET 8.0)
-- **Backend**: ASP.NET Core Web API, Controllers, JWT Bearer Authentication, In-Memory Data, LINQ
+- **Backend**: ASP.NET Core Web API, Entity Framework Core 8.0 (SQL Server), Controllers, JWT Bearer Authentication, LINQ Async/Await
 - **Frontend**: Windows Forms (.NET 8.0), `System.Net.Http.Json`, `System.IdentityModel.Tokens.Jwt`
-- **Công cụ phát triển & kiểm thử**: Visual Studio Code (VS Code), C# Dev Kit Extension, Swagger UI, xUnit Test Framework
+- **Công cụ phát triển & kiểm thử**: Visual Studio Code (VS Code), C# Dev Kit Extension, Postman, Swagger UI, xUnit Test Framework
 
 ---
 
@@ -27,22 +27,25 @@ Dự án được xây dựng theo mô hình phân tầng hiện đại, tách b
 ```text
 c:\HeThongBanLeThienAn
 ├── README.md
+├── MiniSupermarket.postman_collection.json # Bộ sưu tập kiểm thử API trên Postman
 ├── .vscode/                             # Cấu hình Run & Debug cho VS Code
 │   ├── launch.json                      # Cấu hình khởi chạy API, WinForms và Compound API + WinForms
-│   ├── tasks.json                       # Cấu hình Build và Stop process tự động
-│   └── settings.json
+│   └── tasks.json                       # Cấu hình Build và Stop process tự động
 ├── HeThongBanLeThienAn.sln
 ├── HeThongBanLeThienAn.API/             # Dự án Web API (Backend)
-│   ├── Controllers/                     # Chứa AuthController, CategoriesController (JWT, CRUD & Search)
-│   ├── Models/                          # Chứa lớp thực thể Category.cs
-│   └── Program.cs                       # Cấu hình JWT Bearer, Swagger & Middleware
+│   ├── Controllers/                     # AuthController, CategoriesController, CustomersController
+│   ├── Data/                            # SupermarketDbContext & Data Seeding
+│   ├── Models/                          # Category.cs, Product.cs, Customer.cs
+│   └── Program.cs                       # Cấu hình EF Core SQL Server, JWT Bearer, Swagger
 ├── HeThongBanLeThienAn.WinForms/        # Dự án Windows Forms (Frontend Client)
-│   ├── FormLogin.cs                     # Giao diện đăng nhập lấy JWT Token
-│   ├── FormCategoryManagement.cs        # Giao diện quản lý danh mục & tồn kho
+│   ├── FormLogin.cs                     # Đăng nhập lấy JWT Token
+│   ├── FormCategoryManagement.cs        # Quản lý danh mục & tồn kho
+│   ├── FormCustomerManagement.cs        # Quản lý thông tin khách hàng & tích điểm
 │   └── SessionManager.cs                # Quản lý phiên làm việc & JWT Token
 └── HeThongBanLeThienAn.Tests/           # Dự án Unit Test (xUnit)
     ├── AuthControllerTests.cs           # Kiểm thử đăng nhập & xác thực JWT
-    └── CategoriesControllerTests.cs     # Kiểm thử các API CRUD & Phân quyền
+    ├── CategoriesControllerTests.cs     # Kiểm thử API Danh mục CRUD & Phân quyền
+    └── CustomersControllerTests.cs      # Kiểm thử API Khách hàng CRUD & Tìm kiếm
 ```
 
 ---
@@ -51,8 +54,8 @@ c:\HeThongBanLeThienAn
 
 | Tài khoản | Mật khẩu | Vai trò | Quyền hạn |
 | --------- | -------- | ------- | --------- |
-| `admin`   | `123456` | Admin   | Toàn quyền xem, thêm, sửa, xóa sản phẩm và truy cập Admin Dashboard |
-| `cashier` | `123456` | Cashier | Quyền nhân viên: Xem danh sách, tìm kiếm sản phẩm và truy cập POS |
+| `admin`   | `123456` | Admin   | Toàn quyền xem, thêm, sửa, xóa sản phẩm/khách hàng và truy cập Admin Dashboard |
+| `cashier` | `123456` | Cashier | Quyền nhân viên: Xem danh sách, tìm kiếm, quản lý thông tin khách hàng & bán hàng POS |
 
 ---
 
@@ -98,22 +101,32 @@ dotnet run --project ./HeThongBanLeThienAn.WinForms/HeThongBanLeThienAn.WinForms
 
 ---
 
-### Bước 2: Thử nghiệm ứng dụng WinForms
-1. Nhập tài khoản:
-   - `admin` / `123456` (Quyền Admin - toàn quyền CRUD)
-   - `cashier` / `123456` (Quyền Cashier - chỉ xem và tìm kiếm)
-2. Sau khi đăng nhập thành công, token JWT sẽ được lưu và mở giao diện `FormCategoryManagement`.
-3. Thử nghiệm các tính năng: Tải lại dữ liệu, Thêm sản phẩm, Sửa sản phẩm, Xóa sản phẩm, Tìm kiếm theo từ khóa.
+### Bước 2: Kiểm thử API bằng Postman 📬
+1. Mở phần mềm **Postman**.
+2. Chọn **Import** -> Tìm và chọn file `MiniSupermarket.postman_collection.json` ở thư mục gốc của dự án.
+3. Thực hiện kiểm thử theo thứ tự:
+   - **Xác thực (Auth)**: Chạy `Đăng nhập Admin` hoặc `Đăng nhập Cashier` (Postman sẽ tự động lưu `adminToken` / `cashierToken` vào biến môi trường).
+   - **Quản lý Danh mục (Categories)**: Chạy các request Get All, Search, Create, Update, Delete.
+   - **Quản lý Khách hàng (Customers)**: Chạy các request Get All, Search, Create, Update, Delete.
 
 ---
 
-### Bước 3: Chạy Kiểm thử Đơn vị (Unit Tests)
+### Bước 3: Thử nghiệm ứng dụng WinForms
+1. Nhập tài khoản:
+   - `admin` / `123456` (Quyền Admin - toàn quyền CRUD)
+   - `cashier` / `123456` (Quyền Cashier - xem, tìm kiếm, quản lý khách hàng)
+2. Sau khi đăng nhập thành công, token JWT sẽ được lưu và mở giao diện `FormCategoryManagement` / `FormCustomerManagement`.
+3. Thử nghiệm các tính năng: Tải lại dữ liệu, Thêm mới, Sửa, Xóa và Tìm kiếm theo từ khóa.
+
+---
+
+### Bước 4: Chạy Kiểm thử Đơn vị (Unit Tests)
 
 Trong Terminal của VS Code, chạy lệnh sau:
 ```bash
 dotnet test
 ```
-Hoặc mở phím tắt trong VS Code **Testing Tab** (Test Explorer) để xem và chạy toàn bộ 17 bài test tự động cho `AuthController` và `CategoriesController`.
+Hoặc mở **Testing Tab** (Test Explorer) trong VS Code để xem và chạy toàn bộ 23 bài test tự động cho `AuthController`, `CategoriesController` và `CustomersController`.
 
 ---
 
