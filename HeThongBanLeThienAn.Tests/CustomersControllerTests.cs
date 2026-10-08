@@ -10,7 +10,7 @@ using Xunit;
 
 namespace HeThongBanLeThienAn.Tests
 {
-    public class CategoriesControllerTests
+    public class CustomersControllerTests
     {
         private SupermarketDbContext GetDbContext()
         {
@@ -24,11 +24,11 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public async Task GetAll_ReturnsOkResultWithListOfCategories()
+        public async Task GetAll_ReturnsOkResultWithListOfCustomers()
         {
             // Arrange
             using var context = GetDbContext();
-            var controller = new CategoriesController(context);
+            var controller = new CustomersController(context);
 
             // Act
             var result = await controller.GetAll() as OkObjectResult;
@@ -37,9 +37,9 @@ namespace HeThongBanLeThienAn.Tests
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
 
-            var categories = result.Value as List<Category>;
-            Assert.NotNull(categories);
-            Assert.NotEmpty(categories);
+            var customers = result.Value as List<Customer>;
+            Assert.NotNull(customers);
+            Assert.Equal(3, customers.Count); // 3 seeded customers
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace HeThongBanLeThienAn.Tests
         {
             // Arrange
             using var context = GetDbContext();
-            var controller = new CategoriesController(context);
+            var controller = new CustomersController(context);
 
             // Act
             var result = await controller.GetById(1) as OkObjectResult;
@@ -56,9 +56,9 @@ namespace HeThongBanLeThienAn.Tests
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
 
-            var category = result.Value as Category;
-            Assert.NotNull(category);
-            Assert.Equal(1, category.CategoryId);
+            var customer = result.Value as Customer;
+            Assert.NotNull(customer);
+            Assert.Equal("Nguyễn Văn A", customer.CustomerName);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace HeThongBanLeThienAn.Tests
         {
             // Arrange
             using var context = GetDbContext();
-            var controller = new CategoriesController(context);
+            var controller = new CustomersController(context);
 
             // Act
             var result = await controller.GetById(9999) as NotFoundObjectResult;
@@ -77,22 +77,23 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public async Task Search_WithValidKeyword_ReturnsOkResult()
+        public async Task Search_WithValidKeyword_ReturnsMatchingCustomers()
         {
             // Arrange
             using var context = GetDbContext();
-            var controller = new CategoriesController(context);
+            var controller = new CustomersController(context);
 
             // Act
-            var result = await controller.Search("suối") as OkObjectResult;
+            var result = await controller.Search("Văn A") as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
 
-            var categories = result.Value as List<Category>;
-            Assert.NotNull(categories);
-            Assert.Single(categories);
+            var list = result.Value as List<Customer>;
+            Assert.NotNull(list);
+            Assert.Single(list);
+            Assert.Equal("Nguyễn Văn A", list[0].CustomerName);
         }
 
         [Fact]
@@ -100,7 +101,7 @@ namespace HeThongBanLeThienAn.Tests
         {
             // Arrange
             using var context = GetDbContext();
-            var controller = new CategoriesController(context);
+            var controller = new CustomersController(context);
 
             // Act
             var result = await controller.Search("   ") as BadRequestObjectResult;
@@ -111,30 +112,32 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public async Task Create_ValidCategory_ReturnsCreatedAtAction()
+        public async Task Create_ValidCustomer_ReturnsCreatedAtAction()
         {
             // Arrange
             using var context = GetDbContext();
-            var controller = new CategoriesController(context);
+            var controller = new CustomersController(context);
 
-            var newCategory = new Category
+            var newCustomer = new Customer
             {
-                CategoryName = "Trà sữa Ô Long",
-                Description = "Đồ uống đóng chai",
-                StockQuantity = 100
+                CustomerName = "Phạm Văn D",
+                PhoneNumber = "0933445566",
+                Address = "101 Điện Biên Phủ",
+                RewardPoints = 100,
+                MembershipRank = "Bạc"
             };
 
             // Act
-            var result = await controller.Create(newCategory) as CreatedAtActionResult;
+            var result = await controller.Create(newCustomer) as CreatedAtActionResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal(201, result.StatusCode);
 
-            var createdCat = result.Value as Category;
-            Assert.NotNull(createdCat);
-            Assert.True(createdCat.CategoryId > 0);
-            Assert.Equal("Trà sữa Ô Long", createdCat.CategoryName);
+            var created = result.Value as Customer;
+            Assert.NotNull(created);
+            Assert.True(created.CustomerId > 0);
+            Assert.Equal("Phạm Văn D", created.CustomerName);
         }
 
         [Fact]
@@ -142,17 +145,16 @@ namespace HeThongBanLeThienAn.Tests
         {
             // Arrange
             using var context = GetDbContext();
-            var controller = new CategoriesController(context);
+            var controller = new CustomersController(context);
 
-            var newCategory = new Category
+            var newCustomer = new Customer
             {
-                CategoryName = "",
-                Description = "Đồ uống",
-                StockQuantity = 10
+                CustomerName = "",
+                PhoneNumber = "0912345678"
             };
 
             // Act
-            var result = await controller.Create(newCategory) as BadRequestObjectResult;
+            var result = await controller.Create(newCustomer) as BadRequestObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -160,33 +162,39 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public async Task Update_ExistingCategory_ReturnsNoContent()
+        public async Task Update_ExistingCustomer_ReturnsNoContent()
         {
             // Arrange
             using var context = GetDbContext();
-            var controller = new CategoriesController(context);
+            var controller = new CustomersController(context);
 
-            var updateCategory = new Category
+            var updateData = new Customer
             {
-                CategoryName = "Bánh quy bơ giòn",
-                Description = "Sản phẩm bánh kẹo cao cấp",
-                StockQuantity = 150
+                CustomerName = "Nguyễn Văn A Updated",
+                PhoneNumber = "0901234567",
+                Address = "Địa chỉ mới",
+                RewardPoints = 600,
+                MembershipRank = "Kim Cương"
             };
 
             // Act
-            var result = await controller.Update(1, updateCategory) as NoContentResult;
+            var result = await controller.Update(1, updateData) as NoContentResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal(204, result.StatusCode);
+
+            var updatedCustomer = await context.Customers.FindAsync(1);
+            Assert.Equal("Nguyễn Văn A Updated", updatedCustomer!.CustomerName);
+            Assert.Equal("Kim Cương", updatedCustomer.MembershipRank);
         }
 
         [Fact]
-        public async Task Delete_ExistingCategory_ReturnsNoContent()
+        public async Task Delete_ExistingCustomer_ReturnsNoContent()
         {
             // Arrange
             using var context = GetDbContext();
-            var controller = new CategoriesController(context);
+            var controller = new CustomersController(context);
 
             // Act
             var result = await controller.Delete(1) as NoContentResult;
@@ -194,36 +202,9 @@ namespace HeThongBanLeThienAn.Tests
             // Assert
             Assert.NotNull(result);
             Assert.Equal(204, result.StatusCode);
-        }
 
-        [Fact]
-        public void GetAdminDashboard_ReturnsOkResult()
-        {
-            // Arrange
-            using var context = GetDbContext();
-            var controller = new CategoriesController(context);
-
-            // Act
-            var result = controller.GetAdminDashboard() as OkObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-        }
-
-        [Fact]
-        public void GetStaffPos_ReturnsOkResult()
-        {
-            // Arrange
-            using var context = GetDbContext();
-            var controller = new CategoriesController(context);
-
-            // Act
-            var result = controller.GetStaffPos() as OkObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
+            var deleted = await context.Customers.FindAsync(1);
+            Assert.Null(deleted);
         }
     }
 }

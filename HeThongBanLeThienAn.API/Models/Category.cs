@@ -1,4 +1,7 @@
-﻿namespace MiniSupermarket.API.Models
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
+namespace MiniSupermarket.API.Models
 {
     public class Category
     {
@@ -14,5 +17,8 @@
         // Số lượng tồn kho hiện tại
         public int StockQuantity { get; set; }
 
+        // Quan hệ 1 - Nhiều với Product
+        [JsonIgnore]
+        public ICollection<Product>? Products { get; set; }
     }
 }
