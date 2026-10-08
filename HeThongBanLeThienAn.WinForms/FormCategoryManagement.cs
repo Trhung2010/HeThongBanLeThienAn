@@ -221,6 +221,7 @@ namespace MiniSupermarket.WinForms
 
             try
             {
+                using var client = GetAuthenticatedClient();
                 var newCat = new
                 {
                     CategoryName = txtCategoryName.Text.Trim(),
@@ -229,7 +230,7 @@ namespace MiniSupermarket.WinForms
                 };
 
                 var response =
-                    await _client.PostAsJsonAsync("categories", newCat);
+                    await client.PostAsJsonAsync("categories", newCat);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -311,6 +312,7 @@ namespace MiniSupermarket.WinForms
 
             try
             {
+                using var client = GetAuthenticatedClient();
                 var updateCat = new
                 {
                     CategoryId = id,
@@ -320,7 +322,7 @@ namespace MiniSupermarket.WinForms
                 };
 
                 var response =
-                    await _client.PutAsJsonAsync(
+                    await client.PutAsJsonAsync(
                         $"categories/{id}",
                         updateCat);
 
@@ -402,8 +404,9 @@ namespace MiniSupermarket.WinForms
 
             try
             {
+                using var client = GetAuthenticatedClient();
                 var response =
-                    await _client.DeleteAsync($"categories/{id}");
+                    await client.DeleteAsync($"categories/{id}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -450,11 +453,12 @@ namespace MiniSupermarket.WinForms
 
             try
             {
+                using var client = GetAuthenticatedClient();
                 string encodedKeyword =
                     Uri.EscapeDataString(keyword);
 
                 var result =
-                    await _client.GetFromJsonAsync<List<CategoryDto>>(
+                    await client.GetFromJsonAsync<List<CategoryDto>>(
                         $"categories/search?keyword={encodedKeyword}");
 
                 dgvCategories.DataSource = result;
