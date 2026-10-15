@@ -140,6 +140,7 @@ namespace MiniSupermarket.API.Controllers
     public class CheckoutRequestDto
     {
         public string CashierUsername { get; set; } = string.Empty;
+        public int CustomerId { get; set; } = 15;
         public string? CustomerPhone { get; set; }
         public List<CheckoutItemDto> Items { get; set; } = new();
     }

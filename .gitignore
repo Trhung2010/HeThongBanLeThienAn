@@ -7,3 +7,7 @@
 *.user
 *.suo
 *.slnLaunch.user
+
+# SQLite temporary runtime files
+*.db-shm
+*.db-wal

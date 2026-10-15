@@ -40,6 +40,9 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
+// Cấu hình dịch vụ ADO.NET Connection Factory
+builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+
 // Cấu hình dịch vụ và middleware khác
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

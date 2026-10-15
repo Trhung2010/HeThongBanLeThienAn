@@ -150,9 +150,56 @@ Hoặc mở **Testing Tab** (Test Explorer) trong VS Code để xem và chạy t
 
 ---
 
+## 🚀 5. Nội dung Thực hành Buổi 5: ADO.NET Nâng cao, Stored Procedure & POS Transaction
+
+Buổi 5 tập trung vào kỹ thuật truy xuất dữ liệu tầng thấp với ADO.NET, Stored Procedure và quản lý giao dịch chuẩn ACID:
+
+### 1. ADO.NET Nền tảng (Tiết 1)
+- Minh họa 5 đối tượng cốt lõi: `SqlConnection`, `SqlCommand`, `SqlParameter`, `SqlDataReader`, `DataTable` / `SqlDataAdapter`.
+- Chương trình mẫu `AdoNetTiet1Demo.cs`:
+  - **Bài tập 1**: Đếm tổng số mặt hàng bằng `ExecuteScalar()`.
+  - **Bài tập 2**: Cập nhật tồn kho sản phẩm an toàn bằng `ExecuteNonQuery()` và `SqlParameter` (chống SQL Injection).
+  - **Bài tập 3**: Đọc duyệt danh sách sản phẩm tốc độ cao bằng `SqlDataReader`.
+
+### 2. API Tra cứu mã vạch siêu tốc & Mô hình ngắt kết nối (Tiết 2)
+- **Controller**: `AdoProductController.cs` (`/api/ado-products`)
+  - `GET /barcode/{barcode}`: Quét mã vạch siêu tốc bằng `SqlDataReader` (Connected Mode, độ trễ < 100ms).
+  - `GET /disconnected-cache`: Tải toàn bộ danh sách sản phẩm đệm vào RAM qua `DataTable` & `SqlDataAdapter` (Disconnected Mode).
+  - **Bài tập 2.1**: `GET /filter-stock?minStock=50`: Tra cứu sản phẩm theo ngưỡng tồn kho cảnh báo bằng `SqlDataReader`.
+  - **Bài tập 2.2**: `GET /count-by-category`: Thống kê số lượng sản phẩm theo từng nhóm danh mục bằng `DataTable`.
+
+### 3. Tối ưu truy vấn với Stored Procedure & Báo cáo doanh thu (Tiết 3)
+- File script SQL: `HeThongBanLeThienAn.API/Data/StoredProcedures_Buoi5.sql`
+  - `sp_GetRevenueByCashier`: Báo cáo tổng hợp doanh thu theo từng thu ngân (`GROUP BY`, `SUM`, `COUNT`).
+  - **Bài tập 3.1**: `sp_GetRevenueByDateRange`: Báo cáo doanh thu theo khoảng ngày nhận tham số `@FromDate`, `@ToDate`.
+  - **Bài tập 3.2**: `sp_GetTop5SellingProducts`: Báo cáo Top 5 sản phẩm bán chạy nhất.
+- **Controller**: `ReportsController.cs` (`/api/reports`)
+  - `GET /revenue-by-cashier`: Gọi Stored Procedure `sp_GetRevenueByCashier`.
+  - `GET /revenue-by-date?fromDate=...&toDate=...`: Gọi Stored Procedure `sp_GetRevenueByDateRange`.
+  - `GET /top-selling-products`: Gọi Stored Procedure `sp_GetTop5SellingProducts`.
+
+### 4. Chuẩn ACID & Giao dịch POS Checkout với SqlTransaction (Tiết 4 & Tiết 5)
+- **Controller**: `CheckoutController.cs` (`/api/checkout`)
+  - `POST /api/checkout`: Thực thi liên hoàn 4 thao tác bọc kín trong `SqlTransaction` (`BeginTransaction()`, `Commit()`, `Rollback()`):
+    1. `INSERT INTO Orders`: Tạo hóa đơn, lấy `OrderId` tự tăng.
+    2. Kiểm tra tồn kho từng sản phẩm (`currentStock >= item.Quantity`), ném exception nếu không đủ.
+    3. `INSERT INTO OrderDetails`: Lưu các dòng mặt hàng giỏ hàng.
+    4. `UPDATE Products`: Khấu trừ số lượng tồn kho.
+    5. `UPDATE Customers`: Tích lũy điểm thưởng (10.000đ = 1 điểm).
+  - **Bài tập mở rộng (Tiết 5)**: `DELETE /api/checkout/cancel/{orderId}`: Hủy đơn hàng và tự động hoàn trả tồn kho, khấu trừ điểm thưởng bọc trong 1 Transaction hoàn chỉnh.
+
+### 5. Bộ Test tự động (44 Unit Tests)
+- Toàn bộ 44 unit tests vượt qua (`Passed: 44, Failed: 0`):
+  ```bash
+  dotnet test
+  ```
+
+---
+
 ## 👨‍💻 6. Tác giả
 
 - **Họ tên sinh viên**: Vương Nguyễn Trường Hưng
 - **Mã sinh viên**: 2124110111
 - **Lớp học phần**: CCQ2411D
 - **Đề tài**: Phát triển Hệ thống Quản lý Bán lẻ và Theo dõi Hàng tồn kho theo thời gian thực -- Cửa hàng Bách hóa Tổng hợp Thiên Ân
+
