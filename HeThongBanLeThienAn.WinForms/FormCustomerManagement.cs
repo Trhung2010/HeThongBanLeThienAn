@@ -20,8 +20,11 @@ namespace MiniSupermarket.WinForms
         private async void FormCustomerManagement_Load(object sender, EventArgs e)
         {
             var menu = NavigationManager.CreateAppMenu(this);
-            this.Controls.Add(menu);
-            this.MainMenuStrip = menu;
+            if (menu != null)
+            {
+                this.Controls.Add(menu);
+                this.MainMenuStrip = menu;
+            }
 
             await LoadDataAsync();
         }

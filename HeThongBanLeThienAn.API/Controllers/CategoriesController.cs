@@ -21,7 +21,7 @@ namespace MiniSupermarket.API.Controllers
         // 1. READ: Lấy toàn bộ danh sách nhóm hàng
         // GET /api/categories
         [HttpGet]
-        [Authorize(Roles = "Admin,Cashier")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> GetAll()
         {
             var categories = await _context.Categories.ToListAsync();
@@ -31,7 +31,7 @@ namespace MiniSupermarket.API.Controllers
         // 2. READ: Lấy chi tiết một nhóm hàng theo ID
         // GET /api/categories/{id}
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,Cashier")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> GetById(int id)
         {
             var cat = await _context.Categories.FindAsync(id);
@@ -50,7 +50,7 @@ namespace MiniSupermarket.API.Controllers
         // 3. SEARCH: Tìm kiếm nhóm hàng
         // GET /api/categories/search?keyword=...
         [HttpGet("search")]
-        [Authorize(Roles = "Admin,Cashier")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> Search([FromQuery] string keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))
@@ -71,7 +71,7 @@ namespace MiniSupermarket.API.Controllers
         // 4. CREATE: Thêm mới nhóm hàng
         // POST /api/categories
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Warehouse")]
         public async Task<IActionResult> Create([FromBody] Category newCat)
         {
             if (string.IsNullOrWhiteSpace(newCat.CategoryName))
@@ -102,7 +102,7 @@ namespace MiniSupermarket.API.Controllers
         // 5. UPDATE: Cập nhật thông tin nhóm hàng
         // PUT /api/categories/{id}
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Warehouse")]
         public async Task<IActionResult> Update(int id, [FromBody] Category updateCat)
         {
             var cat = await _context.Categories.FindAsync(id);
@@ -135,7 +135,7 @@ namespace MiniSupermarket.API.Controllers
         // 6. DELETE: Xóa nhóm hàng theo ID
         // DELETE /api/categories/{id}
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Warehouse")]
         public async Task<IActionResult> Delete(int id)
         {
             var cat = await _context.Categories.FindAsync(id);

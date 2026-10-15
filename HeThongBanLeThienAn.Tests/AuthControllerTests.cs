@@ -77,6 +77,33 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
+        public void Login_WithWarehouseCredentials_ReturnsOkWithTokenAndRole()
+        {
+            // Arrange
+            var request = new LoginRequestDto
+            {
+                Username = "ware01",
+                Password = "123456"
+            };
+
+            // Act
+            var result = _authController.Login(request) as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(200, result.StatusCode);
+
+            dynamic value = result.Value!;
+            string role = value.GetType().GetProperty("role").GetValue(value, null);
+            bool success = value.GetType().GetProperty("success").GetValue(value, null);
+            string username = value.GetType().GetProperty("username").GetValue(value, null);
+
+            Assert.True(success);
+            Assert.Equal("Warehouse", role);
+            Assert.Equal("ware01", username);
+        }
+
+        [Fact]
         public void Login_WithInvalidCredentials_ReturnsUnauthorized()
         {
             // Arrange

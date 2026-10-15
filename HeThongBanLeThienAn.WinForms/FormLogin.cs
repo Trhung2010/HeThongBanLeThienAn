@@ -70,15 +70,26 @@ namespace MiniSupermarket.WinForms
                             .GetProperty("role")
                             .GetString() ?? string.Empty;
 
+                    // Lưu username và họ tên vào SessionManager
+                    SessionManager.CurrentUsername =
+                        doc.RootElement.TryGetProperty("username", out var pUser)
+                            ? pUser.GetString() ?? username
+                            : username;
+
+                    SessionManager.CurrentFullName =
+                        doc.RootElement.TryGetProperty("fullName", out var pName)
+                            ? pName.GetString() ?? username
+                            : username;
+
                     // Hiển thị thông báo đăng nhập thành công
                     MessageBox.Show(
-                        $"Đăng nhập thành công với quyền:\n{SessionManager.CurrentRole}",
+                        $"Đăng nhập thành công!\nXin chào: {SessionManager.CurrentFullName}\nVai trò: [{SessionManager.CurrentRole}]",
                         "Thông báo",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
-                    // Mở Form quản lý sản phẩm
-                    FormProductManagement mainForm = new FormProductManagement();
+                    // Mở FormMainShell - Khung điều khiển trung tâm
+                    FormMainShell mainForm = new FormMainShell();
                     mainForm.StartPosition = FormStartPosition.CenterScreen;
                     Program.AppContext.MainForm = mainForm;
                     mainForm.Show();

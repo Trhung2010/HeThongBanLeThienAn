@@ -38,27 +38,44 @@ c:\HeThongBanLeThienAn
 │   ├── Models/                          # Category.cs, Product.cs, Customer.cs
 │   └── Program.cs                       # Cấu hình EF Core SQLite, JWT Bearer, Swagger
 ├── HeThongBanLeThienAn.WinForms/        # Dự án Windows Forms (Frontend Client)
-│   ├── FormLogin.cs                     # Đăng nhập lấy JWT Token
+│   ├── FormLogin.cs                     # Đăng nhập lấy JWT Token & nạp thông tin phiên
+│   ├── FormMainShell.cs                 # Khung điều khiển trung tâm (Sidebar + Dynamic Main Workspace)
+│   ├── FormPOS.cs                       # Quầy bán hàng POS: quét barcode, giỏ hàng, thanh toán F9
 │   ├── FormProductManagement.cs         # Quản lý sản phẩm, mã vạch, giá và tồn kho
 │   ├── FormCategoryManagement.cs        # Quản lý danh mục & nhóm hàng
 │   ├── FormCustomerManagement.cs        # Quản lý thông tin khách hàng & tích điểm
-│   ├── NavigationManager.cs             # Thanh menu điều hướng chuyển đổi linh hoạt giữa các form
-│   └── SessionManager.cs                # Quản lý phiên làm việc & JWT Token
-└── HeThongBanLeThienAn.Tests/           # Dự án Unit Test (xUnit - 30 tests)
-    ├── AuthControllerTests.cs           # Kiểm thử đăng nhập & xác thực JWT
+│   ├── FormQuickReport.cs               # Báo cáo doanh thu ca & hiệu suất (Admin)
+│   ├── FormUserManagement.cs            # Quản trị tài khoản & phân quyền người dùng (Admin)
+│   ├── NavigationManager.cs             # Bộ điều hướng phân quyền & quản lý form
+│   └── SessionManager.cs                # Quản lý phiên làm việc & ApiClientService
+└── HeThongBanLeThienAn.Tests/           # Dự án Unit Test (xUnit - 32 tests)
+    ├── AuthControllerTests.cs           # Kiểm thử đăng nhập & xác thực JWT (Admin, Cashier, Warehouse)
     ├── CategoriesControllerTests.cs     # Kiểm thử API Danh mục CRUD & Phân quyền
-    ├── ProductsControllerTests.cs       # Kiểm thử API Sản phẩm CRUD & Tìm kiếm
+    ├── ProductsControllerTests.cs       # Kiểm thử API Sản phẩm CRUD, Barcode & Tìm kiếm
     └── CustomersControllerTests.cs      # Kiểm thử API Khách hàng CRUD & Tìm kiếm
 ```
 
 ---
 
-## 🔑 4. Tài khoản Mẫu & Phân quyền
+## 🔑 4. Danh sách 15 Tài khoản Kiểm thử Phân quyền (RBAC)
 
-| Tài khoản | Mật khẩu | Vai trò | Quyền hạn |
-| --------- | -------- | ------- | --------- |
-| `admin`   | `123456` | Admin   | Toàn quyền xem, thêm, sửa, xóa sản phẩm/khách hàng và truy cập Admin Dashboard |
-| `cashier` | `123456` | Cashier | Quyền nhân viên: Xem danh sách, tìm kiếm, quản lý thông tin khách hàng & bán hàng POS |
+| STT | Username | Mật khẩu | Họ và Tên | Vai trò (Role) | Màn hình mặc định | Phạm vi quyền hạn |
+| :---: | :--- | :---: | :--- | :---: | :---: | :--- |
+| 1 | `admin01` | `123456` | Nguyễn Quản Trị | **Admin** | Quản lý Danh mục | Toàn quyền toàn bộ hệ thống |
+| 2 | `admin02` | `123456` | Trần Giám Đốc | **Admin** | Quản lý Danh mục | Toàn quyền toàn bộ hệ thống |
+| 3 | `cashier01` | `123456` | Lê Thu Ngân | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
+| 4 | `cashier02` | `123456` | Phạm Bán Hàng | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
+| 5 | `cashier03` | `123456` | Hoàng Thu Ngân | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
+| 6 | `cashier04` | `123456` | Vũ Thị Quầy | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
+| 7 | `cashier05` | `123456` | Đỗ Bán Lẻ | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
+| 8 | `ware01` | `123456` | Ngô Quản Kho | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
+| 9 | `ware02` | `123456` | Bùi Kiểm Kê | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
+| 10 | `ware03` | `123456` | Dương Thủ Kho | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
+| 11 | `ware04` | `123456` | Lý Nhập Hàng | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
+| 12 | `admin_backup` | `123456` | Đặng Hỗ Trợ | **Admin** | Quản lý Danh mục | Toàn quyền toàn bộ hệ thống |
+| 13 | `cashier06` | `123456` | Hồ Ca Chiều | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
+| 14 | `ware05` | `123456` | Trương Vận Chuyển | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
+| 15 | `supervisor` | `123456` | Mai Giám Sát | **Admin** | Quản lý Danh mục | Toàn quyền toàn bộ hệ thống |
 
 ---
 

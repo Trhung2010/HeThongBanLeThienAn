@@ -169,5 +169,25 @@ namespace HeThongBanLeThienAn.Tests
             var deleted = await context.Products.FindAsync(1);
             Assert.Null(deleted);
         }
+
+        [Fact]
+        public async Task GetByBarcode_ValidBarcode_ReturnsOkResult()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var controller = new ProductsController(context);
+
+            // Act
+            var result = await controller.GetByBarcode("893000000002") as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(200, result.StatusCode);
+
+            var product = result.Value as Product;
+            Assert.NotNull(product);
+            Assert.Equal("893000000002", product.Barcode);
+            Assert.Equal("Nước khoáng thiên nhiên Lavie 500ml", product.ProductName);
+        }
     }
 }

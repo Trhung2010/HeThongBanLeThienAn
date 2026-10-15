@@ -6,8 +6,11 @@ namespace MiniSupermarket.WinForms
 {
     public static class NavigationManager
     {
-        public static MenuStrip CreateAppMenu(Form currentForm)
+        public static MenuStrip? CreateAppMenu(Form currentForm)
         {
+            if (!currentForm.TopLevel)
+                return null; // Không hiển thị menu phụ khi form đang được nhúng trong FormMainShell
+
             var menu = new MenuStrip
             {
                 BackColor = Color.FromArgb(240, 244, 250),

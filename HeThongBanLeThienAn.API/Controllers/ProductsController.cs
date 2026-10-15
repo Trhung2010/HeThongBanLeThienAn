@@ -21,7 +21,7 @@ namespace MiniSupermarket.API.Controllers
         // 1. READ ALL: Lấy toàn bộ danh sách sản phẩm
         // GET /api/products
         [HttpGet]
-        [Authorize(Roles = "Admin,Cashier")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> GetAll()
         {
             var products = await _context.Products.ToListAsync();
@@ -31,7 +31,7 @@ namespace MiniSupermarket.API.Controllers
         // 2. READ BY ID: Lấy chi tiết một sản phẩm theo ID
         // GET /api/products/{id}
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,Cashier")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> GetById(int id)
         {
             var product = await _context.Products.FindAsync(id);
@@ -47,10 +47,37 @@ namespace MiniSupermarket.API.Controllers
             return Ok(product);
         }
 
-        // 3. SEARCH: Tìm kiếm sản phẩm theo tên hoặc mã vạch
+        // 3. READ BY BARCODE: Tìm sản phẩm theo mã vạch cho quầy POS
+        // GET /api/products/barcode/{barcode}
+        [HttpGet("barcode/{barcode}")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
+        public async Task<IActionResult> GetByBarcode(string barcode)
+        {
+            if (string.IsNullOrWhiteSpace(barcode))
+            {
+                return BadRequest(new
+                {
+                    message = "Mã vạch không được để trống!"
+                });
+            }
+
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Barcode == barcode.Trim());
+
+            if (product == null)
+            {
+                return NotFound(new
+                {
+                    message = "Không tìm thấy sản phẩm có mã vạch này!"
+                });
+            }
+
+            return Ok(product);
+        }
+
+        // 4. SEARCH: Tìm kiếm sản phẩm theo tên hoặc mã vạch
         // GET /api/products/search?keyword=...
         [HttpGet("search")]
-        [Authorize(Roles = "Admin,Cashier")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> Search([FromQuery] string keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))
@@ -68,10 +95,10 @@ namespace MiniSupermarket.API.Controllers
             return Ok(result);
         }
 
-        // 4. CREATE: Thêm mới sản phẩm
+        // 5. CREATE: Thêm mới sản phẩm (Admin và Warehouse)
         // POST /api/products
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Warehouse")]
         public async Task<IActionResult> Create([FromBody] Product product)
         {
             if (string.IsNullOrWhiteSpace(product.ProductName))
@@ -115,10 +142,10 @@ namespace MiniSupermarket.API.Controllers
                 product);
         }
 
-        // 5. UPDATE: Cập nhật thông tin sản phẩm
+        // 6. UPDATE: Cập nhật thông tin sản phẩm (Admin và Warehouse)
         // PUT /api/products/{id}
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Warehouse")]
         public async Task<IActionResult> Update(int id, [FromBody] Product updateData)
         {
             var product = await _context.Products.FindAsync(id);
@@ -177,10 +204,10 @@ namespace MiniSupermarket.API.Controllers
             return NoContent();
         }
 
-        // 6. DELETE: Xóa sản phẩm theo ID
+        // 7. DELETE: Xóa sản phẩm theo ID (Admin và Warehouse)
         // DELETE /api/products/{id}
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Warehouse")]
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _context.Products.FindAsync(id);

@@ -23,10 +23,13 @@ namespace MiniSupermarket.WinForms
 
         private async void FormProductManagement_Load(object sender, EventArgs e)
         {
-            // Gắn thanh điều hướng MenuStrip lên đầu Form
+            // Gắn thanh điều hướng MenuStrip lên đầu Form (nếu chạy độc lập)
             var menu = NavigationManager.CreateAppMenu(this);
-            this.Controls.Add(menu);
-            this.MainMenuStrip = menu;
+            if (menu != null)
+            {
+                this.Controls.Add(menu);
+                this.MainMenuStrip = menu;
+            }
 
             await LoadCategoriesAsync();
             await LoadDataAsync();
