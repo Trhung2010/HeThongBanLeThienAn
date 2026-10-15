@@ -23,7 +23,7 @@ namespace MiniSupermarket.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            if (_context != null && _context.Users.Any())
+            if (_context != null)
             {
                 var dbUserDtos = _context.Users.Select(u => new
                 {

@@ -7,20 +7,14 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Cấu hình Entity Framework Core DbContext với SQLite
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<SupermarketDbContext>(options =>
-{
-    if (!string.IsNullOrEmpty(connectionString))
-    {
-        // ĐÃ SỬA: Dùng UseSqlite thay cho UseSqlServer
-        options.UseSqlite(connectionString);
-    }
-    else
-    {
-        options.UseInMemoryDatabase("MiniSupermarketDb");
-    }
-});
+// Resolve SQLite relative to the API folder, regardless of the launch directory.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Thiếu cấu hình kết nối SQLite.");
+var sqlite = new Microsoft.Data.Sqlite.SqliteConnectionStringBuilder(connectionString);
+if (sqlite.DataSource != ":memory:" && !Path.IsPathRooted(sqlite.DataSource))
+    sqlite.DataSource = Path.Combine(builder.Environment.ContentRootPath, sqlite.DataSource);
+builder.Configuration["ConnectionStrings:DefaultConnection"] = sqlite.ConnectionString;
+builder.Services.AddDbContext<SupermarketDbContext>(options => options.UseSqlite(sqlite.ConnectionString));
 
 // Cấu hình dịch vụ xác thực JWT Bearer
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ??
@@ -44,47 +38,18 @@ builder.Services.AddAuthentication(options => {
 builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
 
 // Cấu hình dịch vụ và middleware khác
+builder.Services.AddScoped<CheckoutService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Đảm bảo CSDL được khởi tạo và nạp dữ liệu mẫu khi ứng dụng khởi chạy
+// Apply versioned migrations; never delete business data based on row counts.
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<SupermarketDbContext>();
-    try
-    {
-        bool needsReset = false;
-        try
-        {
-            // Kiểm tra số lượng đạt chuẩn theo nghiệm thu:
-            // Categories = 15, Products = 20, Users = 15, Customers = 15, Orders = 15, OrderDetails = 18
-            if (!dbContext.Users.Any() || dbContext.Categories.Count() != 15 || dbContext.Products.Count() != 20)
-            {
-                needsReset = true;
-            }
-        }
-        catch
-        {
-            needsReset = true;
-        }
-
-        if (needsReset)
-        {
-            dbContext.Database.EnsureDeleted();
-            dbContext.Database.EnsureCreated();
-        }
-        else
-        {
-            dbContext.Database.EnsureCreated();
-        }
-    }
-    catch
-    {
-        // Fallback for isolated build environments if DB is not running locally
-    }
+    dbContext.Database.Migrate();
 }
 
 // Cấu hình middleware

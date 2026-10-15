@@ -32,6 +32,9 @@ namespace MiniSupermarket.API.Models
         [Range(0, double.MaxValue, ErrorMessage = "Giá bán phải lớn hơn hoặc bằng 0!")]
         public decimal Price { get; set; }
 
+        [StringLength(255)]
+        public string DataSource { get; set; } = "Nhập thủ công";
+
         // 5. Số lượng hàng hóa hiện còn trong kho
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng tồn kho không được âm!")]
         public int StockQuantity { get; set; }

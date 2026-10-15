@@ -58,7 +58,7 @@ namespace HeThongBanLeThienAn.Tests
 
             var customer = result.Value as Customer;
             Assert.NotNull(customer);
-            Assert.Equal("Trần Văn Hoàng", customer.CustomerName);
+            Assert.Equal("Khách mẫu 01", customer.CustomerName);
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace HeThongBanLeThienAn.Tests
             var controller = new CustomersController(context);
 
             // Act
-            var result = await controller.Search("Trần Văn") as OkObjectResult;
+            var result = await controller.Search("Khách mẫu") as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -93,7 +93,7 @@ namespace HeThongBanLeThienAn.Tests
             var list = result.Value as List<Customer>;
             Assert.NotNull(list);
             Assert.NotEmpty(list);
-            Assert.Contains(list, c => c.CustomerName.Contains("Trần Văn"));
+            Assert.Contains(list, c => c.CustomerName.Contains("Khách mẫu"));
         }
 
         [Fact]
@@ -170,7 +170,7 @@ namespace HeThongBanLeThienAn.Tests
 
             var updateData = new Customer
             {
-                CustomerName = "Trần Văn Hoàng Updated",
+                CustomerName = "Khách mẫu 01 Updated",
                 PhoneNumber = "0903123456",
                 Address = "Địa chỉ mới",
                 RewardPoints = 600,
@@ -185,7 +185,7 @@ namespace HeThongBanLeThienAn.Tests
             Assert.Equal(204, result.StatusCode);
 
             var updatedCustomer = await context.Customers.FindAsync(1);
-            Assert.Equal("Trần Văn Hoàng Updated", updatedCustomer!.CustomerName);
+            Assert.Equal("Khách mẫu 01 Updated", updatedCustomer!.CustomerName);
             Assert.Equal("Bạch Kim", updatedCustomer.MembershipRank);
         }
 

@@ -11,3 +11,6 @@
 # SQLite temporary runtime files
 *.db-shm
 *.db-wal
+
+# Local database snapshots
+backups/

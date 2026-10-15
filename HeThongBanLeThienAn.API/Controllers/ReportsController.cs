@@ -9,6 +9,7 @@
 */
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MiniSupermarket.API.Data;
@@ -20,21 +21,26 @@ namespace MiniSupermarket.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ReportsController : ControllerBase
     {
         private readonly IConfiguration? _configuration;
-        private readonly IDbConnectionFactory? _connectionFactory;
+        private readonly IDbConnectionFactory _connectionFactory;
         private readonly SupermarketDbContext? _context;
 
-        public ReportsController(IConfiguration configuration, IDbConnectionFactory connectionFactory)
+        [Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructor]
+        public ReportsController(IConfiguration configuration, IDbConnectionFactory connectionFactory, SupermarketDbContext? context = null)
         {
             _configuration = configuration;
             _connectionFactory = connectionFactory;
+            _context = context;
         }
 
         public ReportsController(SupermarketDbContext context)
         {
             _context = context;
+            _connectionFactory = new DbConnectionFactory(new ConfigurationBuilder().AddInMemoryCollection(
+                new Dictionary<string, string?> { ["ConnectionStrings:DefaultConnection"] = context.Database.GetConnectionString() }).Build());
         }
 
         // =========================================================================
@@ -119,7 +125,8 @@ namespace MiniSupermarket.API.Controllers
         public IActionResult GetRevenueByDateRange([FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate)
         {
             var start = fromDate ?? DateTime.Today.AddDays(-30);
-            var end = toDate ?? DateTime.Today.AddDays(1);
+            var end = (toDate ?? DateTime.Today).Date.AddDays(1);
+            if (start >= end) return BadRequest(new { message = "Khoảng ngày không hợp lệ." });
 
             var reportList = new List<CashierRevenueDto>();
 
@@ -141,7 +148,7 @@ namespace MiniSupermarket.API.Controllers
                                 SUM(FinalAmount) AS TotalRevenue,
                                 SUM(RewardPoints) AS TotalPointsAwarded
                             FROM Orders
-                            WHERE CreatedDate >= @FromDate AND CreatedDate <= @ToDate
+                            WHERE CreatedDate >= @FromDate AND CreatedDate < @ToDate
                             GROUP BY CashierUsername
                             ORDER BY TotalRevenue DESC";
                         command.CommandType = CommandType.Text;
@@ -273,22 +280,23 @@ namespace MiniSupermarket.API.Controllers
                 queryDate = parsedDate.Date;
             }
 
-            string bestSellerName = "Snack Khoai Tây O'Star Gói 60g";
-            if (_context != null)
-            {
-                var topProduct = await _context.Products.OrderByDescending(p => (double)p.Price).FirstOrDefaultAsync();
-                if (topProduct != null)
-                {
-                    bestSellerName = topProduct.ProductName;
-                }
-            }
-
+            if (_context == null) return StatusCode(500, new { message = "Thiếu kết nối báo cáo." });
+            var nextDay = queryDate.AddDays(1);
+            var orders = await _context.Orders.AsNoTracking()
+                .Where(o => o.CreatedDate >= queryDate && o.CreatedDate < nextDay)
+                .Select(o => new { o.OrderId, o.FinalAmount }).ToListAsync();
+            var orderIds = orders.Select(o => o.OrderId).ToList();
+            var bestSeller = await _context.OrderDetails.AsNoTracking()
+                .Where(d => orderIds.Contains(d.OrderId))
+                .GroupBy(d => new { d.ProductId, d.Product!.ProductName })
+                .OrderByDescending(g => g.Sum(d => d.Quantity)).ThenBy(g => g.Key.ProductId)
+                .Select(g => g.Key.ProductName).FirstOrDefaultAsync();
             return Ok(new
             {
                 ReportDate = queryDate.ToString("yyyy-MM-dd"),
-                TotalOrders = 38,
-                TotalRevenue = 4850000m,
-                BestSeller = bestSellerName
+                TotalOrders = orders.Count,
+                TotalRevenue = orders.Sum(o => o.FinalAmount),
+                BestSeller = bestSeller ?? "Chưa có giao dịch"
             });
         }
     }

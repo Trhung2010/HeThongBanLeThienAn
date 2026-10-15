@@ -10,6 +10,7 @@ namespace MiniSupermarket.WinForms
 {
     public partial class FormPOS : Form
     {
+        private bool _checkoutInProgress;
         private readonly List<CartItemDto> _cart = new List<CartItemDto>();
 
         public FormPOS()
@@ -162,6 +163,7 @@ namespace MiniSupermarket.WinForms
 
         private void btnClearCart_Click(object sender, EventArgs e)
         {
+            if (_checkoutInProgress) return;
             if (_cart.Count == 0) return;
 
             var confirm = MessageBox.Show("Bạn có chắc muốn hủy toàn bộ giỏ hàng?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -216,6 +218,7 @@ namespace MiniSupermarket.WinForms
 
         private async void btnCheckout_Click(object sender, EventArgs e)
         {
+            if (_checkoutInProgress) return;
             if (_cart.Count == 0)
             {
                 MessageBox.Show("Giỏ hàng đang trống! Vui lòng quét sản phẩm trước khi thanh toán.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -246,10 +249,14 @@ namespace MiniSupermarket.WinForms
 
             try
             {
-                var response = await ApiClientService.Client.PostAsJsonAsync("orders/checkout", orderRequest);
+                _checkoutInProgress = true;
+                btnCheckout.Enabled = false;
+                var response = await ApiClientService.Client.PostAsJsonAsync("checkout", orderRequest);
 
                 if (response.IsSuccessStatusCode)
                 {
+                    using var receipt = System.Text.Json.JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                    total = receipt.RootElement.GetProperty("finalAmount").GetDecimal();
                     MessageBox.Show(
                         $"Thanh toán thành công!\nTổng tiền: {total:N0} đ\nĐã xuất hóa đơn và cập nhật kho hàng.",
                         "Thành công",
@@ -272,6 +279,11 @@ namespace MiniSupermarket.WinForms
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi kết nối máy chủ: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                _checkoutInProgress = false;
+                btnCheckout.Enabled = true;
             }
         }
 

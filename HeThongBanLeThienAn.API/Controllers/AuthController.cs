@@ -49,7 +49,7 @@ namespace MiniSupermarket.API.Controllers
                         return Unauthorized(new { success = false, message = "Tài khoản nhân viên này đã bị khóa!" });
                     }
 
-                    if (dbUser.PasswordHash == inputPassword || inputPassword == "123456")
+                    if (dbUser.PasswordHash == inputPassword)
                     {
                         var token = GenerateJwtToken(dbUser.Username, dbUser.Role);
                         return Ok(new
@@ -64,10 +64,13 @@ namespace MiniSupermarket.API.Controllers
                 }
             }
 
-            // 2. Tra cứu dự phòng từ UserDataStore
+            if (_context != null)
+                return Unauthorized(new { success = false, message = "Sai tài khoản hoặc mật khẩu!" });
+
+            // Isolated teaching fixture used only when no database context is supplied.
             var user = UserDataStore.Users.FirstOrDefault(u =>
                 u.Username.Equals(inputUsername, StringComparison.OrdinalIgnoreCase) &&
-                (u.Password == inputPassword || inputPassword == "123456") &&
+                u.Password == inputPassword &&
                 u.IsActive);
 
             if (user != null)

@@ -63,7 +63,8 @@ namespace MiniSupermarket.API.Models
     public class PosCheckoutRequestDto
     {
         public string CashierUsername { get; set; } = string.Empty;
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
+        public string? CustomerPhone { get; set; }
         public List<CartItemCheckoutDto> Items { get; set; } = new();
     }
 }

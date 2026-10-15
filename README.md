@@ -1,205 +1,75 @@
-# 🛒 HỆ THỐNG QUẢN LÝ SIÊU THỊ MINI (MINISUPERMARKET SYSTEM)
+# Hệ thống bán lẻ Thiên Ân
 
-- **Môn học**: Lập trình Ứng dụng .NET Core (Mã môn: 229162)
-- **Đồ án**: Phát triển Hệ thống Quản lý Bán lẻ và Theo dõi Hàng tồn kho theo thời gian thực
+Ứng dụng thực hành .NET 8 gồm ASP.NET Core Web API, WinForms POS và SQLite.
+Đã triển khai nội dung buổi 1–5: CRUD, JWT/phân quyền, EF Core migrations, WinForms shell và ADO.NET transaction.
 
----
+## Nguồn dữ liệu
 
-## 🏗️ 1. Mô hình Kiến trúc Hệ thống (Client - Server)
+**Bộ dữ liệu tham khảo phục vụ thực hành, chưa xác minh từ website chính thức Bách Hóa Thiên Ân.**
 
-Dự án được xây dựng theo mô hình phân tầng hiện đại, tách biệt hoàn toàn giữa Backend và Frontend:
-- **HeThongBanLeThienAn.API (Backend)**: Dự án ASP.NET Core Web API sử dụng Entity Framework Core Code-First (SQL Server), chịu trách nhiệm xử lý logic nghiệp vụ, xác thực JWT (JSON Web Token), phân quyền theo vai trò (Admin / Cashier) và cung cấp các RESTful API chuẩn hóa.
-- **HeThongBanLeThienAn.WinForms (Frontend Client)**: Ứng dụng Windows Forms đóng vai trò là máy trạm POS tại quầy, sử dụng `HttpClient` đính kèm Bearer Token để giao tiếp với API, quản lý Danh mục, Sản phẩm và Khách hàng trực quan trên `DataGridView`.
+- 100 mặt hàng, mã riêng biệt, 15 danh mục.
+- 20 mặt hàng ban đầu giữ mã và giá mẫu. 80 mặt hàng thêm có mã nội bộ `TA-REF-0021` đến `TA-REF-0100`, tồn kho ban đầu 0; nhập tồn kho trước khi bán.
+- Mã nội bộ không phải barcode nhà sản xuất; giá không phải bảng giá xác nhận của cửa hàng.
+- `Products.DataSource` lưu nhãn nguồn tham khảo; mặt hàng nhập thủ công có nhãn riêng.
+- 15 khách có tên `Khách mẫu xx`, mã tra cứu `DEMO-KH-xxx`; 15 nhân viên và 15 hóa đơn là dữ liệu mô phỏng.
+- Hóa đơn mẫu có đủ 22 dòng chi tiết, tổng tiền và số lượng được đối soát. Số dư điểm seed là số dư thực hành, không phải sổ điểm của cửa hàng.
 
----
+## Khởi chạy
 
-## 🛠️ 2. Công nghệ Sử dụng
-
-- **Ngôn ngữ**: C# (.NET 8.0)
-- **Backend**: ASP.NET Core Web API, Entity Framework Core 8.0 (SQL Server), Controllers, JWT Bearer Authentication, LINQ Async/Await
-- **Frontend**: Windows Forms (.NET 8.0), `System.Net.Http.Json`, `System.IdentityModel.Tokens.Jwt`
-- **Công cụ phát triển & kiểm thử**: Visual Studio Code (VS Code), C# Dev Kit Extension, Postman, Swagger UI, xUnit Test Framework
-
----
-
-## 📂 3. Cấu trúc Solution
-
-```text
-c:\HeThongBanLeThienAn
-├── README.md
-├── MiniSupermarket.postman_collection.json # Bộ sưu tập kiểm thử API trên Postman
-├── .vscode/                             # Cấu hình Run & Debug cho VS Code
-│   ├── launch.json                      # Cấu hình khởi chạy API, WinForms và Compound API + WinForms
-│   └── tasks.json                       # Cấu hình Build và Stop process tự động
-├── HeThongBanLeThienAn.sln
-├── HeThongBanLeThienAn.API/             # Dự án Web API (Backend)
-│   ├── Controllers/                     # AuthController, CategoriesController, ProductsController, CustomersController
-│   ├── Data/                            # SupermarketDbContext & Data Seeding
-│   ├── Models/                          # Category.cs, Product.cs, Customer.cs
-│   └── Program.cs                       # Cấu hình EF Core SQLite, JWT Bearer, Swagger
-├── HeThongBanLeThienAn.WinForms/        # Dự án Windows Forms (Frontend Client)
-│   ├── FormLogin.cs                     # Đăng nhập lấy JWT Token & nạp thông tin phiên
-│   ├── FormMainShell.cs                 # Khung điều khiển trung tâm (Sidebar + Dynamic Main Workspace)
-│   ├── FormPOS.cs                       # Quầy bán hàng POS: quét barcode, giỏ hàng, thanh toán F9
-│   ├── FormProductManagement.cs         # Quản lý sản phẩm, mã vạch, giá và tồn kho
-│   ├── FormCategoryManagement.cs        # Quản lý danh mục & nhóm hàng
-│   ├── FormCustomerManagement.cs        # Quản lý thông tin khách hàng & tích điểm
-│   ├── FormQuickReport.cs               # Báo cáo doanh thu ca & hiệu suất (Admin)
-│   ├── FormUserManagement.cs            # Quản trị tài khoản & phân quyền người dùng (Admin)
-│   ├── NavigationManager.cs             # Bộ điều hướng phân quyền & quản lý form
-│   └── SessionManager.cs                # Quản lý phiên làm việc & ApiClientService
-└── HeThongBanLeThienAn.Tests/           # Dự án Unit Test (xUnit - 32 tests)
-    ├── AuthControllerTests.cs           # Kiểm thử đăng nhập & xác thực JWT (Admin, Cashier, Warehouse)
-    ├── CategoriesControllerTests.cs     # Kiểm thử API Danh mục CRUD & Phân quyền
-    ├── ProductsControllerTests.cs       # Kiểm thử API Sản phẩm CRUD, Barcode & Tìm kiếm
-    └── CustomersControllerTests.cs      # Kiểm thử API Khách hàng CRUD & Tìm kiếm
+```powershell
+dotnet run --project HeThongBanLeThienAn.API
+dotnet run --project HeThongBanLeThienAn.WinForms
 ```
 
----
+API: http://localhost:5167; Swagger: http://localhost:5167/swagger.
+SQLite nằm tại `HeThongBanLeThienAn.API/supermarket.db`, được giải đường dẫn theo thư mục ứng dụng.
 
-## 🔑 4. Danh sách 15 Tài khoản Kiểm thử Phân quyền (RBAC)
+API áp dụng migration lúc khởi động. **Không dùng EnsureDeleted/EnsureCreated hoặc kiểm tra số lượng bản ghi để reset CSDL.**
+Trước khi cập nhật CSDL đang có, sao lưu bằng SQLite backup API (kể cả khi có WAL), không chỉ sao chép file đang ghi.
+Migration `ReferenceCatalogAndSafeCheckout` nối tiếp migration ban đầu; không sửa lịch sử cũ.
+Nếu CSDL cũ được tạo bằng EnsureCreated và chưa có migration history, cần đối soát/baseline riêng; ứng dụng sẽ báo lỗi thay vì tự xóa dữ liệu.
 
-| STT | Username | Mật khẩu | Họ và Tên | Vai trò (Role) | Màn hình mặc định | Phạm vi quyền hạn |
-| :---: | :--- | :---: | :--- | :---: | :---: | :--- |
-| 1 | `admin01` | `123456` | Nguyễn Quản Trị | **Admin** | Quản lý Danh mục | Toàn quyền toàn bộ hệ thống |
-| 2 | `admin02` | `123456` | Trần Giám Đốc | **Admin** | Quản lý Danh mục | Toàn quyền toàn bộ hệ thống |
-| 3 | `cashier01` | `123456` | Lê Thu Ngân | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
-| 4 | `cashier02` | `123456` | Phạm Bán Hàng | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
-| 5 | `cashier03` | `123456` | Hoàng Thu Ngân | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
-| 6 | `cashier04` | `123456` | Vũ Thị Quầy | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
-| 7 | `cashier05` | `123456` | Đỗ Bán Lẻ | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
-| 8 | `ware01` | `123456` | Ngô Quản Kho | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
-| 9 | `ware02` | `123456` | Bùi Kiểm Kê | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
-| 10 | `ware03` | `123456` | Dương Thủ Kho | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
-| 11 | `ware04` | `123456` | Lý Nhập Hàng | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
-| 12 | `admin_backup` | `123456` | Đặng Hỗ Trợ | **Admin** | Quản lý Danh mục | Toàn quyền toàn bộ hệ thống |
-| 13 | `cashier06` | `123456` | Hồ Ca Chiều | **Cashier** | Quầy POS | Màn hình POS, Khách hàng thành viên |
-| 14 | `ware05` | `123456` | Trương Vận Chuyển | **Warehouse** | Quản lý Sản phẩm | Quản lý Sản phẩm, Nhóm hàng tồn kho |
-| 15 | `supervisor` | `123456` | Mai Giám Sát | **Admin** | Quản lý Danh mục | Toàn quyền toàn bộ hệ thống |
+Tài khoản demo trong SQLite:
 
----
+| Vai trò | Tài khoản | Mật khẩu |
+|---|---|---|
+| Admin | admin | admin@123 |
+| Thu ngân | cashier01 | cashier@123 |
+| Thủ kho | warehouse01 | wh@123 |
 
-## 🚀 5. Hướng dẫn Chạy và Kiểm thử Dự án trong Visual Studio Code (VS Code)
+Mật khẩu demo hiện lưu dạng rõ; chưa triển khai lưu mật khẩu băm. Không dùng tài khoản/mật khẩu demo cho vận hành thực tế.
+Đăng nhập qua CSDL không chấp nhận mật khẩu chung 123456 và không quay về danh sách tài khoản RAM khi sai mật khẩu.
 
-### Bước 1: Mở dự án trong VS Code
-1. Mở Visual Studio Code.
-2. Chọn **File** -> **Open Folder...** và chọn thư mục gốc dự án (`HeThongBanLeThienAn`).
-3. Khuyến nghị cài đặt Extension **C#** hoặc **C# Dev Kit** từ Microsoft.
+## POS và giao dịch
 
----
+- WinForms gọi `POST /api/checkout`; route cũ `POST /api/orders/checkout` dùng cùng `CheckoutService`.
+- Chỉ Admin/Cashier được thanh toán; danh tính thu ngân lấy từ JWT, không tin danh tính gửi trong body.
+- Gộp dòng trùng sản phẩm; từ chối số lượng <= 0, thiếu hàng, sản phẩm/khách không tồn tại.
+- Giá lấy từ CSDL; giá client không quyết định tiền hóa đơn.
+- Tạo hóa đơn, lưu chi tiết, trừ kho, cộng điểm trong một transaction ADO.NET.
+- Lỗi bất kỳ hoàn tác tất cả thay đổi. Cập nhật kho có điều kiện để không bán âm.
+- Khách vãng lai có CustomerId null, không tích điểm vào thành viên khác.
+- Khách có số điện thoại chưa đăng ký cần được tạo hồ sơ hoặc để trống để bán vãng lai.
+- Admin hủy đơn qua `DELETE /api/checkout/cancel/{orderId}`: hoàn trả tồn, điểm và hạng thẻ trong một transaction.
+- POS khóa thao tác thanh toán khi đang gửi để tránh bấm liên tục; hiển thị số tiền từ kết quả máy chủ.
 
-### Cách 1: Chạy trực tiếp bằng Run & Debug trong VS Code (Khuyến nghị)
-1. Bấm tổ hợp phím **`Ctrl + Shift + D`** (hoặc chọn biểu tượng **Run and Debug** trên thanh bên trái).
-2. Tại menu thả xuống phía trên, chọn cấu hình: **`API + WinForms`** (Compound run cả Backend và Frontend cùng lúc).
-3. Nhấn **F5** hoặc nút **Play**:
-   - VS Code sẽ tự động build và khởi chạy **Web API** (`http://localhost:5167`).
-   - Màn hình Swagger UI sẽ sẵn sàng tại `http://localhost:5167/swagger`.
-   - Ứng dụng **WinForms Client** (`FormLogin`) sẽ tự động mở lên.
+## Báo cáo và buổi 5
 
----
+- `GET /api/reports/quick?date=yyyy-MM-dd`: doanh thu/số đơn thực tế theo ngày, hàng bán chạy tính theo tổng số lượng bán; ngày trống trả 0.
+- `GET /api/reports/revenue-by-cashier`, `/revenue-by-date`, `/top-selling-products`: tổng hợp qua SQL có tham số, chỉ Admin.
+- Khoảng ngày gồm toàn bộ ngày kết thúc, không bỏ giao dịch sau 00:00.
+- `GET /api/ado-products/barcode/{barcode}`, `/disconnected-cache`, `/filter-stock`, `/count-by-category`: tra cứu ADO.NET, yêu cầu Admin/Cashier/Warehouse.
+- SQLite không hỗ trợ stored procedure. `Data/StoredProcedures_Buoi5.sql` là tài liệu T-SQL tham khảo, không phải script đã chạy trên SQLite.
 
-### Cách 2: Chạy qua Terminal bằng .NET CLI
+## Kiểm thử
 
-#### 1. Restore các package
-Mở Terminal trong VS Code (**`Ctrl + ~`**) và chạy:
-```bash
-dotnet restore
+```powershell
+dotnet test HeThongBanLeThienAn.Tests --no-restore
+dotnet build HeThongBanLeThienAn.WinForms --no-restore
 ```
 
-#### 2. Chạy Backend Web API
-Mở Terminal 1 và chạy:
-```bash
-dotnet run --project ./HeThongBanLeThienAn.API/HeThongBanLeThienAn.API.csproj
-```
-> Web API sẽ lắng nghe tại `http://localhost:5167`. Bạn có thể truy cập Swagger UI qua trình duyệt: `http://localhost:5167/swagger`.
+Kiểm thử hồi quy dùng SQLite tạm: migration mới/cũ, giữ tồn và giá đã sửa, thêm mặt hàng ngoài seed, chạy migration lại; đối soát hóa đơn; giá client giả; số lượng âm/0; dòng trùng; lỗi CSDL giữa giao dịch; khách vãng lai; hủy và hủy lặp; báo cáo theo ngày; đăng nhập và route checkout cũ.
 
-#### 3. Chạy Frontend WinForms Client
-Mở Terminal 2 và chạy:
-```bash
-dotnet run --project ./HeThongBanLeThienAn.WinForms/HeThongBanLeThienAn.WinForms.csproj
-```
+## Tác giả
 
----
-
-### Bước 2: Kiểm thử API bằng Postman 📬
-1. Mở phần mềm **Postman**.
-2. Chọn **Import** -> Tìm và chọn file `MiniSupermarket.postman_collection.json` ở thư mục gốc của dự án.
-3. Thực hiện kiểm thử theo thứ tự:
-   - **Xác thực (Auth)**: Chạy `Đăng nhập Admin` hoặc `Đăng nhập Cashier` (Postman sẽ tự động lưu `adminToken` / `cashierToken` vào biến môi trường).
-   - **Quản lý Danh mục (Categories)**: Chạy các request Get All, Search, Create, Update, Delete.
-   - **Quản lý Khách hàng (Customers)**: Chạy các request Get All, Search, Create, Update, Delete.
-
----
-
-### Bước 3: Thử nghiệm ứng dụng WinForms
-1. Nhập tài khoản:
-   - `admin` / `123456` (Quyền Admin - toàn quyền CRUD)
-   - `cashier` / `123456` (Quyền Cashier - xem, tìm kiếm, quản lý khách hàng)
-2. Sau khi đăng nhập thành công, token JWT sẽ được lưu và mở giao diện `FormCategoryManagement` / `FormCustomerManagement`.
-3. Thử nghiệm các tính năng: Tải lại dữ liệu, Thêm mới, Sửa, Xóa và Tìm kiếm theo từ khóa.
-
----
-
-### Bước 4: Chạy Kiểm thử Đơn vị (Unit Tests)
-
-Trong Terminal của VS Code, chạy lệnh sau:
-```bash
-dotnet test
-```
-Hoặc mở **Testing Tab** (Test Explorer) trong VS Code để xem và chạy toàn bộ 23 bài test tự động cho `AuthController`, `CategoriesController` và `CustomersController`.
-
----
-
-## 🚀 5. Nội dung Thực hành Buổi 5: ADO.NET Nâng cao, Stored Procedure & POS Transaction
-
-Buổi 5 tập trung vào kỹ thuật truy xuất dữ liệu tầng thấp với ADO.NET, Stored Procedure và quản lý giao dịch chuẩn ACID:
-
-### 1. ADO.NET Nền tảng (Tiết 1)
-- Minh họa 5 đối tượng cốt lõi: `SqlConnection`, `SqlCommand`, `SqlParameter`, `SqlDataReader`, `DataTable` / `SqlDataAdapter`.
-- Chương trình mẫu `AdoNetTiet1Demo.cs`:
-  - **Bài tập 1**: Đếm tổng số mặt hàng bằng `ExecuteScalar()`.
-  - **Bài tập 2**: Cập nhật tồn kho sản phẩm an toàn bằng `ExecuteNonQuery()` và `SqlParameter` (chống SQL Injection).
-  - **Bài tập 3**: Đọc duyệt danh sách sản phẩm tốc độ cao bằng `SqlDataReader`.
-
-### 2. API Tra cứu mã vạch siêu tốc & Mô hình ngắt kết nối (Tiết 2)
-- **Controller**: `AdoProductController.cs` (`/api/ado-products`)
-  - `GET /barcode/{barcode}`: Quét mã vạch siêu tốc bằng `SqlDataReader` (Connected Mode, độ trễ < 100ms).
-  - `GET /disconnected-cache`: Tải toàn bộ danh sách sản phẩm đệm vào RAM qua `DataTable` & `SqlDataAdapter` (Disconnected Mode).
-  - **Bài tập 2.1**: `GET /filter-stock?minStock=50`: Tra cứu sản phẩm theo ngưỡng tồn kho cảnh báo bằng `SqlDataReader`.
-  - **Bài tập 2.2**: `GET /count-by-category`: Thống kê số lượng sản phẩm theo từng nhóm danh mục bằng `DataTable`.
-
-### 3. Tối ưu truy vấn với Stored Procedure & Báo cáo doanh thu (Tiết 3)
-- File script SQL: `HeThongBanLeThienAn.API/Data/StoredProcedures_Buoi5.sql`
-  - `sp_GetRevenueByCashier`: Báo cáo tổng hợp doanh thu theo từng thu ngân (`GROUP BY`, `SUM`, `COUNT`).
-  - **Bài tập 3.1**: `sp_GetRevenueByDateRange`: Báo cáo doanh thu theo khoảng ngày nhận tham số `@FromDate`, `@ToDate`.
-  - **Bài tập 3.2**: `sp_GetTop5SellingProducts`: Báo cáo Top 5 sản phẩm bán chạy nhất.
-- **Controller**: `ReportsController.cs` (`/api/reports`)
-  - `GET /revenue-by-cashier`: Gọi Stored Procedure `sp_GetRevenueByCashier`.
-  - `GET /revenue-by-date?fromDate=...&toDate=...`: Gọi Stored Procedure `sp_GetRevenueByDateRange`.
-  - `GET /top-selling-products`: Gọi Stored Procedure `sp_GetTop5SellingProducts`.
-
-### 4. Chuẩn ACID & Giao dịch POS Checkout với SqlTransaction (Tiết 4 & Tiết 5)
-- **Controller**: `CheckoutController.cs` (`/api/checkout`)
-  - `POST /api/checkout`: Thực thi liên hoàn 4 thao tác bọc kín trong `SqlTransaction` (`BeginTransaction()`, `Commit()`, `Rollback()`):
-    1. `INSERT INTO Orders`: Tạo hóa đơn, lấy `OrderId` tự tăng.
-    2. Kiểm tra tồn kho từng sản phẩm (`currentStock >= item.Quantity`), ném exception nếu không đủ.
-    3. `INSERT INTO OrderDetails`: Lưu các dòng mặt hàng giỏ hàng.
-    4. `UPDATE Products`: Khấu trừ số lượng tồn kho.
-    5. `UPDATE Customers`: Tích lũy điểm thưởng (10.000đ = 1 điểm).
-  - **Bài tập mở rộng (Tiết 5)**: `DELETE /api/checkout/cancel/{orderId}`: Hủy đơn hàng và tự động hoàn trả tồn kho, khấu trừ điểm thưởng bọc trong 1 Transaction hoàn chỉnh.
-
-### 5. Bộ Test tự động (44 Unit Tests)
-- Toàn bộ 44 unit tests vượt qua (`Passed: 44, Failed: 0`):
-  ```bash
-  dotnet test
-  ```
-
----
-
-## 👨‍💻 6. Tác giả
-
-- **Họ tên sinh viên**: Vương Nguyễn Trường Hưng
-- **Mã sinh viên**: 2124110111
-- **Lớp học phần**: CCQ2411D
-- **Đề tài**: Phát triển Hệ thống Quản lý Bán lẻ và Theo dõi Hàng tồn kho theo thời gian thực -- Cửa hàng Bách hóa Tổng hợp Thiên Ân
-
+Vương Nguyễn Trường Hưng — MSSV 2124110111 — Lớp CCQ2411D.

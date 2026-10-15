@@ -26,8 +26,7 @@ namespace MiniSupermarket.API.Models
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         // 4. Khóa ngoại tham chiếu về khách hàng (Khách lẻ hoặc Khách thành viên)
-        [Required]
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
 
         // 5. Tên tài khoản thu ngân lập hóa đơn
         [Required]

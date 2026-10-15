@@ -171,136 +171,136 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             CustomerId = 1,
-                            Address = "123 Lê Lợi, Quận 1, TPHCM",
-                            CustomerName = "Trần Văn Hoàng",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 01",
                             MembershipRank = "Bạc",
-                            PhoneNumber = "0903123456",
+                            PhoneNumber = "DEMO-KH-001",
                             RewardPoints = 120
                         },
                         new
                         {
                             CustomerId = 2,
-                            Address = "45 Điện Biên Phủ, Quận Bình Thạnh, TPHCM",
-                            CustomerName = "Nguyễn Thị Kim Loan",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 02",
                             MembershipRank = "Vàng",
-                            PhoneNumber = "0918234567",
+                            PhoneNumber = "DEMO-KH-002",
                             RewardPoints = 350
                         },
                         new
                         {
                             CustomerId = 3,
-                            Address = "88 Nam Kỳ Khởi Nghĩa, Quận 3, TPHCM",
-                            CustomerName = "Lê Minh Trí",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 03",
                             MembershipRank = "Chuẩn",
-                            PhoneNumber = "0977345678",
+                            PhoneNumber = "DEMO-KH-003",
                             RewardPoints = 45
                         },
                         new
                         {
                             CustomerId = 4,
-                            Address = "102 Quang Trung, Quận Gò Vấp, TPHCM",
-                            CustomerName = "Phạm Hồng Nhung",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 04",
                             MembershipRank = "Bạch Kim",
-                            PhoneNumber = "0988456789",
+                            PhoneNumber = "DEMO-KH-004",
                             RewardPoints = 520
                         },
                         new
                         {
                             CustomerId = 5,
-                            Address = "15 Phan Xích Long, Quận Phú Nhuận, TPHCM",
-                            CustomerName = "Võ Thành Nam",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 05",
                             MembershipRank = "Chuẩn",
-                            PhoneNumber = "0909567890",
+                            PhoneNumber = "DEMO-KH-005",
                             RewardPoints = 80
                         },
                         new
                         {
                             CustomerId = 6,
-                            Address = "234 Hoàng Văn Thụ, Quận Tân Bình, TPHCM",
-                            CustomerName = "Đỗ Thị Mỹ Duyên",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 06",
                             MembershipRank = "Bạc",
-                            PhoneNumber = "0933678901",
+                            PhoneNumber = "DEMO-KH-006",
                             RewardPoints = 210
                         },
                         new
                         {
                             CustomerId = 7,
-                            Address = "312 Ba Tháng Hai, Quận 10, TPHCM",
-                            CustomerName = "Hoàng Quốc Bảo",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 07",
                             MembershipRank = "Chuẩn",
-                            PhoneNumber = "0944789012",
+                            PhoneNumber = "DEMO-KH-007",
                             RewardPoints = 15
                         },
                         new
                         {
                             CustomerId = 8,
-                            Address = "56 Nguyễn Thị Thập, Quận 7, TPHCM",
-                            CustomerName = "Bùi Lan Hương",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 08",
                             MembershipRank = "Vàng",
-                            PhoneNumber = "0966890123",
+                            PhoneNumber = "DEMO-KH-008",
                             RewardPoints = 410
                         },
                         new
                         {
                             CustomerId = 9,
-                            Address = "79 Kinh Dương Vương, Quận Bình Tân, TPHCM",
-                            CustomerName = "Đặng Tuấn Kiệt",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 09",
                             MembershipRank = "Chuẩn",
-                            PhoneNumber = "0922901234",
+                            PhoneNumber = "DEMO-KH-009",
                             RewardPoints = 95
                         },
                         new
                         {
                             CustomerId = 10,
-                            Address = "18 Hoàng Diệu, Quận 4, TPHCM",
-                            CustomerName = "Ngô Thanh Vân",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 10",
                             MembershipRank = "Bạch Kim",
-                            PhoneNumber = "0971012345",
+                            PhoneNumber = "DEMO-KH-010",
                             RewardPoints = 650
                         },
                         new
                         {
                             CustomerId = 11,
-                            Address = "405 Lê Văn Khương, Quận 12, TPHCM",
-                            CustomerName = "Trương Đình Trọng",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 11",
                             MembershipRank = "Chuẩn",
-                            PhoneNumber = "0982123456",
+                            PhoneNumber = "DEMO-KH-011",
                             RewardPoints = 30
                         },
                         new
                         {
                             CustomerId = 12,
-                            Address = "123 Long Thuận, TP. Thủ Đức, TPHCM",
-                            CustomerName = "Lý Mỹ Lệ",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 12",
                             MembershipRank = "Bạc",
-                            PhoneNumber = "0904234567",
+                            PhoneNumber = "DEMO-KH-012",
                             RewardPoints = 180
                         },
                         new
                         {
                             CustomerId = 13,
-                            Address = "67 Lũy Bán Bích, Quận Tân Phú, TPHCM",
-                            CustomerName = "Vũ Đức Thịnh",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 13",
                             MembershipRank = "Bạc",
-                            PhoneNumber = "0915345678",
+                            PhoneNumber = "DEMO-KH-013",
                             RewardPoints = 290
                         },
                         new
                         {
                             CustomerId = 14,
-                            Address = "142 Phạm Thế Hiển, Quận 8, TPHCM",
-                            CustomerName = "Phan Bích Thủy",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 14",
                             MembershipRank = "Vàng",
-                            PhoneNumber = "0936456789",
+                            PhoneNumber = "DEMO-KH-014",
                             RewardPoints = 480
                         },
                         new
                         {
                             CustomerId = 15,
-                            Address = "89 An Dương Vương, Quận 5, TPHCM",
-                            CustomerName = "Dương Gia Huy",
+                            Address = "Dữ liệu thực hành, không phải khách thật",
+                            CustomerName = "Khách mẫu 15",
                             MembershipRank = "Chuẩn",
-                            PhoneNumber = "0977567890",
+                            PhoneNumber = "DEMO-KH-015",
                             RewardPoints = 0
                         });
                 });
@@ -319,7 +319,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("FinalAmount")
@@ -410,7 +410,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             FinalAmount = 53500m,
                             OrderCode = "HD20261003-001",
                             RewardPoints = 5,
-                            TotalItems = 3
+                            TotalItems = 1
                         },
                         new
                         {
@@ -440,10 +440,10 @@ namespace HeThongBanLeThienAn.API.Migrations
                             CashierUsername = "cashier05",
                             CreatedDate = new DateTime(2026, 10, 4, 13, 30, 0, 0, DateTimeKind.Unspecified),
                             CustomerId = 9,
-                            FinalAmount = 48500m,
+                            FinalAmount = 41000m,
                             OrderCode = "HD20261004-002",
                             RewardPoints = 4,
-                            TotalItems = 4
+                            TotalItems = 3
                         },
                         new
                         {
@@ -454,7 +454,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             FinalAmount = 168000m,
                             OrderCode = "HD20261005-001",
                             RewardPoints = 16,
-                            TotalItems = 6
+                            TotalItems = 4
                         },
                         new
                         {
@@ -704,6 +704,42 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 16,
                             Quantity = 1,
                             UnitPrice = 125000m
+                        },
+                        new
+                        {
+                            OrderDetailId = 19,
+                            LineTotal = 36000m,
+                            OrderId = 11,
+                            ProductId = 13,
+                            Quantity = 8,
+                            UnitPrice = 4500m
+                        },
+                        new
+                        {
+                            OrderDetailId = 20,
+                            LineTotal = 108000m,
+                            OrderId = 12,
+                            ProductId = 4,
+                            Quantity = 2,
+                            UnitPrice = 54000m
+                        },
+                        new
+                        {
+                            OrderDetailId = 21,
+                            LineTotal = 78000m,
+                            OrderId = 13,
+                            ProductId = 12,
+                            Quantity = 3,
+                            UnitPrice = 26000m
+                        },
+                        new
+                        {
+                            OrderDetailId = 22,
+                            LineTotal = 40000m,
+                            OrderId = 15,
+                            ProductId = 5,
+                            Quantity = 4,
+                            UnitPrice = 10000m
                         });
                 });
 
@@ -720,6 +756,11 @@ namespace HeThongBanLeThienAn.API.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("DataSource")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -747,6 +788,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 1,
                             Barcode = "893456789001",
                             CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 12500m,
                             ProductName = "Snack Khoai Tây O'Star Gói 60g",
                             StockQuantity = 150
@@ -756,6 +798,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 2,
                             Barcode = "893456789002",
                             CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 135000m,
                             ProductName = "Bánh Quy Bơ Danisa Hộp Thiếc 454g",
                             StockQuantity = 40
@@ -765,6 +808,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 3,
                             Barcode = "893456789003",
                             CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 15000m,
                             ProductName = "Kẹo Dẻo Chupa Chups Hương Trái Cây 90g",
                             StockQuantity = 120
@@ -774,6 +818,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 4,
                             Barcode = "893456789004",
                             CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 54000m,
                             ProductName = "Bánh Chocopie Orion Hộp 12 Cái",
                             StockQuantity = 60
@@ -783,6 +828,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 5,
                             Barcode = "893456789005",
                             CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 10000m,
                             ProductName = "Nước Ngọt Coca Cola Lon 320ml",
                             StockQuantity = 320
@@ -792,6 +838,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 6,
                             Barcode = "893456789006",
                             CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 6000m,
                             ProductName = "Nước Khoáng Thiên Nhiên Lavie Chai 500ml",
                             StockQuantity = 200
@@ -801,6 +848,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 7,
                             Barcode = "893456789007",
                             CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 11000m,
                             ProductName = "Trà Xanh Không Độ Chai 455ml",
                             StockQuantity = 180
@@ -810,6 +858,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 8,
                             Barcode = "893456789008",
                             CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 14500m,
                             ProductName = "Nước Tăng Lực Red Bull Lon 250ml",
                             StockQuantity = 150
@@ -819,6 +868,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 9,
                             Barcode = "893456789009",
                             CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 34500m,
                             ProductName = "Sữa Tươi Tiệt Trùng Vinamilk Có Đường 1L",
                             StockQuantity = 85
@@ -828,6 +878,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 10,
                             Barcode = "893456789010",
                             CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 39000m,
                             ProductName = "Phô Mai Con Bò Cười Hộp 8 Miếng",
                             StockQuantity = 60
@@ -837,6 +888,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 11,
                             Barcode = "893456789011",
                             CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 28000m,
                             ProductName = "Sữa Chua Ăn Vinamilk Có Đường Lốc 4 Hộp",
                             StockQuantity = 95
@@ -846,6 +898,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 12,
                             Barcode = "893456789012",
                             CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 26000m,
                             ProductName = "Sữa Đặc Có Đường Ông Thọ Lon 380g",
                             StockQuantity = 110
@@ -855,6 +908,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 13,
                             Barcode = "893456789013",
                             CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 4500m,
                             ProductName = "Mì Tôm Hảo Hảo Chua Cay Gói 75g",
                             StockQuantity = 500
@@ -864,6 +918,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 14,
                             Barcode = "893456789014",
                             CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 8500m,
                             ProductName = "Phở Bò Đệ Nhất Gói 68g",
                             StockQuantity = 140
@@ -873,6 +928,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 15,
                             Barcode = "893456789015",
                             CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 14000m,
                             ProductName = "Mì Trộn Tương Đen Koreno Gói 115g",
                             StockQuantity = 80
@@ -882,6 +938,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 16,
                             Barcode = "893456789016",
                             CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 125000m,
                             ProductName = "Dầu Ăn Simply Nguyên Chất Can 2L",
                             StockQuantity = 45
@@ -891,6 +948,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 17,
                             Barcode = "893456789017",
                             CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 30000m,
                             ProductName = "Nước Mắm Nam Ngư Đệ Nhị Chai 900ml",
                             StockQuantity = 90
@@ -900,6 +958,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 18,
                             Barcode = "893456789018",
                             CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 36000m,
                             ProductName = "Hạt Nêm Knorr Từ Thịt Thăn Gói 400g",
                             StockQuantity = 75
@@ -909,6 +968,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 19,
                             Barcode = "893456789019",
                             CategoryId = 6,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 19000m,
                             ProductName = "Cá Nục Sốt Cà Ba Cô Gái Hộp 155g",
                             StockQuantity = 130
@@ -918,9 +978,810 @@ namespace HeThongBanLeThienAn.API.Migrations
                             ProductId = 20,
                             Barcode = "893456789020",
                             CategoryId = 7,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 29000m,
                             ProductName = "Nước Rửa Chén Sunlight Chanh Chai 750g",
                             StockQuantity = 80
+                        },
+                        new
+                        {
+                            ProductId = 21,
+                            Barcode = "TA-REF-0021",
+                            CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 18000m,
+                            ProductName = "Bánh quy sữa gói 100g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 22,
+                            Barcode = "TA-REF-0022",
+                            CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 22000m,
+                            ProductName = "Bánh cracker gói 150g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 23,
+                            Barcode = "TA-REF-0023",
+                            CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 25000m,
+                            ProductName = "Bánh gạo gói 150g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 24,
+                            Barcode = "TA-REF-0024",
+                            CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 15000m,
+                            ProductName = "Kẹo bạc hà gói 100g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 25,
+                            Barcode = "TA-REF-0025",
+                            CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 18000m,
+                            ProductName = "Kẹo sữa gói 100g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 26,
+                            Barcode = "TA-REF-0026",
+                            CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 65000m,
+                            ProductName = "Hạt điều rang hộp 200g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 27,
+                            Barcode = "TA-REF-0027",
+                            CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 12000m,
+                            ProductName = "Đậu phộng rang gói 100g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 28,
+                            Barcode = "TA-REF-0028",
+                            CategoryId = 1,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 15000m,
+                            ProductName = "Rong biển ăn liền gói 20g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 29,
+                            Barcode = "TA-REF-0029",
+                            CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 10000m,
+                            ProductName = "Nước tinh khiết chai 1.5L",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 30,
+                            Barcode = "TA-REF-0030",
+                            CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 5000m,
+                            ProductName = "Nước khoáng chai 350ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 31,
+                            Barcode = "TA-REF-0031",
+                            CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 12000m,
+                            ProductName = "Trà đào chai 450ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 32,
+                            Barcode = "TA-REF-0032",
+                            CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 12000m,
+                            ProductName = "Trà ô long chai 450ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 33,
+                            Barcode = "TA-REF-0033",
+                            CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 15000m,
+                            ProductName = "Nước cam chai 350ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 34,
+                            Barcode = "TA-REF-0034",
+                            CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 10000m,
+                            ProductName = "Nước chanh chai 350ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 35,
+                            Barcode = "TA-REF-0035",
+                            CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 35000m,
+                            ProductName = "Nước dừa hộp 1L",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 36,
+                            Barcode = "TA-REF-0036",
+                            CategoryId = 2,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 10000m,
+                            ProductName = "Nước yến lon 190ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 37,
+                            Barcode = "TA-REF-0037",
+                            CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 8000m,
+                            ProductName = "Sữa tươi không đường hộp 180ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 38,
+                            Barcode = "TA-REF-0038",
+                            CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 8000m,
+                            ProductName = "Sữa tươi có đường hộp 180ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 39,
+                            Barcode = "TA-REF-0039",
+                            CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 28000m,
+                            ProductName = "Sữa đậu nành hộp 1L",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 40,
+                            Barcode = "TA-REF-0040",
+                            CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 9000m,
+                            ProductName = "Sữa chua uống chai 180ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 41,
+                            Barcode = "TA-REF-0041",
+                            CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 6500m,
+                            ProductName = "Sữa chua không đường hộp 100g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 42,
+                            Barcode = "TA-REF-0042",
+                            CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 180000m,
+                            ProductName = "Sữa bột hộp 400g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 43,
+                            Barcode = "TA-REF-0043",
+                            CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 60000m,
+                            ProductName = "Bơ lạt gói 200g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 44,
+                            Barcode = "TA-REF-0044",
+                            CategoryId = 3,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 55000m,
+                            ProductName = "Phô mai lát gói 200g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 45,
+                            Barcode = "TA-REF-0045",
+                            CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 4500m,
+                            ProductName = "Mì bò gói 75g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 46,
+                            Barcode = "TA-REF-0046",
+                            CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 4500m,
+                            ProductName = "Mì chay gói 75g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 47,
+                            Barcode = "TA-REF-0047",
+                            CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 7000m,
+                            ProductName = "Cháo thịt gói 50g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 48,
+                            Barcode = "TA-REF-0048",
+                            CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 10000m,
+                            ProductName = "Miến gà gói 58g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 49,
+                            Barcode = "TA-REF-0049",
+                            CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 12000m,
+                            ProductName = "Bún bò gói 75g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 50,
+                            Barcode = "TA-REF-0050",
+                            CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 8500m,
+                            ProductName = "Hủ tiếu gói 65g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 51,
+                            Barcode = "TA-REF-0051",
+                            CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 8500m,
+                            ProductName = "Phở gà gói 65g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 52,
+                            Barcode = "TA-REF-0052",
+                            CategoryId = 4,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 22000m,
+                            ProductName = "Nui khô gói 400g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 53,
+                            Barcode = "TA-REF-0053",
+                            CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 26000m,
+                            ProductName = "Đường cát trắng túi 1kg",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 54,
+                            Barcode = "TA-REF-0054",
+                            CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 8000m,
+                            ProductName = "Muối iốt gói 500g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 55,
+                            Barcode = "TA-REF-0055",
+                            CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 32000m,
+                            ProductName = "Bột ngọt gói 400g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 56,
+                            Barcode = "TA-REF-0056",
+                            CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 18000m,
+                            ProductName = "Tiêu xay lọ 50g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 57,
+                            Barcode = "TA-REF-0057",
+                            CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 22000m,
+                            ProductName = "Nước tương chai 500ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 58,
+                            Barcode = "TA-REF-0058",
+                            CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 15000m,
+                            ProductName = "Tương ớt chai 250g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 59,
+                            Barcode = "TA-REF-0059",
+                            CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 14000m,
+                            ProductName = "Giấm gạo chai 500ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 60,
+                            Barcode = "TA-REF-0060",
+                            CategoryId = 5,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 28000m,
+                            ProductName = "Dầu hào chai 350g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 61,
+                            Barcode = "TA-REF-0061",
+                            CategoryId = 6,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 35000m,
+                            ProductName = "Cá ngừ ngâm dầu hộp 185g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 62,
+                            Barcode = "TA-REF-0062",
+                            CategoryId = 6,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 25000m,
+                            ProductName = "Pate gan hộp 150g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 63,
+                            Barcode = "TA-REF-0063",
+                            CategoryId = 6,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 40000m,
+                            ProductName = "Thịt heo hộp 170g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 64,
+                            Barcode = "TA-REF-0064",
+                            CategoryId = 6,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 26000m,
+                            ProductName = "Bắp ngọt hộp 340g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 65,
+                            Barcode = "TA-REF-0065",
+                            CategoryId = 6,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 28000m,
+                            ProductName = "Đậu Hà Lan hộp 400g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 66,
+                            Barcode = "TA-REF-0066",
+                            CategoryId = 6,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 32000m,
+                            ProductName = "Xúc xích gói 200g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 67,
+                            Barcode = "TA-REF-0067",
+                            CategoryId = 6,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 55000m,
+                            ProductName = "Chà bông heo hộp 100g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 68,
+                            Barcode = "TA-REF-0068",
+                            CategoryId = 6,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 35000m,
+                            ProductName = "Dưa leo muối lọ 500g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 69,
+                            Barcode = "TA-REF-0069",
+                            CategoryId = 7,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 95000m,
+                            ProductName = "Nước giặt túi 2L",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 70,
+                            Barcode = "TA-REF-0070",
+                            CategoryId = 7,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 65000m,
+                            ProductName = "Nước xả vải túi 1.6L",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 71,
+                            Barcode = "TA-REF-0071",
+                            CategoryId = 7,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 35000m,
+                            ProductName = "Bột giặt túi 800g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 72,
+                            Barcode = "TA-REF-0072",
+                            CategoryId = 7,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 32000m,
+                            ProductName = "Nước lau sàn chai 1L",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 73,
+                            Barcode = "TA-REF-0073",
+                            CategoryId = 7,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 38000m,
+                            ProductName = "Nước tẩy nhà vệ sinh chai 900ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 74,
+                            Barcode = "TA-REF-0074",
+                            CategoryId = 7,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 25000m,
+                            ProductName = "Nước lau kính chai 500ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 75,
+                            Barcode = "TA-REF-0075",
+                            CategoryId = 7,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 28000m,
+                            ProductName = "Nước rửa tay chai 250ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 76,
+                            Barcode = "TA-REF-0076",
+                            CategoryId = 7,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 12000m,
+                            ProductName = "Miếng rửa chén bộ 3 miếng",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 77,
+                            Barcode = "TA-REF-0077",
+                            CategoryId = 8,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 75000m,
+                            ProductName = "Dầu gội chai 340ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 78,
+                            Barcode = "TA-REF-0078",
+                            CategoryId = 8,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 85000m,
+                            ProductName = "Sữa tắm chai 500ml",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 79,
+                            Barcode = "TA-REF-0079",
+                            CategoryId = 8,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 35000m,
+                            ProductName = "Kem đánh răng tuýp 180g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 80,
+                            Barcode = "TA-REF-0080",
+                            CategoryId = 8,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 18000m,
+                            ProductName = "Bàn chải đánh răng chiếc",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 81,
+                            Barcode = "TA-REF-0081",
+                            CategoryId = 8,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 12000m,
+                            ProductName = "Xà phòng bánh 90g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 82,
+                            Barcode = "TA-REF-0082",
+                            CategoryId = 8,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 25000m,
+                            ProductName = "Khăn ướt gói 80 tờ",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 83,
+                            Barcode = "TA-REF-0083",
+                            CategoryId = 8,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 28000m,
+                            ProductName = "Băng vệ sinh gói 8 miếng",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 84,
+                            Barcode = "TA-REF-0084",
+                            CategoryId = 8,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 15000m,
+                            ProductName = "Tăm bông hộp 200 que",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 85,
+                            Barcode = "TA-REF-0085",
+                            CategoryId = 9,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 22000m,
+                            ProductName = "Khăn giấy hộp 180 tờ",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 86,
+                            Barcode = "TA-REF-0086",
+                            CategoryId = 9,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 55000m,
+                            ProductName = "Giấy vệ sinh lốc 10 cuộn",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 87,
+                            Barcode = "TA-REF-0087",
+                            CategoryId = 9,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 25000m,
+                            ProductName = "Túi rác cuộn 500g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 88,
+                            Barcode = "TA-REF-0088",
+                            CategoryId = 9,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 28000m,
+                            ProductName = "Màng bọc thực phẩm cuộn 30m",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 89,
+                            Barcode = "TA-REF-0089",
+                            CategoryId = 9,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 25000m,
+                            ProductName = "Giấy bạc cuộn 5m",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 90,
+                            Barcode = "TA-REF-0090",
+                            CategoryId = 9,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 15000m,
+                            ProductName = "Pin AA vỉ 2 viên",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 91,
+                            Barcode = "TA-REF-0091",
+                            CategoryId = 9,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 15000m,
+                            ProductName = "Pin AAA vỉ 2 viên",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 92,
+                            Barcode = "TA-REF-0092",
+                            CategoryId = 9,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 20000m,
+                            ProductName = "Găng tay thực phẩm hộp 100 chiếc",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 93,
+                            Barcode = "TA-REF-0093",
+                            CategoryId = 13,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 55000m,
+                            ProductName = "Cà phê hòa tan hộp 20 gói",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 94,
+                            Barcode = "TA-REF-0094",
+                            CategoryId = 13,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 65000m,
+                            ProductName = "Cà phê rang xay gói 250g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 95,
+                            Barcode = "TA-REF-0095",
+                            CategoryId = 13,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 45000m,
+                            ProductName = "Yến mạch túi 500g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 96,
+                            Barcode = "TA-REF-0096",
+                            CategoryId = 13,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 48000m,
+                            ProductName = "Ngũ cốc dinh dưỡng túi 400g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 97,
+                            Barcode = "TA-REF-0097",
+                            CategoryId = 13,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 35000m,
+                            ProductName = "Trà túi lọc hộp 25 túi",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 98,
+                            Barcode = "TA-REF-0098",
+                            CategoryId = 13,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 55000m,
+                            ProductName = "Bột cacao hộp 200g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 99,
+                            Barcode = "TA-REF-0099",
+                            CategoryId = 13,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 38000m,
+                            ProductName = "Bột đậu xanh túi 500g",
+                            StockQuantity = 0
+                        },
+                        new
+                        {
+                            ProductId = 100,
+                            Barcode = "TA-REF-0100",
+                            CategoryId = 13,
+                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            Price = 95000m,
+                            ProductName = "Gạo trắng túi 5kg",
+                            StockQuantity = 0
                         });
                 });
 
@@ -963,7 +1824,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 1,
-                            FullName = "Nguyễn Quản Trị",
+                            FullName = "Nhân viên mẫu 01",
                             IsActive = true,
                             PasswordHash = "admin@123",
                             Role = "Admin",
@@ -972,7 +1833,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 2,
-                            FullName = "Trần Cửa Hàng Trưởng",
+                            FullName = "Nhân viên mẫu 02",
                             IsActive = true,
                             PasswordHash = "manager@123",
                             Role = "Admin",
@@ -981,7 +1842,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 3,
-                            FullName = "Lê Thu Ngân 1",
+                            FullName = "Nhân viên mẫu 03",
                             IsActive = true,
                             PasswordHash = "cashier@123",
                             Role = "Cashier",
@@ -990,7 +1851,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 4,
-                            FullName = "Phạm Thu Ngân 2",
+                            FullName = "Nhân viên mẫu 04",
                             IsActive = true,
                             PasswordHash = "cashier@123",
                             Role = "Cashier",
@@ -999,7 +1860,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 5,
-                            FullName = "Hoàng Thu Ngân 3",
+                            FullName = "Nhân viên mẫu 05",
                             IsActive = true,
                             PasswordHash = "cashier@123",
                             Role = "Cashier",
@@ -1008,7 +1869,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 6,
-                            FullName = "Vũ Thu Ngân 4",
+                            FullName = "Nhân viên mẫu 06",
                             IsActive = true,
                             PasswordHash = "cashier@123",
                             Role = "Cashier",
@@ -1017,7 +1878,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 7,
-                            FullName = "Đỗ Thu Ngân 5",
+                            FullName = "Nhân viên mẫu 07",
                             IsActive = true,
                             PasswordHash = "cashier@123",
                             Role = "Cashier",
@@ -1026,7 +1887,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 8,
-                            FullName = "Ngô Thu Ngân 6",
+                            FullName = "Nhân viên mẫu 08",
                             IsActive = true,
                             PasswordHash = "cashier@123",
                             Role = "Cashier",
@@ -1035,7 +1896,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 9,
-                            FullName = "Bùi Thu Ngân 7",
+                            FullName = "Nhân viên mẫu 09",
                             IsActive = true,
                             PasswordHash = "cashier@123",
                             Role = "Cashier",
@@ -1044,7 +1905,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 10,
-                            FullName = "Đặng Thủ Kho 1",
+                            FullName = "Nhân viên mẫu 10",
                             IsActive = true,
                             PasswordHash = "wh@123",
                             Role = "Warehouse",
@@ -1053,7 +1914,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 11,
-                            FullName = "Trương Thủ Kho 2",
+                            FullName = "Nhân viên mẫu 11",
                             IsActive = true,
                             PasswordHash = "wh@123",
                             Role = "Warehouse",
@@ -1062,7 +1923,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 12,
-                            FullName = "Lý Kiểm Kê",
+                            FullName = "Nhân viên mẫu 12",
                             IsActive = true,
                             PasswordHash = "wh@123",
                             Role = "Warehouse",
@@ -1071,7 +1932,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 13,
-                            FullName = "Mai Thu Ngân 8",
+                            FullName = "Nhân viên mẫu 13",
                             IsActive = true,
                             PasswordHash = "cashier@123",
                             Role = "Cashier",
@@ -1080,7 +1941,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 14,
-                            FullName = "Dương Thu Ngân 9",
+                            FullName = "Nhân viên mẫu 14",
                             IsActive = true,
                             PasswordHash = "cashier@123",
                             Role = "Cashier",
@@ -1089,7 +1950,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                         new
                         {
                             UserId = 15,
-                            FullName = "Hồ Nhân Viên Nghỉ Việc",
+                            FullName = "Nhân viên mẫu 15",
                             IsActive = false,
                             PasswordHash = "lock@123",
                             Role = "Cashier",
@@ -1101,9 +1962,7 @@ namespace HeThongBanLeThienAn.API.Migrations
                 {
                     b.HasOne("MiniSupermarket.API.Models.Customer", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.Navigation("Customer");
                 });

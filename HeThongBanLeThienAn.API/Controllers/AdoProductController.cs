@@ -9,6 +9,7 @@
 */
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using MiniSupermarket.API.Data;
@@ -20,6 +21,7 @@ namespace MiniSupermarket.API.Controllers
 {
     [Route("api/ado-products")]
     [ApiController]
+    [Authorize(Roles = "Admin,Cashier,Warehouse")]
     public class AdoProductController : ControllerBase
     {
         private readonly IConfiguration _configuration;
