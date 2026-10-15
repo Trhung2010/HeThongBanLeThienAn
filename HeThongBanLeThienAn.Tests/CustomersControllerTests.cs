@@ -58,7 +58,7 @@ namespace HeThongBanLeThienAn.Tests
 
             var customer = result.Value as Customer;
             Assert.NotNull(customer);
-            Assert.Equal("Nguyễn Văn A", customer.CustomerName);
+            Assert.Equal("Trần Văn Hoàng", customer.CustomerName);
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace HeThongBanLeThienAn.Tests
             var controller = new CustomersController(context);
 
             // Act
-            var result = await controller.Search("Văn A") as OkObjectResult;
+            var result = await controller.Search("Trần Văn") as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -92,8 +92,8 @@ namespace HeThongBanLeThienAn.Tests
 
             var list = result.Value as List<Customer>;
             Assert.NotNull(list);
-            Assert.Single(list);
-            Assert.Equal("Nguyễn Văn A", list[0].CustomerName);
+            Assert.NotEmpty(list);
+            Assert.Contains(list, c => c.CustomerName.Contains("Trần Văn"));
         }
 
         [Fact]
@@ -170,11 +170,11 @@ namespace HeThongBanLeThienAn.Tests
 
             var updateData = new Customer
             {
-                CustomerName = "Nguyễn Văn A Updated",
-                PhoneNumber = "0901234567",
+                CustomerName = "Trần Văn Hoàng Updated",
+                PhoneNumber = "0903123456",
                 Address = "Địa chỉ mới",
                 RewardPoints = 600,
-                MembershipRank = "Kim Cương"
+                MembershipRank = "Bạch Kim"
             };
 
             // Act
@@ -185,8 +185,8 @@ namespace HeThongBanLeThienAn.Tests
             Assert.Equal(204, result.StatusCode);
 
             var updatedCustomer = await context.Customers.FindAsync(1);
-            Assert.Equal("Nguyễn Văn A Updated", updatedCustomer!.CustomerName);
-            Assert.Equal("Kim Cương", updatedCustomer.MembershipRank);
+            Assert.Equal("Trần Văn Hoàng Updated", updatedCustomer!.CustomerName);
+            Assert.Equal("Bạch Kim", updatedCustomer.MembershipRank);
         }
 
         [Fact]

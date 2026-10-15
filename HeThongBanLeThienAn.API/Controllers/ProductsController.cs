@@ -28,6 +28,31 @@ namespace MiniSupermarket.API.Controllers
             return Ok(products);
         }
 
+        // BÀI TẬP 1 (MỞ RỘNG): Lấy danh sách sản phẩm kèm tên danh mục (Eager Loading)
+        // GET /api/products/with-category
+        [HttpGet("with-category")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
+        public async Task<IActionResult> GetWithCategory()
+        {
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .AsNoTracking()
+                .Select(p => new
+                {
+                    p.ProductId,
+                    p.Barcode,
+                    p.ProductName,
+                    p.Price,
+                    p.StockQuantity,
+                    p.IsLowStock,
+                    p.CategoryId,
+                    CategoryName = p.Category != null ? p.Category.CategoryName : string.Empty
+                })
+                .ToListAsync();
+
+            return Ok(products);
+        }
+
         // 2. READ BY ID: Lấy chi tiết một sản phẩm theo ID
         // GET /api/products/{id}
         [HttpGet("{id}")]

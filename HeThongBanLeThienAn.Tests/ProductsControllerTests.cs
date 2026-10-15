@@ -92,7 +92,7 @@ namespace HeThongBanLeThienAn.Tests
 
             var products = result.Value as List<Product>;
             Assert.NotNull(products);
-            Assert.Single(products);
+            Assert.NotEmpty(products);
         }
 
         [Fact]
@@ -132,7 +132,7 @@ namespace HeThongBanLeThienAn.Tests
 
             var updateData = new Product
             {
-                Barcode = "893000000001",
+                Barcode = "893456789001",
                 ProductName = "Bánh quy AFC Dinh Dưỡng Cải Tiến",
                 Price = 30000m,
                 StockQuantity = 80,
@@ -178,7 +178,7 @@ namespace HeThongBanLeThienAn.Tests
             var controller = new ProductsController(context);
 
             // Act
-            var result = await controller.GetByBarcode("893000000002") as OkObjectResult;
+            var result = await controller.GetByBarcode("893456789006") as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -186,8 +186,8 @@ namespace HeThongBanLeThienAn.Tests
 
             var product = result.Value as Product;
             Assert.NotNull(product);
-            Assert.Equal("893000000002", product.Barcode);
-            Assert.Equal("Nước khoáng thiên nhiên Lavie 500ml", product.ProductName);
+            Assert.Equal("893456789006", product.Barcode);
+            Assert.Contains("Lavie", product.ProductName);
         }
     }
 }

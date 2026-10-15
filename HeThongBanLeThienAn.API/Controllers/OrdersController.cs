@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSupermarket.API.Data;
+using MiniSupermarket.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,21 @@ namespace MiniSupermarket.API.Controllers
             _context = context;
         }
 
+        // GET /api/orders
+        [HttpGet]
+        [Authorize(Roles = "Admin,Cashier")]
+        public async Task<IActionResult> GetAll()
+        {
+            var orders = await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .OrderByDescending(o => o.CreatedDate)
+                .ToListAsync();
+
+            return Ok(orders);
+        }
+
         // POST /api/orders/checkout
         [HttpPost("checkout")]
         [Authorize(Roles = "Admin,Cashier")]
@@ -32,6 +48,7 @@ namespace MiniSupermarket.API.Controllers
             }
 
             decimal totalAmount = 0;
+            int totalItems = 0;
 
             // 1. Trừ số lượng tồn kho sản phẩm
             foreach (var item in request.Items)
@@ -41,24 +58,27 @@ namespace MiniSupermarket.API.Controllers
                 {
                     product.StockQuantity = Math.Max(0, product.StockQuantity - item.Quantity);
                     totalAmount += item.UnitPrice * item.Quantity;
+                    totalItems += item.Quantity;
                 }
             }
 
             // 2. Tích điểm cho khách hàng thân thiết nếu có SĐT
             string customerInfo = "Khách vãng lai";
+            Customer? customer = null;
+            int pointsEarned = (int)(totalAmount / 10000m);
+
             if (!string.IsNullOrWhiteSpace(request.CustomerPhone))
             {
                 string cleanPhone = request.CustomerPhone.Trim();
-                var customer = await _context.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == cleanPhone);
+                customer = await _context.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == cleanPhone);
                 if (customer != null)
                 {
-                    int pointsEarned = (int)(totalAmount / 10000m);
                     customer.RewardPoints += pointsEarned;
 
                     // Tự động nâng hạng thẻ
                     if (customer.RewardPoints >= 1000)
                     {
-                        customer.MembershipRank = "Kim Cương";
+                        customer.MembershipRank = "Bạch Kim";
                     }
                     else if (customer.RewardPoints >= 500)
                     {
@@ -73,19 +93,46 @@ namespace MiniSupermarket.API.Controllers
                 }
             }
 
+            string orderCode = "HD-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            int customerId = customer?.CustomerId ?? 1;
+
+            var newOrder = new Order
+            {
+                OrderCode = orderCode,
+                CreatedDate = DateTime.Now,
+                CustomerId = customerId,
+                CashierUsername = string.IsNullOrWhiteSpace(request.CashierUsername) ? "cashier01" : request.CashierUsername,
+                TotalItems = totalItems,
+                FinalAmount = totalAmount,
+                RewardPoints = customer != null ? pointsEarned : 0
+            };
+
+            _context.Orders.Add(newOrder);
             await _context.SaveChangesAsync();
 
-            string orderCode = "HD-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            foreach (var item in request.Items)
+            {
+                _context.OrderDetails.Add(new OrderDetail
+                {
+                    OrderId = newOrder.OrderId,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice,
+                    LineTotal = item.Quantity * item.UnitPrice
+                });
+            }
+
+            await _context.SaveChangesAsync();
 
             return Ok(new
             {
                 success = true,
                 message = "Thanh toán thành công và đã xuất hóa đơn!",
                 orderCode = orderCode,
-                cashier = request.CashierUsername,
+                cashier = newOrder.CashierUsername,
                 totalAmount = totalAmount,
                 customer = customerInfo,
-                timestamp = DateTime.Now
+                timestamp = newOrder.CreatedDate
             });
         }
     }

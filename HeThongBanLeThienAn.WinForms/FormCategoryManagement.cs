@@ -232,8 +232,7 @@ namespace MiniSupermarket.WinForms
                 var newCat = new
                 {
                     CategoryName = txtCategoryName.Text.Trim(),
-                    Description = txtDescription.Text.Trim(),
-                    StockQuantity = ParseStockQuantity()
+                    Description = txtDescription.Text.Trim()
                 };
 
                 var response =
@@ -324,8 +323,7 @@ namespace MiniSupermarket.WinForms
                 {
                     CategoryId = id,
                     CategoryName = txtCategoryName.Text.Trim(),
-                    Description = txtDescription.Text.Trim(),
-                    StockQuantity = ParseStockQuantity()
+                    Description = txtDescription.Text.Trim()
                 };
 
                 var response =

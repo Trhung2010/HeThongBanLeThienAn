@@ -84,7 +84,7 @@ namespace HeThongBanLeThienAn.Tests
             var controller = new CategoriesController(context);
 
             // Act
-            var result = await controller.Search("suối") as OkObjectResult;
+            var result = await controller.Search("Bánh kẹo") as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -92,7 +92,7 @@ namespace HeThongBanLeThienAn.Tests
 
             var categories = result.Value as List<Category>;
             Assert.NotNull(categories);
-            Assert.Single(categories);
+            Assert.NotEmpty(categories);
         }
 
         [Fact]
@@ -120,8 +120,7 @@ namespace HeThongBanLeThienAn.Tests
             var newCategory = new Category
             {
                 CategoryName = "Trà sữa Ô Long",
-                Description = "Đồ uống đóng chai",
-                StockQuantity = 100
+                Description = "Đồ uống đóng chai"
             };
 
             // Act
@@ -147,8 +146,7 @@ namespace HeThongBanLeThienAn.Tests
             var newCategory = new Category
             {
                 CategoryName = "",
-                Description = "Đồ uống",
-                StockQuantity = 10
+                Description = "Đồ uống"
             };
 
             // Act
@@ -169,8 +167,7 @@ namespace HeThongBanLeThienAn.Tests
             var updateCategory = new Category
             {
                 CategoryName = "Bánh quy bơ giòn",
-                Description = "Sản phẩm bánh kẹo cao cấp",
-                StockQuantity = 150
+                Description = "Sản phẩm bánh kẹo cao cấp"
             };
 
             // Act

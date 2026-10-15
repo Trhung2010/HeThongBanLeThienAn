@@ -82,14 +82,6 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (newCat.StockQuantity < 0)
-            {
-                return BadRequest(new
-                {
-                    message = "Số lượng tồn kho không được âm!"
-                });
-            }
-
             await _context.Categories.AddAsync(newCat);
             await _context.SaveChangesAsync();
 
@@ -115,17 +107,8 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (updateCat.StockQuantity < 0)
-            {
-                return BadRequest(new
-                {
-                    message = "Số lượng tồn kho không được âm!"
-                });
-            }
-
             cat.CategoryName = updateCat.CategoryName;
             cat.Description = updateCat.Description;
-            cat.StockQuantity = updateCat.StockQuantity;
 
             await _context.SaveChangesAsync();
 
