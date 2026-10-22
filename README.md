@@ -8,7 +8,7 @@
 **Bộ dữ liệu tham khảo phục vụ thực hành, chưa xác minh từ website chính thức Bách Hóa Thiên Ân.**
 
 - 100 mặt hàng, mã riêng biệt, 15 danh mục.
-- 20 mặt hàng ban đầu giữ mã và giá mẫu. 80 mặt hàng thêm có mã nội bộ `TA-REF-0021` đến `TA-REF-0100`, tồn kho ban đầu 0; nhập tồn kho trước khi bán.
+- 100 mặt hàng dùng mã vạch số 12 chữ số liên tiếp từ `893456789001` đến `893456789100`. 80 mặt hàng bổ sung có tồn kho ban đầu 0; nhập tồn kho trước khi bán.
 - Mã nội bộ không phải barcode nhà sản xuất; giá không phải bảng giá xác nhận của cửa hàng.
 - `Products.DataSource` lưu nhãn nguồn tham khảo; mặt hàng nhập thủ công có nhãn riêng.
 - CSDL mới không tự tạo khách mẫu. Hồ sơ khách được nhập qua API/WinForms. Migration chỉ dọn hồ sơ còn khớp chính xác tên và mã DEMO; giữ nguyên khách đã sửa và hóa đơn hiện có. Nhân viên và hóa đơn seed là dữ liệu thực hành.

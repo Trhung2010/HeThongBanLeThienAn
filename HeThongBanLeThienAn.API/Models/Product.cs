@@ -17,9 +17,10 @@ namespace MiniSupermarket.API.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductId { get; set; }
 
-        // 2. Mã vạch Barcode để quét tại quầy thu ngân POS: Duy nhất, tối đa 50 ký tự
+        // 2. Mã vạch Barcode để quét tại quầy thu ngân POS: chỉ gồm chữ số và phải duy nhất
         [Required(ErrorMessage = "Mã vạch không được để trống!")]
         [StringLength(50, ErrorMessage = "Mã vạch không vượt quá 50 ký tự!")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "Mã vạch chỉ được chứa chữ số từ 0 đến 9!")]
         public string Barcode { get; set; } = string.Empty;
 
         // 3. Tên sản phẩm hàng hóa

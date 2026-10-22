@@ -849,7 +849,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 21,
-                            Barcode = "TA-REF-0021",
+                            Barcode = "893456789021",
                             CategoryId = 1,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 18000m,
@@ -859,7 +859,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 22,
-                            Barcode = "TA-REF-0022",
+                            Barcode = "893456789022",
                             CategoryId = 1,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 22000m,
@@ -869,7 +869,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 23,
-                            Barcode = "TA-REF-0023",
+                            Barcode = "893456789023",
                             CategoryId = 1,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 25000m,
@@ -879,7 +879,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 24,
-                            Barcode = "TA-REF-0024",
+                            Barcode = "893456789024",
                             CategoryId = 1,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 15000m,
@@ -889,7 +889,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 25,
-                            Barcode = "TA-REF-0025",
+                            Barcode = "893456789025",
                             CategoryId = 1,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 18000m,
@@ -899,7 +899,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 26,
-                            Barcode = "TA-REF-0026",
+                            Barcode = "893456789026",
                             CategoryId = 1,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 65000m,
@@ -909,7 +909,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 27,
-                            Barcode = "TA-REF-0027",
+                            Barcode = "893456789027",
                             CategoryId = 1,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 12000m,
@@ -919,7 +919,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 28,
-                            Barcode = "TA-REF-0028",
+                            Barcode = "893456789028",
                             CategoryId = 1,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 15000m,
@@ -929,7 +929,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 29,
-                            Barcode = "TA-REF-0029",
+                            Barcode = "893456789029",
                             CategoryId = 2,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 10000m,
@@ -939,7 +939,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 30,
-                            Barcode = "TA-REF-0030",
+                            Barcode = "893456789030",
                             CategoryId = 2,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 5000m,
@@ -949,7 +949,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 31,
-                            Barcode = "TA-REF-0031",
+                            Barcode = "893456789031",
                             CategoryId = 2,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 12000m,
@@ -959,7 +959,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 32,
-                            Barcode = "TA-REF-0032",
+                            Barcode = "893456789032",
                             CategoryId = 2,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 12000m,
@@ -969,7 +969,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 33,
-                            Barcode = "TA-REF-0033",
+                            Barcode = "893456789033",
                             CategoryId = 2,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 15000m,
@@ -979,7 +979,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 34,
-                            Barcode = "TA-REF-0034",
+                            Barcode = "893456789034",
                             CategoryId = 2,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 10000m,
@@ -989,7 +989,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 35,
-                            Barcode = "TA-REF-0035",
+                            Barcode = "893456789035",
                             CategoryId = 2,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 35000m,
@@ -999,7 +999,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 36,
-                            Barcode = "TA-REF-0036",
+                            Barcode = "893456789036",
                             CategoryId = 2,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 10000m,
@@ -1009,7 +1009,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 37,
-                            Barcode = "TA-REF-0037",
+                            Barcode = "893456789037",
                             CategoryId = 3,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 8000m,
@@ -1019,7 +1019,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 38,
-                            Barcode = "TA-REF-0038",
+                            Barcode = "893456789038",
                             CategoryId = 3,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 8000m,
@@ -1029,7 +1029,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 39,
-                            Barcode = "TA-REF-0039",
+                            Barcode = "893456789039",
                             CategoryId = 3,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 28000m,
@@ -1039,7 +1039,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 40,
-                            Barcode = "TA-REF-0040",
+                            Barcode = "893456789040",
                             CategoryId = 3,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 9000m,
@@ -1049,7 +1049,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 41,
-                            Barcode = "TA-REF-0041",
+                            Barcode = "893456789041",
                             CategoryId = 3,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 6500m,
@@ -1059,7 +1059,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 42,
-                            Barcode = "TA-REF-0042",
+                            Barcode = "893456789042",
                             CategoryId = 3,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 180000m,
@@ -1069,7 +1069,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 43,
-                            Barcode = "TA-REF-0043",
+                            Barcode = "893456789043",
                             CategoryId = 3,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 60000m,
@@ -1079,7 +1079,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 44,
-                            Barcode = "TA-REF-0044",
+                            Barcode = "893456789044",
                             CategoryId = 3,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 55000m,
@@ -1089,7 +1089,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 45,
-                            Barcode = "TA-REF-0045",
+                            Barcode = "893456789045",
                             CategoryId = 4,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 4500m,
@@ -1099,7 +1099,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 46,
-                            Barcode = "TA-REF-0046",
+                            Barcode = "893456789046",
                             CategoryId = 4,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 4500m,
@@ -1109,7 +1109,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 47,
-                            Barcode = "TA-REF-0047",
+                            Barcode = "893456789047",
                             CategoryId = 4,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 7000m,
@@ -1119,7 +1119,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 48,
-                            Barcode = "TA-REF-0048",
+                            Barcode = "893456789048",
                             CategoryId = 4,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 10000m,
@@ -1129,7 +1129,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 49,
-                            Barcode = "TA-REF-0049",
+                            Barcode = "893456789049",
                             CategoryId = 4,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 12000m,
@@ -1139,7 +1139,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 50,
-                            Barcode = "TA-REF-0050",
+                            Barcode = "893456789050",
                             CategoryId = 4,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 8500m,
@@ -1149,7 +1149,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 51,
-                            Barcode = "TA-REF-0051",
+                            Barcode = "893456789051",
                             CategoryId = 4,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 8500m,
@@ -1159,7 +1159,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 52,
-                            Barcode = "TA-REF-0052",
+                            Barcode = "893456789052",
                             CategoryId = 4,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 22000m,
@@ -1169,7 +1169,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 53,
-                            Barcode = "TA-REF-0053",
+                            Barcode = "893456789053",
                             CategoryId = 5,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 26000m,
@@ -1179,7 +1179,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 54,
-                            Barcode = "TA-REF-0054",
+                            Barcode = "893456789054",
                             CategoryId = 5,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 8000m,
@@ -1189,7 +1189,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 55,
-                            Barcode = "TA-REF-0055",
+                            Barcode = "893456789055",
                             CategoryId = 5,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 32000m,
@@ -1199,7 +1199,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 56,
-                            Barcode = "TA-REF-0056",
+                            Barcode = "893456789056",
                             CategoryId = 5,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 18000m,
@@ -1209,7 +1209,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 57,
-                            Barcode = "TA-REF-0057",
+                            Barcode = "893456789057",
                             CategoryId = 5,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 22000m,
@@ -1219,7 +1219,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 58,
-                            Barcode = "TA-REF-0058",
+                            Barcode = "893456789058",
                             CategoryId = 5,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 15000m,
@@ -1229,7 +1229,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 59,
-                            Barcode = "TA-REF-0059",
+                            Barcode = "893456789059",
                             CategoryId = 5,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 14000m,
@@ -1239,7 +1239,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 60,
-                            Barcode = "TA-REF-0060",
+                            Barcode = "893456789060",
                             CategoryId = 5,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 28000m,
@@ -1249,7 +1249,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 61,
-                            Barcode = "TA-REF-0061",
+                            Barcode = "893456789061",
                             CategoryId = 6,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 35000m,
@@ -1259,7 +1259,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 62,
-                            Barcode = "TA-REF-0062",
+                            Barcode = "893456789062",
                             CategoryId = 6,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 25000m,
@@ -1269,7 +1269,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 63,
-                            Barcode = "TA-REF-0063",
+                            Barcode = "893456789063",
                             CategoryId = 6,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 40000m,
@@ -1279,7 +1279,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 64,
-                            Barcode = "TA-REF-0064",
+                            Barcode = "893456789064",
                             CategoryId = 6,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 26000m,
@@ -1289,7 +1289,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 65,
-                            Barcode = "TA-REF-0065",
+                            Barcode = "893456789065",
                             CategoryId = 6,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 28000m,
@@ -1299,7 +1299,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 66,
-                            Barcode = "TA-REF-0066",
+                            Barcode = "893456789066",
                             CategoryId = 6,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 32000m,
@@ -1309,7 +1309,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 67,
-                            Barcode = "TA-REF-0067",
+                            Barcode = "893456789067",
                             CategoryId = 6,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 55000m,
@@ -1319,7 +1319,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 68,
-                            Barcode = "TA-REF-0068",
+                            Barcode = "893456789068",
                             CategoryId = 6,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 35000m,
@@ -1329,7 +1329,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 69,
-                            Barcode = "TA-REF-0069",
+                            Barcode = "893456789069",
                             CategoryId = 7,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 95000m,
@@ -1339,7 +1339,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 70,
-                            Barcode = "TA-REF-0070",
+                            Barcode = "893456789070",
                             CategoryId = 7,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 65000m,
@@ -1349,7 +1349,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 71,
-                            Barcode = "TA-REF-0071",
+                            Barcode = "893456789071",
                             CategoryId = 7,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 35000m,
@@ -1359,7 +1359,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 72,
-                            Barcode = "TA-REF-0072",
+                            Barcode = "893456789072",
                             CategoryId = 7,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 32000m,
@@ -1369,7 +1369,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 73,
-                            Barcode = "TA-REF-0073",
+                            Barcode = "893456789073",
                             CategoryId = 7,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 38000m,
@@ -1379,7 +1379,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 74,
-                            Barcode = "TA-REF-0074",
+                            Barcode = "893456789074",
                             CategoryId = 7,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 25000m,
@@ -1389,7 +1389,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 75,
-                            Barcode = "TA-REF-0075",
+                            Barcode = "893456789075",
                             CategoryId = 7,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 28000m,
@@ -1399,7 +1399,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 76,
-                            Barcode = "TA-REF-0076",
+                            Barcode = "893456789076",
                             CategoryId = 7,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 12000m,
@@ -1409,7 +1409,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 77,
-                            Barcode = "TA-REF-0077",
+                            Barcode = "893456789077",
                             CategoryId = 8,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 75000m,
@@ -1419,7 +1419,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 78,
-                            Barcode = "TA-REF-0078",
+                            Barcode = "893456789078",
                             CategoryId = 8,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 85000m,
@@ -1429,7 +1429,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 79,
-                            Barcode = "TA-REF-0079",
+                            Barcode = "893456789079",
                             CategoryId = 8,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 35000m,
@@ -1439,7 +1439,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 80,
-                            Barcode = "TA-REF-0080",
+                            Barcode = "893456789080",
                             CategoryId = 8,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 18000m,
@@ -1449,7 +1449,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 81,
-                            Barcode = "TA-REF-0081",
+                            Barcode = "893456789081",
                             CategoryId = 8,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 12000m,
@@ -1459,7 +1459,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 82,
-                            Barcode = "TA-REF-0082",
+                            Barcode = "893456789082",
                             CategoryId = 8,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 25000m,
@@ -1469,7 +1469,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 83,
-                            Barcode = "TA-REF-0083",
+                            Barcode = "893456789083",
                             CategoryId = 8,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 28000m,
@@ -1479,7 +1479,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 84,
-                            Barcode = "TA-REF-0084",
+                            Barcode = "893456789084",
                             CategoryId = 8,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 15000m,
@@ -1489,7 +1489,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 85,
-                            Barcode = "TA-REF-0085",
+                            Barcode = "893456789085",
                             CategoryId = 9,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 22000m,
@@ -1499,7 +1499,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 86,
-                            Barcode = "TA-REF-0086",
+                            Barcode = "893456789086",
                             CategoryId = 9,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 55000m,
@@ -1509,7 +1509,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 87,
-                            Barcode = "TA-REF-0087",
+                            Barcode = "893456789087",
                             CategoryId = 9,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 25000m,
@@ -1519,7 +1519,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 88,
-                            Barcode = "TA-REF-0088",
+                            Barcode = "893456789088",
                             CategoryId = 9,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 28000m,
@@ -1529,7 +1529,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 89,
-                            Barcode = "TA-REF-0089",
+                            Barcode = "893456789089",
                             CategoryId = 9,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 25000m,
@@ -1539,7 +1539,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 90,
-                            Barcode = "TA-REF-0090",
+                            Barcode = "893456789090",
                             CategoryId = 9,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 15000m,
@@ -1549,7 +1549,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 91,
-                            Barcode = "TA-REF-0091",
+                            Barcode = "893456789091",
                             CategoryId = 9,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 15000m,
@@ -1559,7 +1559,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 92,
-                            Barcode = "TA-REF-0092",
+                            Barcode = "893456789092",
                             CategoryId = 9,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 20000m,
@@ -1569,7 +1569,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 93,
-                            Barcode = "TA-REF-0093",
+                            Barcode = "893456789093",
                             CategoryId = 13,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 55000m,
@@ -1579,7 +1579,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 94,
-                            Barcode = "TA-REF-0094",
+                            Barcode = "893456789094",
                             CategoryId = 13,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 65000m,
@@ -1589,7 +1589,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 95,
-                            Barcode = "TA-REF-0095",
+                            Barcode = "893456789095",
                             CategoryId = 13,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 45000m,
@@ -1599,7 +1599,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 96,
-                            Barcode = "TA-REF-0096",
+                            Barcode = "893456789096",
                             CategoryId = 13,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 48000m,
@@ -1609,7 +1609,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 97,
-                            Barcode = "TA-REF-0097",
+                            Barcode = "893456789097",
                             CategoryId = 13,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 35000m,
@@ -1619,7 +1619,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 98,
-                            Barcode = "TA-REF-0098",
+                            Barcode = "893456789098",
                             CategoryId = 13,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 55000m,
@@ -1629,7 +1629,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 99,
-                            Barcode = "TA-REF-0099",
+                            Barcode = "893456789099",
                             CategoryId = 13,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 38000m,
@@ -1639,7 +1639,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             ProductId = 100,
-                            Barcode = "TA-REF-0100",
+                            Barcode = "893456789100",
                             CategoryId = 13,
                             DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
                             Price = 95000m,

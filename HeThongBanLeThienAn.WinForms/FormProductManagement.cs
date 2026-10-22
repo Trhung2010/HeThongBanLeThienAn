@@ -297,6 +297,12 @@ namespace MiniSupermarket.WinForms
                 return false;
             }
 
+            if (barcode.Any(character => character < '0' || character > '9'))
+            {
+                MessageBox.Show("Mã vạch chỉ được chứa chữ số từ 0 đến 9!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
             if (!decimal.TryParse(txtPrice.Text.Trim(), out decimal price) || price < 0)
             {
                 MessageBox.Show("Đơn giá phải là số hợp lệ và không âm!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);

@@ -174,6 +174,25 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
+        public async Task Create_AlphanumericBarcode_ReturnsBadRequest()
+        {
+            using var context = GetDbContext();
+            var controller = new ProductsController(context);
+
+            var result = await controller.Create(new Product
+            {
+                Barcode = "TA-REF-0101",
+                ProductName = "Sản phẩm mã không hợp lệ",
+                Price = 10000m,
+                StockQuantity = 1,
+                CategoryId = 1
+            });
+
+            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.False(await context.Products.AnyAsync(p => p.Barcode == "TA-REF-0101"));
+        }
+
+        [Fact]
         public async Task Update_ExistingProduct_ReturnsNoContent()
         {
             // Arrange

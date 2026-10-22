@@ -43,6 +43,7 @@ public sealed class CheckoutRegressionTests : IDisposable
     {
         Assert.Equal(100, _db.Products.Count());
         Assert.Equal(100, _db.Products.Select(p=>p.Barcode).Distinct().Count());
+        Assert.All(_db.Products.ToList(), p => Assert.Matches("^[0-9]+$", p.Barcode));
         Assert.All(_db.Products.ToList(), p=>Assert.Contains("Tham khảo", p.DataSource));
         Assert.All(_db.Products.Where(p=>p.ProductId>20).ToList(), p=>Assert.Equal(0,p.StockQuantity));
         foreach (var order in _db.Orders.Include(o=>o.OrderDetails))
@@ -64,7 +65,7 @@ public sealed class CheckoutRegressionTests : IDisposable
         db.GetService<IMigrator>().Migrate("20261015104746_InitialCreateFullThienAn");
         db.Database.ExecuteSqlRaw("UPDATE Products SET StockQuantity=123, Price=777 WHERE ProductId=1");
         db.Database.ExecuteSqlRaw("UPDATE Customers SET CustomerName='Edited customer',PhoneNumber='CUSTOM-1' WHERE CustomerId=1");
-        db.Database.ExecuteSqlRaw("INSERT INTO Products (ProductId,Barcode,ProductName,Price,StockQuantity,CategoryId) VALUES(101,'BUSINESS-101','User product',500,7,1)");
+        db.Database.ExecuteSqlRaw("INSERT INTO Products (ProductId,Barcode,ProductName,Price,StockQuantity,CategoryId) VALUES(101,'893456789101','User product',500,7,1)");
         db.Database.Migrate();
         db.Database.Migrate();
         Assert.Equal(101,db.Products.Count());

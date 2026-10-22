@@ -18,6 +18,9 @@ namespace MiniSupermarket.API.Controllers
             _context = context;
         }
 
+        private static bool IsNumericBarcode(string barcode) =>
+            barcode.All(character => character is >= '0' and <= '9');
+
         // BUỔI 6: Phân trang phía máy chủ, tìm kiếm và lọc theo nhóm hàng.
         // GET /api/products/paged?keyword=Coca&categoryId=2&pageNumber=1&pageSize=5
         [HttpGet("paged")]
@@ -146,7 +149,16 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Barcode == barcode.Trim());
+            barcode = barcode.Trim();
+            if (!IsNumericBarcode(barcode))
+            {
+                return BadRequest(new
+                {
+                    message = "Mã vạch chỉ được chứa chữ số từ 0 đến 9!"
+                });
+            }
+
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Barcode == barcode);
 
             if (product == null)
             {
@@ -199,6 +211,15 @@ namespace MiniSupermarket.API.Controllers
                 return BadRequest(new
                 {
                     message = "Mã vạch không được để trống!"
+                });
+            }
+
+            product.Barcode = product.Barcode.Trim();
+            if (!IsNumericBarcode(product.Barcode))
+            {
+                return BadRequest(new
+                {
+                    message = "Mã vạch chỉ được chứa chữ số từ 0 đến 9!"
                 });
             }
 
@@ -256,6 +277,15 @@ namespace MiniSupermarket.API.Controllers
                 return BadRequest(new
                 {
                     message = "Mã vạch không được để trống!"
+                });
+            }
+
+            updateData.Barcode = updateData.Barcode.Trim();
+            if (!IsNumericBarcode(updateData.Barcode))
+            {
+                return BadRequest(new
+                {
+                    message = "Mã vạch chỉ được chứa chữ số từ 0 đến 9!"
                 });
             }
 
