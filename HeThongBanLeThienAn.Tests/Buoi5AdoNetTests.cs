@@ -38,6 +38,7 @@ namespace HeThongBanLeThienAn.Tests
 
             var context = new SupermarketDbContext(options);
             context.Database.EnsureCreated();
+            CustomerFixtures.Add(context);
 
             var factory = new TestDbConnectionFactory(connection.ConnectionString);
             return (context, factory, connection);

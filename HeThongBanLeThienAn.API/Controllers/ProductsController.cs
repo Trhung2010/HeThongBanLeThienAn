@@ -18,6 +18,66 @@ namespace MiniSupermarket.API.Controllers
             _context = context;
         }
 
+        // BUỔI 6: Phân trang phía máy chủ, tìm kiếm và lọc theo nhóm hàng.
+        // GET /api/products/paged?keyword=Coca&categoryId=2&pageNumber=1&pageSize=5
+        [HttpGet("paged")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
+        public async Task<ActionResult<PagedResult<ProductItemDto>>> GetPagedProducts(
+            [FromQuery] string? keyword,
+            [FromQuery] int? categoryId,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 5)
+        {
+            pageNumber = Math.Max(pageNumber, 1);
+            pageSize = pageSize is >= 1 and <= 50 ? pageSize : 5;
+
+            IQueryable<Product> query = _context.Products
+                .Include(p => p.Category)
+                .AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                string search = keyword.Trim().ToLower();
+                query = query.Where(p =>
+                    p.ProductName.ToLower().Contains(search) || p.Barcode.ToLower().Contains(search));
+            }
+
+            if (categoryId is > 0)
+            {
+                query = query.Where(p => p.CategoryId == categoryId.Value);
+            }
+
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            int maxSafePage = (int.MaxValue / pageSize) + 1;
+            pageNumber = Math.Min(pageNumber, maxSafePage);
+
+            var items = await query
+                .OrderBy(p => p.ProductId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new ProductItemDto
+                {
+                    ProductId = p.ProductId,
+                    Barcode = p.Barcode,
+                    ProductName = p.ProductName,
+                    Price = p.Price,
+                    StockQuantity = p.StockQuantity,
+                    CategoryId = p.CategoryId,
+                    CategoryName = p.Category == null ? string.Empty : p.Category.CategoryName
+                })
+                .ToListAsync();
+
+            return Ok(new PagedResult<ProductItemDto>
+            {
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                Items = items
+            });
+        }
+
         // 1. READ ALL: Lấy toàn bộ danh sách sản phẩm
         // GET /api/products
         [HttpGet]

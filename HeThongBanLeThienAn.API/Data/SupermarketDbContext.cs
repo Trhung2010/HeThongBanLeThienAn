@@ -100,42 +100,25 @@ namespace MiniSupermarket.API.Data
                 new Product { ProductId = 20, DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng", Barcode = "893456789020", ProductName = "Nước Rửa Chén Sunlight Chanh Chai 750g", Price = 29000m, StockQuantity = 80, CategoryId = 7 }
             );
 
-            // 4. DATA SEEDING: BẢNG CUSTOMERS (15 Khách hàng thân thiết mẫu tại TP.HCM)
-            modelBuilder.Entity<Customer>().HasData(
-                new Customer { CustomerId = 1, CustomerName = "Khách mẫu 01", PhoneNumber = "DEMO-KH-001", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 120, MembershipRank = "Bạc" },
-                new Customer { CustomerId = 2, CustomerName = "Khách mẫu 02", PhoneNumber = "DEMO-KH-002", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 350, MembershipRank = "Vàng" },
-                new Customer { CustomerId = 3, CustomerName = "Khách mẫu 03", PhoneNumber = "DEMO-KH-003", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 45, MembershipRank = "Chuẩn" },
-                new Customer { CustomerId = 4, CustomerName = "Khách mẫu 04", PhoneNumber = "DEMO-KH-004", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 520, MembershipRank = "Bạch Kim" },
-                new Customer { CustomerId = 5, CustomerName = "Khách mẫu 05", PhoneNumber = "DEMO-KH-005", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 80, MembershipRank = "Chuẩn" },
-                new Customer { CustomerId = 6, CustomerName = "Khách mẫu 06", PhoneNumber = "DEMO-KH-006", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 210, MembershipRank = "Bạc" },
-                new Customer { CustomerId = 7, CustomerName = "Khách mẫu 07", PhoneNumber = "DEMO-KH-007", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 15, MembershipRank = "Chuẩn" },
-                new Customer { CustomerId = 8, CustomerName = "Khách mẫu 08", PhoneNumber = "DEMO-KH-008", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 410, MembershipRank = "Vàng" },
-                new Customer { CustomerId = 9, CustomerName = "Khách mẫu 09", PhoneNumber = "DEMO-KH-009", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 95, MembershipRank = "Chuẩn" },
-                new Customer { CustomerId = 10, CustomerName = "Khách mẫu 10", PhoneNumber = "DEMO-KH-010", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 650, MembershipRank = "Bạch Kim" },
-                new Customer { CustomerId = 11, CustomerName = "Khách mẫu 11", PhoneNumber = "DEMO-KH-011", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 30, MembershipRank = "Chuẩn" },
-                new Customer { CustomerId = 12, CustomerName = "Khách mẫu 12", PhoneNumber = "DEMO-KH-012", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 180, MembershipRank = "Bạc" },
-                new Customer { CustomerId = 13, CustomerName = "Khách mẫu 13", PhoneNumber = "DEMO-KH-013", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 290, MembershipRank = "Bạc" },
-                new Customer { CustomerId = 14, CustomerName = "Khách mẫu 14", PhoneNumber = "DEMO-KH-014", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 480, MembershipRank = "Vàng" },
-                new Customer { CustomerId = 15, CustomerName = "Khách mẫu 15", PhoneNumber = "DEMO-KH-015", Address = "Dữ liệu thực hành, không phải khách thật", RewardPoints = 0, MembershipRank = "Chuẩn" }
-            );
+            // 4. DATA SEEDING: BẢNG CUSTOMERS — để trống, nhập dữ liệu thực qua WinForm/API
 
             // 5. DATA SEEDING: BẢNG ORDERS (15 Hóa đơn bán lẻ phát sinh tại quầy)
             modelBuilder.Entity<Order>().HasData(
-                new Order { OrderId = 1, OrderCode = "HD20261001-001", CreatedDate = new DateTime(2026, 10, 1, 8, 30, 0), CustomerId = 1, CashierUsername = "cashier01", TotalItems = 3, FinalAmount = 57000m, RewardPoints = 5 },
-                new Order { OrderId = 2, OrderCode = "HD20261001-002", CreatedDate = new DateTime(2026, 10, 1, 9, 15, 0), CustomerId = 2, CashierUsername = "cashier01", TotalItems = 2, FinalAmount = 145000m, RewardPoints = 14 },
-                new Order { OrderId = 3, OrderCode = "HD20261001-003", CreatedDate = new DateTime(2026, 10, 1, 10, 0, 0), CustomerId = 3, CashierUsername = "cashier02", TotalItems = 10, FinalAmount = 45000m, RewardPoints = 4 },
-                new Order { OrderId = 4, OrderCode = "HD20261002-001", CreatedDate = new DateTime(2026, 10, 2, 8, 45, 0), CustomerId = 4, CashierUsername = "cashier02", TotalItems = 4, FinalAmount = 138000m, RewardPoints = 13 },
-                new Order { OrderId = 5, OrderCode = "HD20261002-002", CreatedDate = new DateTime(2026, 10, 2, 11, 20, 0), CustomerId = 5, CashierUsername = "cashier03", TotalItems = 2, FinalAmount = 69000m, RewardPoints = 6 },
-                new Order { OrderId = 6, OrderCode = "HD20261003-001", CreatedDate = new DateTime(2026, 10, 3, 14, 10, 0), CustomerId = 6, CashierUsername = "cashier03", TotalItems = 1, FinalAmount = 53500m, RewardPoints = 5 },
-                new Order { OrderId = 7, OrderCode = "HD20261003-002", CreatedDate = new DateTime(2026, 10, 3, 16, 40, 0), CustomerId = 7, CashierUsername = "cashier04", TotalItems = 5, FinalAmount = 30000m, RewardPoints = 3 },
-                new Order { OrderId = 8, OrderCode = "HD20261004-001", CreatedDate = new DateTime(2026, 10, 4, 9, 05, 0), CustomerId = 8, CashierUsername = "cashier04", TotalItems = 2, FinalAmount = 155000m, RewardPoints = 15 },
-                new Order { OrderId = 9, OrderCode = "HD20261004-002", CreatedDate = new DateTime(2026, 10, 4, 13, 30, 0), CustomerId = 9, CashierUsername = "cashier05", TotalItems = 3, FinalAmount = 41000m, RewardPoints = 4 },
-                new Order { OrderId = 10, OrderCode = "HD20261005-001", CreatedDate = new DateTime(2026, 10, 5, 10, 50, 0), CustomerId = 10, CashierUsername = "cashier05", TotalItems = 4, FinalAmount = 168000m, RewardPoints = 16 },
-                new Order { OrderId = 11, OrderCode = "HD20261005-002", CreatedDate = new DateTime(2026, 10, 5, 17, 15, 0), CustomerId = 11, CashierUsername = "cashier06", TotalItems = 8, FinalAmount = 36000m, RewardPoints = 3 },
-                new Order { OrderId = 12, OrderCode = "HD20261006-001", CreatedDate = new DateTime(2026, 10, 6, 8, 20, 0), CustomerId = 12, CashierUsername = "cashier06", TotalItems = 2, FinalAmount = 108000m, RewardPoints = 10 },
-                new Order { OrderId = 13, OrderCode = "HD20261006-002", CreatedDate = new DateTime(2026, 10, 6, 15, 00, 0), CustomerId = 13, CashierUsername = "cashier07", TotalItems = 3, FinalAmount = 78000m, RewardPoints = 7 },
-                new Order { OrderId = 14, OrderCode = "HD20261007-001", CreatedDate = new DateTime(2026, 10, 7, 12, 10, 0), CustomerId = 14, CashierUsername = "cashier07", TotalItems = 1, FinalAmount = 125000m, RewardPoints = 12 },
-                new Order { OrderId = 15, OrderCode = "HD20261007-002", CreatedDate = new DateTime(2026, 10, 7, 18, 45, 0), CustomerId = 15, CashierUsername = "cashier01", TotalItems = 4, FinalAmount = 40000m, RewardPoints = 4 }
+                new Order { OrderId = 1, OrderCode = "HD20261001-001", CreatedDate = new DateTime(2026, 10, 1, 8, 30, 0), CustomerId = null, CashierUsername = "cashier01", TotalItems = 3, FinalAmount = 57000m, RewardPoints = 0 },
+                new Order { OrderId = 2, OrderCode = "HD20261001-002", CreatedDate = new DateTime(2026, 10, 1, 9, 15, 0), CustomerId = null, CashierUsername = "cashier01", TotalItems = 2, FinalAmount = 145000m, RewardPoints = 0 },
+                new Order { OrderId = 3, OrderCode = "HD20261001-003", CreatedDate = new DateTime(2026, 10, 1, 10, 0, 0), CustomerId = null, CashierUsername = "cashier02", TotalItems = 10, FinalAmount = 45000m, RewardPoints = 0 },
+                new Order { OrderId = 4, OrderCode = "HD20261002-001", CreatedDate = new DateTime(2026, 10, 2, 8, 45, 0), CustomerId = null, CashierUsername = "cashier02", TotalItems = 4, FinalAmount = 138000m, RewardPoints = 0 },
+                new Order { OrderId = 5, OrderCode = "HD20261002-002", CreatedDate = new DateTime(2026, 10, 2, 11, 20, 0), CustomerId = null, CashierUsername = "cashier03", TotalItems = 2, FinalAmount = 69000m, RewardPoints = 0 },
+                new Order { OrderId = 6, OrderCode = "HD20261003-001", CreatedDate = new DateTime(2026, 10, 3, 14, 10, 0), CustomerId = null, CashierUsername = "cashier03", TotalItems = 1, FinalAmount = 53500m, RewardPoints = 0 },
+                new Order { OrderId = 7, OrderCode = "HD20261003-002", CreatedDate = new DateTime(2026, 10, 3, 16, 40, 0), CustomerId = null, CashierUsername = "cashier04", TotalItems = 5, FinalAmount = 30000m, RewardPoints = 0 },
+                new Order { OrderId = 8, OrderCode = "HD20261004-001", CreatedDate = new DateTime(2026, 10, 4, 9, 05, 0), CustomerId = null, CashierUsername = "cashier04", TotalItems = 2, FinalAmount = 155000m, RewardPoints = 0 },
+                new Order { OrderId = 9, OrderCode = "HD20261004-002", CreatedDate = new DateTime(2026, 10, 4, 13, 30, 0), CustomerId = null, CashierUsername = "cashier05", TotalItems = 3, FinalAmount = 41000m, RewardPoints = 0 },
+                new Order { OrderId = 10, OrderCode = "HD20261005-001", CreatedDate = new DateTime(2026, 10, 5, 10, 50, 0), CustomerId = null, CashierUsername = "cashier05", TotalItems = 4, FinalAmount = 168000m, RewardPoints = 0 },
+                new Order { OrderId = 11, OrderCode = "HD20261005-002", CreatedDate = new DateTime(2026, 10, 5, 17, 15, 0), CustomerId = null, CashierUsername = "cashier06", TotalItems = 8, FinalAmount = 36000m, RewardPoints = 0 },
+                new Order { OrderId = 12, OrderCode = "HD20261006-001", CreatedDate = new DateTime(2026, 10, 6, 8, 20, 0), CustomerId = null, CashierUsername = "cashier06", TotalItems = 2, FinalAmount = 108000m, RewardPoints = 0 },
+                new Order { OrderId = 13, OrderCode = "HD20261006-002", CreatedDate = new DateTime(2026, 10, 6, 15, 00, 0), CustomerId = null, CashierUsername = "cashier07", TotalItems = 3, FinalAmount = 78000m, RewardPoints = 0 },
+                new Order { OrderId = 14, OrderCode = "HD20261007-001", CreatedDate = new DateTime(2026, 10, 7, 12, 10, 0), CustomerId = null, CashierUsername = "cashier07", TotalItems = 1, FinalAmount = 125000m, RewardPoints = 0 },
+                new Order { OrderId = 15, OrderCode = "HD20261007-002", CreatedDate = new DateTime(2026, 10, 7, 18, 45, 0), CustomerId = null, CashierUsername = "cashier01", TotalItems = 4, FinalAmount = 40000m, RewardPoints = 0 }
             );
 
             // 6. DATA SEEDING: BẢNG ORDERDETAILS (18 Dòng chi tiết khớp với các hóa đơn và sản phẩm)

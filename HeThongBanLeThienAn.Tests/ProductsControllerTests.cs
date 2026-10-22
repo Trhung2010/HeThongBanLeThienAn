@@ -43,6 +43,56 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
+        public async Task GetPagedProducts_ReturnsMetadataAndCategoryName()
+        {
+            using var context = GetDbContext();
+            var controller = new ProductsController(context);
+
+            var action = await controller.GetPagedProducts(null, null, 1, 5);
+            var result = Assert.IsType<OkObjectResult>(action.Result);
+            var page = Assert.IsType<PagedResult<ProductItemDto>>(result.Value);
+
+            Assert.Equal(1, page.CurrentPage);
+            Assert.Equal(5, page.PageSize);
+            Assert.Equal(100, page.TotalItems);
+            Assert.Equal(20, page.TotalPages);
+            Assert.Equal(5, page.Items.Count);
+            Assert.All(page.Items, item => Assert.False(string.IsNullOrWhiteSpace(item.CategoryName)));
+        }
+
+        [Fact]
+        public async Task GetPagedProducts_FiltersKeywordAndCategory()
+        {
+            using var context = GetDbContext();
+            var controller = new ProductsController(context);
+
+            var action = await controller.GetPagedProducts("coca", 2, 1, 5);
+            var result = Assert.IsType<OkObjectResult>(action.Result);
+            var page = Assert.IsType<PagedResult<ProductItemDto>>(result.Value);
+
+            Assert.Equal(1, page.TotalItems);
+            var product = Assert.Single(page.Items);
+            Assert.Contains("Coca", product.ProductName);
+            Assert.Equal(2, product.CategoryId);
+            Assert.False(string.IsNullOrWhiteSpace(product.CategoryName));
+        }
+
+        [Fact]
+        public async Task GetPagedProducts_NormalizesInvalidPagingValues()
+        {
+            using var context = GetDbContext();
+            var controller = new ProductsController(context);
+
+            var action = await controller.GetPagedProducts(null, null, 0, 500);
+            var result = Assert.IsType<OkObjectResult>(action.Result);
+            var page = Assert.IsType<PagedResult<ProductItemDto>>(result.Value);
+
+            Assert.Equal(1, page.CurrentPage);
+            Assert.Equal(5, page.PageSize);
+            Assert.Equal(5, page.Items.Count);
+        }
+
+        [Fact]
         public async Task GetById_ExistingId_ReturnsOkResult()
         {
             // Arrange

@@ -18,6 +18,39 @@ namespace MiniSupermarket.API.Controllers
             _context = context;
         }
 
+        // Bài tập mở rộng Buổi 6: khách hàng có điểm cao hiển thị trước.
+        // GET /api/customers/paged?pageNumber=1&pageSize=5
+        [HttpGet("paged")]
+        [Authorize(Roles = "Admin,Cashier")]
+        public async Task<ActionResult<PagedResult<Customer>>> GetPaged(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 5)
+        {
+            pageNumber = Math.Max(pageNumber, 1);
+            pageSize = pageSize is >= 1 and <= 50 ? pageSize : 5;
+
+            var query = _context.Customers.AsNoTracking();
+            int totalItems = await query.CountAsync();
+            int maxSafePage = (int.MaxValue / pageSize) + 1;
+            pageNumber = Math.Min(pageNumber, maxSafePage);
+
+            var items = await query
+                .OrderByDescending(c => c.RewardPoints)
+                .ThenBy(c => c.CustomerId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(new PagedResult<Customer>
+            {
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize),
+                Items = items
+            });
+        }
+
         // 1. READ ALL: Lấy toàn bộ danh sách khách hàng
         // GET /api/customers
         [HttpGet]

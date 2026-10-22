@@ -1,0 +1,32 @@
+{
+  "unchanged_existing_data": {
+    "Products": true,
+    "Customers": true,
+    "Orders": true,
+    "OrderDetails": true
+  },
+  "counts": {
+    "Products": 100,
+    "Customers": 15,
+    "Orders": 17,
+    "OrderDetails": 24
+  },
+  "migration_history": [
+    [
+      "20261015104746_InitialCreateFullThienAn"
+    ],
+    [
+      "20261015115223_ReferenceCatalogAndSafeCheckout"
+    ],
+    [
+      "20261015131212_RemoveDemoCustomers"
+    ],
+    [
+      "20261015133238_CompleteBuoi5Sqlite"
+    ]
+  ],
+  "integrity": "ok",
+  "foreign_key_errors": 0,
+  "invoice_mismatches": 0,
+  "tests_passed": 59
+}

@@ -21,8 +21,13 @@ namespace MiniSupermarket.WinForms
             txtKeyword = new TextBox();
             btnSearch = new Button();
             btnLoad = new Button();
+            lblCategoryFilter = new Label();
+            cboCategoryFilter = new ComboBox();
             grpSearch = new GroupBox();
             grpProductList = new GroupBox();
+            btnPrev = new Button();
+            lblPaging = new Label();
+            btnNext = new Button();
             grpProductInfo = new GroupBox();
             lblId = new Label();
             txtId = new TextBox();
@@ -46,9 +51,9 @@ namespace MiniSupermarket.WinForms
             grpProductInfo.SuspendLayout();
             SuspendLayout();
 
-            // 
+            //
             // dgvProducts
-            // 
+            //
             dgvProducts.AllowUserToAddRows = false;
             dgvProducts.AllowUserToDeleteRows = false;
             dgvProducts.AllowUserToResizeRows = false;
@@ -62,23 +67,23 @@ namespace MiniSupermarket.WinForms
             dgvProducts.ReadOnly = true;
             dgvProducts.RowHeadersWidth = 40;
             dgvProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProducts.Size = new Size(576, 460);
+            dgvProducts.Size = new Size(576, 415);
             dgvProducts.TabIndex = 0;
             dgvProducts.CellClick += dgvProducts_CellClick;
 
-            // 
+            //
             // txtKeyword
-            // 
+            //
             txtKeyword.Location = new Point(17, 30);
             txtKeyword.Margin = new Padding(3, 4, 3, 4);
             txtKeyword.Name = "txtKeyword";
             txtKeyword.PlaceholderText = "Nhập tên sản phẩm hoặc mã vạch cần tìm...";
-            txtKeyword.Size = new Size(620, 27);
+            txtKeyword.Size = new Size(330, 27);
             txtKeyword.TabIndex = 0;
 
-            // 
+            //
             // btnSearch
-            // 
+            //
             btnSearch.Location = new Point(650, 27);
             btnSearch.Margin = new Padding(3, 4, 3, 4);
             btnSearch.Name = "btnSearch";
@@ -88,9 +93,9 @@ namespace MiniSupermarket.WinForms
             btnSearch.UseVisualStyleBackColor = true;
             btnSearch.Click += btnSearch_Click;
 
-            // 
+            //
             // btnLoad
-            // 
+            //
             btnLoad.Location = new Point(775, 27);
             btnLoad.Margin = new Padding(3, 4, 3, 4);
             btnLoad.Name = "btnLoad";
@@ -100,10 +105,33 @@ namespace MiniSupermarket.WinForms
             btnLoad.UseVisualStyleBackColor = true;
             btnLoad.Click += btnLoad_Click;
 
-            // 
+            //
+            // lblCategoryFilter
+            //
+            lblCategoryFilter.AutoSize = true;
+            lblCategoryFilter.Location = new Point(360, 33);
+            lblCategoryFilter.Name = "lblCategoryFilter";
+            lblCategoryFilter.Size = new Size(52, 20);
+            lblCategoryFilter.TabIndex = 1;
+            lblCategoryFilter.Text = "Nhóm:";
+
+            //
+            // cboCategoryFilter
+            //
+            cboCategoryFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboCategoryFilter.FormattingEnabled = true;
+            cboCategoryFilter.Location = new Point(418, 29);
+            cboCategoryFilter.Name = "cboCategoryFilter";
+            cboCategoryFilter.Size = new Size(220, 28);
+            cboCategoryFilter.TabIndex = 2;
+            cboCategoryFilter.SelectedIndexChanged += cboCategoryFilter_SelectedIndexChanged;
+
+            //
             // grpSearch
-            // 
+            //
             grpSearch.Controls.Add(txtKeyword);
+            grpSearch.Controls.Add(lblCategoryFilter);
+            grpSearch.Controls.Add(cboCategoryFilter);
             grpSearch.Controls.Add(btnSearch);
             grpSearch.Controls.Add(btnLoad);
             grpSearch.Location = new Point(20, 40);
@@ -115,10 +143,13 @@ namespace MiniSupermarket.WinForms
             grpSearch.TabStop = false;
             grpSearch.Text = "Tìm kiếm sản phẩm";
 
-            // 
+            //
             // grpProductList
-            // 
+            //
             grpProductList.Controls.Add(dgvProducts);
+            grpProductList.Controls.Add(btnPrev);
+            grpProductList.Controls.Add(lblPaging);
+            grpProductList.Controls.Add(btnNext);
             grpProductList.Location = new Point(20, 125);
             grpProductList.Margin = new Padding(3, 4, 3, 4);
             grpProductList.Name = "grpProductList";
@@ -128,9 +159,41 @@ namespace MiniSupermarket.WinForms
             grpProductList.TabStop = false;
             grpProductList.Text = "Danh sách Sản phẩm";
 
-            // 
+            //
+            // btnPrev
+            //
+            btnPrev.Location = new Point(90, 454);
+            btnPrev.Name = "btnPrev";
+            btnPrev.Size = new Size(110, 34);
+            btnPrev.TabIndex = 1;
+            btnPrev.Text = "<< Trang trước";
+            btnPrev.UseVisualStyleBackColor = true;
+            btnPrev.Click += btnPrev_Click;
+
+            //
+            // lblPaging
+            //
+            lblPaging.Location = new Point(206, 459);
+            lblPaging.Name = "lblPaging";
+            lblPaging.Size = new Size(190, 24);
+            lblPaging.TabIndex = 2;
+            lblPaging.Text = "Trang 0 / 0 (Tổng: 0 SP)";
+            lblPaging.TextAlign = ContentAlignment.MiddleCenter;
+
+            //
+            // btnNext
+            //
+            btnNext.Location = new Point(402, 454);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(110, 34);
+            btnNext.TabIndex = 3;
+            btnNext.Text = "Trang sau >>";
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
+
+            //
             // grpProductInfo
-            // 
+            //
             grpProductInfo.Controls.Add(lblId);
             grpProductInfo.Controls.Add(txtId);
             grpProductInfo.Controls.Add(lblBarcode);
@@ -155,9 +218,9 @@ namespace MiniSupermarket.WinForms
             grpProductInfo.TabStop = false;
             grpProductInfo.Text = "Thông tin Sản phẩm";
 
-            // 
+            //
             // lblId
-            // 
+            //
             lblId.AutoSize = true;
             lblId.Location = new Point(15, 25);
             lblId.Name = "lblId";
@@ -165,9 +228,9 @@ namespace MiniSupermarket.WinForms
             lblId.TabIndex = 0;
             lblId.Text = "Mã SP:";
 
-            // 
+            //
             // txtId
-            // 
+            //
             txtId.Location = new Point(15, 48);
             txtId.Margin = new Padding(3, 4, 3, 4);
             txtId.Name = "txtId";
@@ -175,9 +238,9 @@ namespace MiniSupermarket.WinForms
             txtId.Size = new Size(260, 27);
             txtId.TabIndex = 1;
 
-            // 
+            //
             // lblBarcode
-            // 
+            //
             lblBarcode.AutoSize = true;
             lblBarcode.Location = new Point(15, 82);
             lblBarcode.Name = "lblBarcode";
@@ -185,9 +248,9 @@ namespace MiniSupermarket.WinForms
             lblBarcode.TabIndex = 2;
             lblBarcode.Text = "Mã vạch:";
 
-            // 
+            //
             // txtBarcode
-            // 
+            //
             txtBarcode.Location = new Point(15, 105);
             txtBarcode.Margin = new Padding(3, 4, 3, 4);
             txtBarcode.Name = "txtBarcode";
@@ -195,9 +258,9 @@ namespace MiniSupermarket.WinForms
             txtBarcode.Size = new Size(260, 27);
             txtBarcode.TabIndex = 3;
 
-            // 
+            //
             // lblProductName
-            // 
+            //
             lblProductName.AutoSize = true;
             lblProductName.Location = new Point(15, 139);
             lblProductName.Name = "lblProductName";
@@ -205,9 +268,9 @@ namespace MiniSupermarket.WinForms
             lblProductName.TabIndex = 4;
             lblProductName.Text = "Tên sản phẩm:";
 
-            // 
+            //
             // txtProductName
-            // 
+            //
             txtProductName.Location = new Point(15, 162);
             txtProductName.Margin = new Padding(3, 4, 3, 4);
             txtProductName.Name = "txtProductName";
@@ -215,9 +278,9 @@ namespace MiniSupermarket.WinForms
             txtProductName.Size = new Size(260, 27);
             txtProductName.TabIndex = 5;
 
-            // 
+            //
             // lblPrice
-            // 
+            //
             lblPrice.AutoSize = true;
             lblPrice.Location = new Point(15, 196);
             lblPrice.Name = "lblPrice";
@@ -225,9 +288,9 @@ namespace MiniSupermarket.WinForms
             lblPrice.TabIndex = 6;
             lblPrice.Text = "Đơn giá (VNĐ):";
 
-            // 
+            //
             // txtPrice
-            // 
+            //
             txtPrice.Location = new Point(15, 219);
             txtPrice.Margin = new Padding(3, 4, 3, 4);
             txtPrice.Name = "txtPrice";
@@ -235,9 +298,9 @@ namespace MiniSupermarket.WinForms
             txtPrice.Size = new Size(260, 27);
             txtPrice.TabIndex = 7;
 
-            // 
+            //
             // lblStockQuantity
-            // 
+            //
             lblStockQuantity.AutoSize = true;
             lblStockQuantity.Location = new Point(15, 253);
             lblStockQuantity.Name = "lblStockQuantity";
@@ -245,9 +308,9 @@ namespace MiniSupermarket.WinForms
             lblStockQuantity.TabIndex = 8;
             lblStockQuantity.Text = "Số lượng tồn:";
 
-            // 
+            //
             // txtStockQuantity
-            // 
+            //
             txtStockQuantity.Location = new Point(15, 276);
             txtStockQuantity.Margin = new Padding(3, 4, 3, 4);
             txtStockQuantity.Name = "txtStockQuantity";
@@ -255,9 +318,9 @@ namespace MiniSupermarket.WinForms
             txtStockQuantity.Size = new Size(260, 27);
             txtStockQuantity.TabIndex = 9;
 
-            // 
+            //
             // lblCategory
-            // 
+            //
             lblCategory.AutoSize = true;
             lblCategory.Location = new Point(15, 310);
             lblCategory.Name = "lblCategory";
@@ -265,9 +328,9 @@ namespace MiniSupermarket.WinForms
             lblCategory.TabIndex = 10;
             lblCategory.Text = "Danh mục:";
 
-            // 
+            //
             // cboCategory
-            // 
+            //
             cboCategory.DropDownStyle = ComboBoxStyle.DropDownList;
             cboCategory.FormattingEnabled = true;
             cboCategory.Location = new Point(15, 333);
@@ -276,9 +339,9 @@ namespace MiniSupermarket.WinForms
             cboCategory.Size = new Size(260, 28);
             cboCategory.TabIndex = 11;
 
-            // 
+            //
             // btnAdd
-            // 
+            //
             btnAdd.BackColor = Color.ForestGreen;
             btnAdd.ForeColor = Color.White;
             btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -291,9 +354,9 @@ namespace MiniSupermarket.WinForms
             btnAdd.UseVisualStyleBackColor = false;
             btnAdd.Click += btnAdd_Click;
 
-            // 
+            //
             // btnUpdate
-            // 
+            //
             btnUpdate.BackColor = Color.SteelBlue;
             btnUpdate.ForeColor = Color.White;
             btnUpdate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -306,9 +369,9 @@ namespace MiniSupermarket.WinForms
             btnUpdate.UseVisualStyleBackColor = false;
             btnUpdate.Click += btnUpdate_Click;
 
-            // 
+            //
             // btnDelete
-            // 
+            //
             btnDelete.BackColor = Color.IndianRed;
             btnDelete.ForeColor = Color.White;
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -321,9 +384,9 @@ namespace MiniSupermarket.WinForms
             btnDelete.UseVisualStyleBackColor = false;
             btnDelete.Click += btnDelete_Click;
 
-            // 
+            //
             // FormProductManagement
-            // 
+            //
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(950, 640);
@@ -353,8 +416,13 @@ namespace MiniSupermarket.WinForms
         private TextBox txtKeyword;
         private Button btnSearch;
         private Button btnLoad;
+        private Label lblCategoryFilter;
+        private ComboBox cboCategoryFilter;
         private GroupBox grpSearch;
         private GroupBox grpProductList;
+        private Button btnPrev;
+        private Label lblPaging;
+        private Button btnNext;
         private GroupBox grpProductInfo;
         private Label lblId;
         private TextBox txtId;

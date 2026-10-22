@@ -226,13 +226,10 @@ namespace MiniSupermarket.WinForms
             }
 
             decimal total = _cart.Sum(x => x.TotalPrice);
-            if (decimal.TryParse(txtCashReceived.Text.Replace(",", "").Replace(".", "").Trim(), out decimal cashReceived))
+            if (!decimal.TryParse(txtCashReceived.Text.Replace(",", "").Replace(".", "").Trim(), out decimal cashReceived) || cashReceived < total)
             {
-                if (cashReceived < total)
-                {
-                    MessageBox.Show("Tiền khách đưa chưa đủ để thanh toán!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                MessageBox.Show("Nhập số tiền khách đưa hợp lệ và đủ thanh toán.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
             var orderRequest = new

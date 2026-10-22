@@ -25,12 +25,8 @@ namespace MiniSupermarket.API.Data
                 ?? "Data Source=supermarket.db";
             _connectionString = defaultConn;
 
-            // Xác định chuỗi kết nối là SQL Server hay SQLite
-            _isSqlServer = defaultConn.Contains("Server=", StringComparison.OrdinalIgnoreCase) ||
-                           defaultConn.Contains("Data Source=.", StringComparison.OrdinalIgnoreCase) ||
-                           defaultConn.Contains("localhost", StringComparison.OrdinalIgnoreCase) ||
-                           defaultConn.Contains("SQLEXPRESS", StringComparison.OrdinalIgnoreCase) ||
-                           defaultConn.Contains("Trusted_Connection", StringComparison.OrdinalIgnoreCase);
+            // Provider is explicit: a SQLite filename may contain localhost or start with ./.
+            _isSqlServer = string.Equals(configuration["Database:Provider"], "SqlServer", StringComparison.OrdinalIgnoreCase);
         }
 
         public bool IsSqlServer => _isSqlServer;
@@ -49,7 +45,8 @@ namespace MiniSupermarket.API.Data
             // Trong .NET Core, SqlDataAdapter hỗ trợ DbCommand
             // Khi dùng SQLite, SqliteDataAdapter không có sẵn trong Microsoft.Data.Sqlite
             // Nhưng ta có thể dễ dàng nạp DataTable từ DbDataReader
-            return new SqlDataAdapter(command as SqlCommand ?? new SqlCommand());
+            if (command is SqlCommand sqlCommand) return new SqlDataAdapter(sqlCommand);
+            throw new NotSupportedException("SQLite không có DataAdapter; dùng DataTable.Load(DbDataReader).");
         }
 
         public DbParameter CreateParameter(string name, object? value)

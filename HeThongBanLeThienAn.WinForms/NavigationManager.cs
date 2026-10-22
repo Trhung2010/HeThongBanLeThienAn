@@ -58,9 +58,20 @@ namespace MiniSupermarket.WinForms
                 mnuCustomer.BackColor = Color.FromArgb(200, 220, 245);
             }
 
-            menu.Items.Add(mnuProduct);
-            menu.Items.Add(mnuCategory);
-            menu.Items.Add(mnuCustomer);
+            // ── PHÂN QUYỀN MENU THEO ROLE ──────────────────────────────────────
+            // Admin     : Sản phẩm | Danh mục | Khách hàng
+            // Cashier   : Khách hàng (chỉ xem + tích điểm, không quản lý kho)
+            // Warehouse : Sản phẩm | Danh mục (không tiếp xúc khách hàng)
+            string role = SessionManager.CurrentRole?.ToUpper() ?? string.Empty;
+
+            bool canSeeProduct  = role == "ADMIN" || role == "WAREHOUSE";
+            bool canSeeCategory = role == "ADMIN" || role == "WAREHOUSE";
+            bool canSeeCustomer = role == "ADMIN" || role == "CASHIER";
+
+            if (canSeeProduct)  menu.Items.Add(mnuProduct);
+            if (canSeeCategory) menu.Items.Add(mnuCategory);
+            if (canSeeCustomer) menu.Items.Add(mnuCustomer);
+
             menu.Items.Add(mnuLogout);
             menu.Items.Add(mnuUser);
 

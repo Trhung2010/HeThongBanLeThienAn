@@ -166,143 +166,6 @@ namespace HeThongBanLeThienAn.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            CustomerId = 1,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 01",
-                            MembershipRank = "Bạc",
-                            PhoneNumber = "DEMO-KH-001",
-                            RewardPoints = 120
-                        },
-                        new
-                        {
-                            CustomerId = 2,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 02",
-                            MembershipRank = "Vàng",
-                            PhoneNumber = "DEMO-KH-002",
-                            RewardPoints = 350
-                        },
-                        new
-                        {
-                            CustomerId = 3,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 03",
-                            MembershipRank = "Chuẩn",
-                            PhoneNumber = "DEMO-KH-003",
-                            RewardPoints = 45
-                        },
-                        new
-                        {
-                            CustomerId = 4,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 04",
-                            MembershipRank = "Bạch Kim",
-                            PhoneNumber = "DEMO-KH-004",
-                            RewardPoints = 520
-                        },
-                        new
-                        {
-                            CustomerId = 5,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 05",
-                            MembershipRank = "Chuẩn",
-                            PhoneNumber = "DEMO-KH-005",
-                            RewardPoints = 80
-                        },
-                        new
-                        {
-                            CustomerId = 6,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 06",
-                            MembershipRank = "Bạc",
-                            PhoneNumber = "DEMO-KH-006",
-                            RewardPoints = 210
-                        },
-                        new
-                        {
-                            CustomerId = 7,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 07",
-                            MembershipRank = "Chuẩn",
-                            PhoneNumber = "DEMO-KH-007",
-                            RewardPoints = 15
-                        },
-                        new
-                        {
-                            CustomerId = 8,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 08",
-                            MembershipRank = "Vàng",
-                            PhoneNumber = "DEMO-KH-008",
-                            RewardPoints = 410
-                        },
-                        new
-                        {
-                            CustomerId = 9,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 09",
-                            MembershipRank = "Chuẩn",
-                            PhoneNumber = "DEMO-KH-009",
-                            RewardPoints = 95
-                        },
-                        new
-                        {
-                            CustomerId = 10,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 10",
-                            MembershipRank = "Bạch Kim",
-                            PhoneNumber = "DEMO-KH-010",
-                            RewardPoints = 650
-                        },
-                        new
-                        {
-                            CustomerId = 11,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 11",
-                            MembershipRank = "Chuẩn",
-                            PhoneNumber = "DEMO-KH-011",
-                            RewardPoints = 30
-                        },
-                        new
-                        {
-                            CustomerId = 12,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 12",
-                            MembershipRank = "Bạc",
-                            PhoneNumber = "DEMO-KH-012",
-                            RewardPoints = 180
-                        },
-                        new
-                        {
-                            CustomerId = 13,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 13",
-                            MembershipRank = "Bạc",
-                            PhoneNumber = "DEMO-KH-013",
-                            RewardPoints = 290
-                        },
-                        new
-                        {
-                            CustomerId = 14,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 14",
-                            MembershipRank = "Vàng",
-                            PhoneNumber = "DEMO-KH-014",
-                            RewardPoints = 480
-                        },
-                        new
-                        {
-                            CustomerId = 15,
-                            Address = "Dữ liệu thực hành, không phải khách thật",
-                            CustomerName = "Khách mẫu 15",
-                            MembershipRank = "Chuẩn",
-                            PhoneNumber = "DEMO-KH-015",
-                            RewardPoints = 0
-                        });
                 });
 
             modelBuilder.Entity("MiniSupermarket.API.Models.Order", b =>
@@ -351,10 +214,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 1,
                             CashierUsername = "cashier01",
                             CreatedDate = new DateTime(2026, 10, 1, 8, 30, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 1,
                             FinalAmount = 57000m,
                             OrderCode = "HD20261001-001",
-                            RewardPoints = 5,
+                            RewardPoints = 0,
                             TotalItems = 3
                         },
                         new
@@ -362,10 +224,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 2,
                             CashierUsername = "cashier01",
                             CreatedDate = new DateTime(2026, 10, 1, 9, 15, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 2,
                             FinalAmount = 145000m,
                             OrderCode = "HD20261001-002",
-                            RewardPoints = 14,
+                            RewardPoints = 0,
                             TotalItems = 2
                         },
                         new
@@ -373,10 +234,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 3,
                             CashierUsername = "cashier02",
                             CreatedDate = new DateTime(2026, 10, 1, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 3,
                             FinalAmount = 45000m,
                             OrderCode = "HD20261001-003",
-                            RewardPoints = 4,
+                            RewardPoints = 0,
                             TotalItems = 10
                         },
                         new
@@ -384,10 +244,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 4,
                             CashierUsername = "cashier02",
                             CreatedDate = new DateTime(2026, 10, 2, 8, 45, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 4,
                             FinalAmount = 138000m,
                             OrderCode = "HD20261002-001",
-                            RewardPoints = 13,
+                            RewardPoints = 0,
                             TotalItems = 4
                         },
                         new
@@ -395,10 +254,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 5,
                             CashierUsername = "cashier03",
                             CreatedDate = new DateTime(2026, 10, 2, 11, 20, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 5,
                             FinalAmount = 69000m,
                             OrderCode = "HD20261002-002",
-                            RewardPoints = 6,
+                            RewardPoints = 0,
                             TotalItems = 2
                         },
                         new
@@ -406,10 +264,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 6,
                             CashierUsername = "cashier03",
                             CreatedDate = new DateTime(2026, 10, 3, 14, 10, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 6,
                             FinalAmount = 53500m,
                             OrderCode = "HD20261003-001",
-                            RewardPoints = 5,
+                            RewardPoints = 0,
                             TotalItems = 1
                         },
                         new
@@ -417,10 +274,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 7,
                             CashierUsername = "cashier04",
                             CreatedDate = new DateTime(2026, 10, 3, 16, 40, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 7,
                             FinalAmount = 30000m,
                             OrderCode = "HD20261003-002",
-                            RewardPoints = 3,
+                            RewardPoints = 0,
                             TotalItems = 5
                         },
                         new
@@ -428,10 +284,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 8,
                             CashierUsername = "cashier04",
                             CreatedDate = new DateTime(2026, 10, 4, 9, 5, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 8,
                             FinalAmount = 155000m,
                             OrderCode = "HD20261004-001",
-                            RewardPoints = 15,
+                            RewardPoints = 0,
                             TotalItems = 2
                         },
                         new
@@ -439,10 +294,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 9,
                             CashierUsername = "cashier05",
                             CreatedDate = new DateTime(2026, 10, 4, 13, 30, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 9,
                             FinalAmount = 41000m,
                             OrderCode = "HD20261004-002",
-                            RewardPoints = 4,
+                            RewardPoints = 0,
                             TotalItems = 3
                         },
                         new
@@ -450,10 +304,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 10,
                             CashierUsername = "cashier05",
                             CreatedDate = new DateTime(2026, 10, 5, 10, 50, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 10,
                             FinalAmount = 168000m,
                             OrderCode = "HD20261005-001",
-                            RewardPoints = 16,
+                            RewardPoints = 0,
                             TotalItems = 4
                         },
                         new
@@ -461,10 +314,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 11,
                             CashierUsername = "cashier06",
                             CreatedDate = new DateTime(2026, 10, 5, 17, 15, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 11,
                             FinalAmount = 36000m,
                             OrderCode = "HD20261005-002",
-                            RewardPoints = 3,
+                            RewardPoints = 0,
                             TotalItems = 8
                         },
                         new
@@ -472,10 +324,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 12,
                             CashierUsername = "cashier06",
                             CreatedDate = new DateTime(2026, 10, 6, 8, 20, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 12,
                             FinalAmount = 108000m,
                             OrderCode = "HD20261006-001",
-                            RewardPoints = 10,
+                            RewardPoints = 0,
                             TotalItems = 2
                         },
                         new
@@ -483,10 +334,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 13,
                             CashierUsername = "cashier07",
                             CreatedDate = new DateTime(2026, 10, 6, 15, 0, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 13,
                             FinalAmount = 78000m,
                             OrderCode = "HD20261006-002",
-                            RewardPoints = 7,
+                            RewardPoints = 0,
                             TotalItems = 3
                         },
                         new
@@ -494,10 +344,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 14,
                             CashierUsername = "cashier07",
                             CreatedDate = new DateTime(2026, 10, 7, 12, 10, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 14,
                             FinalAmount = 125000m,
                             OrderCode = "HD20261007-001",
-                            RewardPoints = 12,
+                            RewardPoints = 0,
                             TotalItems = 1
                         },
                         new
@@ -505,10 +354,9 @@ namespace HeThongBanLeThienAn.API.Migrations
                             OrderId = 15,
                             CashierUsername = "cashier01",
                             CreatedDate = new DateTime(2026, 10, 7, 18, 45, 0, 0, DateTimeKind.Unspecified),
-                            CustomerId = 15,
                             FinalAmount = 40000m,
                             OrderCode = "HD20261007-002",
-                            RewardPoints = 4,
+                            RewardPoints = 0,
                             TotalItems = 4
                         });
                 });

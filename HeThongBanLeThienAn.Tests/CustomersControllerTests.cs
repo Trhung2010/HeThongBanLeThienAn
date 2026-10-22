@@ -20,6 +20,7 @@ namespace HeThongBanLeThienAn.Tests
 
             var context = new SupermarketDbContext(options);
             context.Database.EnsureCreated();
+            CustomerFixtures.Add(context);
             return context;
         }
 
@@ -40,6 +41,22 @@ namespace HeThongBanLeThienAn.Tests
             var customers = result.Value as List<Customer>;
             Assert.NotNull(customers);
             Assert.Equal(15, customers.Count); // 15 seeded customers
+        }
+
+        [Fact]
+        public async Task GetPaged_OrdersCustomersByRewardPointsDescending()
+        {
+            using var context = GetDbContext();
+            var controller = new CustomersController(context);
+
+            var action = await controller.GetPaged(1, 5);
+            var result = Assert.IsType<OkObjectResult>(action.Result);
+            var page = Assert.IsType<PagedResult<Customer>>(result.Value);
+
+            Assert.Equal(15, page.TotalItems);
+            Assert.Equal(3, page.TotalPages);
+            Assert.Equal(5, page.Items.Count);
+            Assert.True(page.Items.Zip(page.Items.Skip(1), (left, right) => left.RewardPoints >= right.RewardPoints).All(x => x));
         }
 
         [Fact]

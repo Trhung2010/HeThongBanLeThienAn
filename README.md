@@ -1,7 +1,7 @@
 # Hệ thống bán lẻ Thiên Ân
 
 Ứng dụng thực hành .NET 8 gồm ASP.NET Core Web API, WinForms POS và SQLite.
-Đã triển khai nội dung buổi 1–5: CRUD, JWT/phân quyền, EF Core migrations, WinForms shell và ADO.NET transaction.
+Đã triển khai nội dung buổi 1–6: CRUD, JWT/phân quyền, EF Core migrations, ADO.NET transaction, phân trang LINQ và WinForms client-server.
 
 ## Nguồn dữ liệu
 
@@ -11,7 +11,7 @@
 - 20 mặt hàng ban đầu giữ mã và giá mẫu. 80 mặt hàng thêm có mã nội bộ `TA-REF-0021` đến `TA-REF-0100`, tồn kho ban đầu 0; nhập tồn kho trước khi bán.
 - Mã nội bộ không phải barcode nhà sản xuất; giá không phải bảng giá xác nhận của cửa hàng.
 - `Products.DataSource` lưu nhãn nguồn tham khảo; mặt hàng nhập thủ công có nhãn riêng.
-- 15 khách có tên `Khách mẫu xx`, mã tra cứu `DEMO-KH-xxx`; 15 nhân viên và 15 hóa đơn là dữ liệu mô phỏng.
+- CSDL mới không tự tạo khách mẫu. Hồ sơ khách được nhập qua API/WinForms. Migration chỉ dọn hồ sơ còn khớp chính xác tên và mã DEMO; giữ nguyên khách đã sửa và hóa đơn hiện có. Nhân viên và hóa đơn seed là dữ liệu thực hành.
 - Hóa đơn mẫu có đủ 22 dòng chi tiết, tổng tiền và số lượng được đối soát. Số dư điểm seed là số dư thực hành, không phải sổ điểm của cửa hàng.
 
 ## Khởi chạy
@@ -61,6 +61,13 @@ Mật khẩu demo hiện lưu dạng rõ; chưa triển khai lưu mật khẩu b
 - `GET /api/ado-products/barcode/{barcode}`, `/disconnected-cache`, `/filter-stock`, `/count-by-category`: tra cứu ADO.NET, yêu cầu Admin/Cashier/Warehouse.
 - SQLite không hỗ trợ stored procedure. `Data/StoredProcedures_Buoi5.sql` là tài liệu T-SQL tham khảo, không phải script đã chạy trên SQLite.
 
+## Buổi 6
+
+- `GET /api/products/paged`: phân trang phía máy chủ bằng `OrderBy`/`Skip`/`Take`, tìm theo tên hoặc barcode, lọc theo danh mục, trả tên danh mục.
+- `GET /api/customers/paged`: bài mở rộng phân trang khách hàng theo điểm thưởng giảm dần.
+- `FormProductManagement` dùng `ApiClientService` chung có JWT, tải 5 sản phẩm mỗi trang, tìm kiếm, lọc nhóm hàng và CRUD trực tiếp qua API.
+- Nút Trang trước/Trang sau bị khóa đúng tại biên và trong lúc request đang chạy để tránh gửi chồng yêu cầu.
+
 ## Kiểm thử
 
 ```powershell
@@ -73,3 +80,16 @@ Kiểm thử hồi quy dùng SQLite tạm: migration mới/cũ, giữ tồn và 
 ## Tác giả
 
 Vương Nguyễn Trường Hưng — MSSV 2124110111 — Lớp CCQ2411D.
+
+## Hoàn tất bài 5 trên SQLite
+
+`CompleteBuoi5Sqlite` là migration dữ liệu thật, chạy sau migration 100 mặt hàng.
+Migration `RemoveDemoCustomers` có sẵn chỉ là bản rỗng; phần dọn có điều kiện nằm trong `CompleteBuoi5Sqlite`.
+Đã giữ nguyên thay đổi menu phân quyền hiện có. Tiết 1 dùng `IDbConnectionFactory`/SQLite cho cả 3 phương thức ADO.NET.
+SQLite không có stored procedure; các báo cáo tiết 3 sử dụng truy vấn SQL có tham số tương đương.
+
+```powershell
+dotnet ef database update --project HeThongBanLeThienAn.API
+```
+
+Sao lưu SQLite trước khi chạy. Migration dọn dữ liệu không hỗ trợ tự tái tạo hồ sơ mẫu bằng downgrade; dùng bản sao lưu nếu cần phục hồi.
