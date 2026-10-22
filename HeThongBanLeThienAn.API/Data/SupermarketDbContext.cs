@@ -10,7 +10,7 @@ namespace MiniSupermarket.API.Data
     /// </summary>
     public class SupermarketDbContext : DbContext
     {
-        public SupermarketDbContext(DbContextOptions<SupermarketDbContext> options) :
+        public SupermarketDbContext(DbContextOptions options) :
             base(options) { }
 
         // Khai báo 6 bảng dữ liệu của hệ thống
@@ -252,5 +252,13 @@ namespace MiniSupermarket.API.Data
                 new Product { ProductId = 100, Barcode = "TA-REF-0100", ProductName = "Gạo trắng túi 5kg", Price = 95000m, StockQuantity = 0, CategoryId = 13, DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng" }
             );
         }
+    }
+
+    // Context riêng để EF Core giữ lịch sử migration SQL Server tách biệt
+    // với các migration SQLite đã được bàn giao ở branch buoi6.
+    public sealed class SqlServerSupermarketDbContext : SupermarketDbContext
+    {
+        public SqlServerSupermarketDbContext(DbContextOptions<SqlServerSupermarketDbContext> options)
+            : base(options) { }
     }
 }

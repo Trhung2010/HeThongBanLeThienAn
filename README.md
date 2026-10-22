@@ -1,6 +1,6 @@
 # Hệ thống bán lẻ Thiên Ân
 
-Ứng dụng thực hành .NET 8 gồm ASP.NET Core Web API, WinForms POS và SQLite.
+Ứng dụng thực hành .NET 8 gồm ASP.NET Core Web API, WinForms POS và SQL Server Express.
 Đã triển khai nội dung buổi 1–6: CRUD, JWT/phân quyền, EF Core migrations, ADO.NET transaction, phân trang LINQ và WinForms client-server.
 
 ## Nguồn dữ liệu
@@ -22,14 +22,18 @@ dotnet run --project HeThongBanLeThienAn.WinForms
 ```
 
 API: http://localhost:5167; Swagger: http://localhost:5167/swagger.
-SQLite nằm tại `HeThongBanLeThienAn.API/supermarket.db`, được giải đường dẫn theo thư mục ứng dụng.
+Kết nối mặc định: `localhost\\SQLEXPRESS`, database `MiniSupermarketDb`, Windows Authentication.
 
 API áp dụng migration lúc khởi động. **Không dùng EnsureDeleted/EnsureCreated hoặc kiểm tra số lượng bản ghi để reset CSDL.**
-Trước khi cập nhật CSDL đang có, sao lưu bằng SQLite backup API (kể cả khi có WAL), không chỉ sao chép file đang ghi.
-Migration `ReferenceCatalogAndSafeCheckout` nối tiếp migration ban đầu; không sửa lịch sử cũ.
-Nếu CSDL cũ được tạo bằng EnsureCreated và chưa có migration history, cần đối soát/baseline riêng; ứng dụng sẽ báo lỗi thay vì tự xóa dữ liệu.
+Migration SQL Server nằm riêng trong `Migrations/SqlServer`; các migration SQLite cũ vẫn được giữ để bảo toàn lịch sử branch `buoi6`.
 
-Tài khoản demo trong SQLite:
+Khởi tạo/cập nhật SQL Server thủ công khi cần:
+
+```powershell
+dotnet ef database update --context SqlServerSupermarketDbContext --project HeThongBanLeThienAn.API --startup-project HeThongBanLeThienAn.API
+```
+
+Tài khoản demo trong SQL Server:
 
 | Vai trò | Tài khoản | Mật khẩu |
 |---|---|---|
@@ -59,7 +63,8 @@ Mật khẩu demo hiện lưu dạng rõ; chưa triển khai lưu mật khẩu b
 - `GET /api/reports/revenue-by-cashier`, `/revenue-by-date`, `/top-selling-products`: tổng hợp qua SQL có tham số, chỉ Admin.
 - Khoảng ngày gồm toàn bộ ngày kết thúc, không bỏ giao dịch sau 00:00.
 - `GET /api/ado-products/barcode/{barcode}`, `/disconnected-cache`, `/filter-stock`, `/count-by-category`: tra cứu ADO.NET, yêu cầu Admin/Cashier/Warehouse.
-- SQLite không hỗ trợ stored procedure. `Data/StoredProcedures_Buoi5.sql` là tài liệu T-SQL tham khảo, không phải script đã chạy trên SQLite.
+- Ba Stored Procedure `sp_GetRevenueByCashier`, `sp_GetRevenueByDateRange` và `sp_GetTop5SellingProducts` được tạo thật bằng migration SQL Server.
+- `Data/StoredProcedures_Buoi5.sql` là bản T-SQL có thể mở và trình diễn trực tiếp trong SSMS.
 
 ## Buổi 6
 
@@ -75,21 +80,17 @@ dotnet test HeThongBanLeThienAn.Tests --no-restore
 dotnet build HeThongBanLeThienAn.WinForms --no-restore
 ```
 
-Kiểm thử hồi quy dùng SQLite tạm: migration mới/cũ, giữ tồn và giá đã sửa, thêm mặt hàng ngoài seed, chạy migration lại; đối soát hóa đơn; giá client giả; số lượng âm/0; dòng trùng; lỗi CSDL giữa giao dịch; khách vãng lai; hủy và hủy lặp; báo cáo theo ngày; đăng nhập và route checkout cũ.
+Kiểm thử hồi quy tự động vẫn dùng SQLite/InMemory tạm để chạy độc lập. Kiểm thử tích hợp SQL Server xác nhận migration, Stored Procedure, đăng nhập, phân trang, checkout và rollback/hủy đơn.
 
 ## Tác giả
 
 Vương Nguyễn Trường Hưng — MSSV 2124110111 — Lớp CCQ2411D.
 
-## Hoàn tất bài 5 trên SQLite
+## Chuyển đổi từ SQLite sang SQL Server
 
-`CompleteBuoi5Sqlite` là migration dữ liệu thật, chạy sau migration 100 mặt hàng.
-Migration `RemoveDemoCustomers` có sẵn chỉ là bản rỗng; phần dọn có điều kiện nằm trong `CompleteBuoi5Sqlite`.
-Đã giữ nguyên thay đổi menu phân quyền hiện có. Tiết 1 dùng `IDbConnectionFactory`/SQLite cho cả 3 phương thức ADO.NET.
-SQLite không có stored procedure; các báo cáo tiết 3 sử dụng truy vấn SQL có tham số tương đương.
+- Provider mặc định là `SqlServer` trong `appsettings.json`.
+- EF Core sử dụng `SqlServerSupermarketDbContext` để tách migration SQL Server khỏi lịch sử SQLite.
+- ADO.NET dùng `Microsoft.Data.SqlClient`, `SqlConnection`, `SqlCommand`, `SqlDataReader`, `SqlDataAdapter` và transaction thật trên SQL Server.
+- File `supermarket.db` cũ không bị xóa; branch `buoi6` vẫn là mốc SQLite ổn định.
 
-```powershell
-dotnet ef database update --project HeThongBanLeThienAn.API
-```
-
-Sao lưu SQLite trước khi chạy. Migration dọn dữ liệu không hỗ trợ tự tái tạo hồ sơ mẫu bằng downgrade; dùng bản sao lưu nếu cần phục hồi.
+Trong SSMS, kết nối Server name `localhost\\SQLEXPRESS`, chọn **Windows Authentication**, rồi mở database `MiniSupermarketDb`.

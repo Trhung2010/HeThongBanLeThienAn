@@ -57,7 +57,7 @@ BEGIN
         SUM(FinalAmount) AS TotalRevenue,
         SUM(RewardPoints) AS TotalPointsAwarded
     FROM Orders
-    WHERE CreatedDate >= @FromDate AND CreatedDate <= @ToDate
+    WHERE CreatedDate >= @FromDate AND CreatedDate < @ToDate
     GROUP BY CashierUsername
     ORDER BY TotalRevenue DESC;
 END
