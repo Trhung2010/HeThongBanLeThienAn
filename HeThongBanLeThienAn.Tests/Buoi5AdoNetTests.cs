@@ -14,19 +14,6 @@ namespace HeThongBanLeThienAn.Tests
 {
     public class Buoi5AdoNetTests
     {
-        private class TestDbConnectionFactory : IDbConnectionFactory
-        {
-            private readonly string _connectionString;
-            public TestDbConnectionFactory(string connectionString)
-            {
-                _connectionString = connectionString;
-            }
-            public bool IsSqlServer => false;
-            public System.Data.Common.DbConnection CreateConnection() => new SqliteConnection(_connectionString);
-            public System.Data.Common.DbDataAdapter CreateDataAdapter(System.Data.Common.DbCommand command) => throw new NotImplementedException();
-            public System.Data.Common.DbParameter CreateParameter(string name, object? value) => new SqliteParameter(name, value ?? DBNull.Value);
-        }
-
         private (SupermarketDbContext context, IDbConnectionFactory factory, SqliteConnection conn) SetupTestDb()
         {
             var connection = new SqliteConnection("DataSource=file:memdb_buoi5_" + Guid.NewGuid() + "?mode=memory&cache=shared");
@@ -40,7 +27,7 @@ namespace HeThongBanLeThienAn.Tests
             context.Database.EnsureCreated();
             CustomerFixtures.Add(context);
 
-            var factory = new TestDbConnectionFactory(connection.ConnectionString);
+            var factory = new SqliteTestDbConnectionFactory(connection.ConnectionString);
             return (context, factory, connection);
         }
 

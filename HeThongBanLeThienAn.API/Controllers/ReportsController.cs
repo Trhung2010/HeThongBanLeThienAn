@@ -5,7 +5,7 @@
 *   - Tiết 3: GET api/reports/revenue-by-cashier (Gọi Stored Procedure sp_GetRevenueByCashier)
 *   - Bài tập 3.1: GET api/reports/revenue-by-date (Gọi Stored Procedure sp_GetRevenueByDateRange)
 *   - Bài tập 3.2: GET api/reports/top-selling-products (Gọi Stored Procedure sp_GetTop5SellingProducts)
-*   - Kèm fallback truy vấn SQL tổng hợp tương thích đa nền tảng (cả SQL Server và SQLite)
+*   - Kèm truy vấn SQL tổng hợp để kiểm thử độc lập
 */
 
 using Microsoft.AspNetCore.Mvc;
@@ -64,7 +64,7 @@ namespace MiniSupermarket.API.Controllers
                     }
                     else
                     {
-                        // Fallback cho môi trường CSDL không có Stored Procedure (như SQLite nhúng)
+                        // Fallback chỉ dùng bởi connection factory của project kiểm thử.
                         command.CommandText = @"
                             SELECT 
                                 CashierUsername,

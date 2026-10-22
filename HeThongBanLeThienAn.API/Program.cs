@@ -9,30 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Thiếu cấu hình ConnectionStrings:DefaultConnection.");
-var databaseProvider = builder.Configuration["Database:Provider"] ?? "SqlServer";
-
-if (databaseProvider.Equals("SqlServer", StringComparison.OrdinalIgnoreCase))
-{
-    builder.Services.AddDbContext<SqlServerSupermarketDbContext>(options =>
-        options.UseSqlServer(connectionString));
-    builder.Services.AddScoped<SupermarketDbContext>(services =>
-        services.GetRequiredService<SqlServerSupermarketDbContext>());
-}
-else if (databaseProvider.Equals("Sqlite", StringComparison.OrdinalIgnoreCase))
-{
-    var sqlite = new Microsoft.Data.Sqlite.SqliteConnectionStringBuilder(connectionString);
-    if (sqlite.DataSource != ":memory:" && !Path.IsPathRooted(sqlite.DataSource))
-    {
-        sqlite.DataSource = Path.Combine(builder.Environment.ContentRootPath, sqlite.DataSource);
-    }
-
-    builder.Configuration["ConnectionStrings:DefaultConnection"] = sqlite.ConnectionString;
-    builder.Services.AddDbContext<SupermarketDbContext>(options => options.UseSqlite(sqlite.ConnectionString));
-}
-else
-{
-    throw new InvalidOperationException($"Database:Provider không được hỗ trợ: {databaseProvider}");
-}
+builder.Services.AddDbContext<SqlServerSupermarketDbContext>(options =>
+    options.UseSqlServer(connectionString));
+builder.Services.AddScoped<SupermarketDbContext>(services =>
+    services.GetRequiredService<SqlServerSupermarketDbContext>());
 
 // Cấu hình dịch vụ xác thực JWT Bearer
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ??

@@ -2,8 +2,6 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using MiniSupermarket.API.Controllers;
 using MiniSupermarket.API.Data;
@@ -24,13 +22,13 @@ public sealed class CheckoutRegressionTests : IDisposable
         _connection = new SqliteConnection(cs);
         _connection.Open();
         _db = new SupermarketDbContext(new DbContextOptionsBuilder<SupermarketDbContext>().UseSqlite(_connection).Options);
-        _db.Database.Migrate();
+        _db.Database.EnsureCreated();
         CustomerFixtures.Add(_db);
         _config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string,string?> {
             ["ConnectionStrings:DefaultConnection"] = cs,
             ["JwtSettings:Secret"] = "SupermarketSecretKeyDoAnMonHoc2026SecureString!!"
         }).Build();
-        _checkout = new CheckoutService(new DbConnectionFactory(_config));
+        _checkout = new CheckoutService(new SqliteTestDbConnectionFactory(cs));
     }
     private static List<CartItemCheckoutDto> Cart(int quantity = 1, decimal price = 1) =>
         new() { new() { ProductId=1, Quantity=quantity, UnitPrice=price } };
@@ -39,7 +37,7 @@ public sealed class CheckoutRegressionTests : IDisposable
     private JsonElement Json(IActionResult result) => JsonSerializer.SerializeToElement(Assert.IsType<OkObjectResult>(result).Value);
 
     [Fact]
-    public void Migrations_Create100DistinctReferenceItemsAndConsistentInvoices()
+    public void EnsureCreated_Creates100DistinctReferenceItemsAndConsistentInvoices()
     {
         Assert.Equal(100, _db.Products.Count());
         Assert.Equal(100, _db.Products.Select(p=>p.Barcode).Distinct().Count());
@@ -53,30 +51,22 @@ public sealed class CheckoutRegressionTests : IDisposable
             Assert.Equal(order.FinalAmount,order.OrderDetails.Sum(d=>d.LineTotal));
             Assert.All(order.OrderDetails,d=>Assert.Equal(d.Quantity*d.UnitPrice,d.LineTotal));
         }
-        Assert.True(_db.Database.GetAppliedMigrations().Count() >= 3);
     }
 
     [Fact]
-    public void Migration_PreservesBusinessEditsAndAdditionalRowsAndIsRepeatable()
+    public void EnsureCreated_IsRepeatableAndDoesNotOverwriteBusinessRows()
     {
         using var connection = new SqliteConnection("Data Source=:memory:");
         connection.Open();
         using var db = new SupermarketDbContext(new DbContextOptionsBuilder<SupermarketDbContext>().UseSqlite(connection).Options);
-        db.GetService<IMigrator>().Migrate("20261015104746_InitialCreateFullThienAn");
+        db.Database.EnsureCreated();
         db.Database.ExecuteSqlRaw("UPDATE Products SET StockQuantity=123, Price=777 WHERE ProductId=1");
-        db.Database.ExecuteSqlRaw("UPDATE Customers SET CustomerName='Edited customer',PhoneNumber='CUSTOM-1' WHERE CustomerId=1");
-        db.Database.ExecuteSqlRaw("INSERT INTO Products (ProductId,Barcode,ProductName,Price,StockQuantity,CategoryId) VALUES(101,'893456789101','User product',500,7,1)");
-        db.GetService<IMigrator>().Migrate("20261022113129_SynchronizeNumericBarcodesSqlite");
-        db.Database.ExecuteSqlRaw("UPDATE Products SET DataSource='Nguồn đã chỉnh sửa' WHERE ProductId=1");
-        db.Database.Migrate();
-        db.Database.Migrate();
+        db.Database.ExecuteSqlRaw("INSERT INTO Products (ProductId,Barcode,ProductName,Price,DataSource,StockQuantity,CategoryId) VALUES(101,'893456789101','User product',500,'Nhập thủ công',7,1)");
+        db.Database.EnsureCreated();
         Assert.Equal(101,db.Products.Count());
         Assert.Equal(123,db.Products.Single(p=>p.ProductId==1).StockQuantity);
         Assert.Equal(777m,db.Products.Single(p=>p.ProductId==1).Price);
-        Assert.Equal("Nguồn đã chỉnh sửa",db.Products.Single(p=>p.ProductId==1).DataSource);
         Assert.Equal(7,db.Products.Single(p=>p.ProductId==101).StockQuantity);
-        Assert.Equal("Edited customer",db.Customers.Single(c=>c.CustomerId==1).CustomerName);
-        Assert.Equal(1,db.Orders.Single(o=>o.OrderId==1).CustomerId);
     }
 
     [Fact]
@@ -184,7 +174,7 @@ public sealed class CheckoutRegressionTests : IDisposable
     [Fact]
     public void AdoLesson1_ExecutesAllThreeOperationsOnSqlite()
     {
-        var demo=new HeThongBanLeThienAn.Tiet1ConsoleDemo.AdoNetTiet1Demo(new DbConnectionFactory(_config));
+        var demo=new HeThongBanLeThienAn.Tiet1ConsoleDemo.AdoNetTiet1Demo(new SqliteTestDbConnectionFactory(_connection.ConnectionString));
         Assert.Equal(100,demo.CountTotalProducts());
         Assert.Equal(1,demo.UpdateProductStock(1,42));
         Assert.Equal(42,demo.ReadAllProducts().Single(p=>p.Id==1).Stock);
@@ -196,7 +186,7 @@ public sealed class CheckoutRegressionTests : IDisposable
     {
         using var connection=new SqliteConnection("Data Source=:memory:"); connection.Open();
         using var db=new SupermarketDbContext(new DbContextOptionsBuilder<SupermarketDbContext>().UseSqlite(connection).Options);
-        db.Database.Migrate();
+        db.Database.EnsureCreated();
         Assert.Empty(db.Customers);
         Assert.All(db.Orders.ToList(),o=> { Assert.Null(o.CustomerId); Assert.Equal(0,o.RewardPoints); });
     }

@@ -3,11 +3,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace HeThongBanLeThienAn.Tiet1ConsoleDemo;
 
-// Buổi 5, tiết 1: ExecuteScalar, ExecuteNonQuery và ExecuteReader trên SQLite.
+// Buổi 5, tiết 1: ExecuteScalar, ExecuteNonQuery và ExecuteReader trên SQL Server.
 public class AdoNetTiet1Demo
 {
     private readonly IDbConnectionFactory _factory;
-    public AdoNetTiet1Demo(string connectionString = "Data Source=supermarket.db")
+    public AdoNetTiet1Demo(string connectionString)
         : this(new DbConnectionFactory(new ConfigurationBuilder().AddInMemoryCollection(
             new Dictionary<string,string?> { ["ConnectionStrings:DefaultConnection"] = connectionString }).Build())) { }
     public AdoNetTiet1Demo(IDbConnectionFactory factory) => _factory = factory;

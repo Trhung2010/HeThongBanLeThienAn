@@ -5,7 +5,7 @@ using MiniSupermarket.API.Models;
 namespace MiniSupermarket.API.Data
 {
     /// <summary>
-    /// Ngữ cảnh cơ sở dữ liệu đại diện cho phiên làm việc với SQL Server / SQLite
+    /// Ngữ cảnh cơ sở dữ liệu đại diện cho phiên làm việc với SQL Server
     /// Quản lý 6 thực thể và cấu hình Data Seeding đầy đủ cho hệ thống Siêu thị Mini
     /// </summary>
     public class SupermarketDbContext : DbContext
@@ -254,8 +254,7 @@ namespace MiniSupermarket.API.Data
         }
     }
 
-    // Context riêng để EF Core giữ lịch sử migration SQL Server tách biệt
-    // với các migration SQLite đã được bàn giao ở branch buoi6.
+    // Context SQL Server dùng cho runtime và migration của ứng dụng.
     public sealed class SqlServerSupermarketDbContext : SupermarketDbContext
     {
         public SqlServerSupermarketDbContext(DbContextOptions<SqlServerSupermarketDbContext> options)

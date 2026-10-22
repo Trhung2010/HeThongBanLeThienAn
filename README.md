@@ -25,7 +25,7 @@ API: http://localhost:5167; Swagger: http://localhost:5167/swagger.
 Kết nối mặc định: `localhost\\SQLEXPRESS`, database `MiniSupermarketDb`, Windows Authentication.
 
 API áp dụng migration lúc khởi động. **Không dùng EnsureDeleted/EnsureCreated hoặc kiểm tra số lượng bản ghi để reset CSDL.**
-Migration SQL Server nằm riêng trong `Migrations/SqlServer`; các migration SQLite cũ vẫn được giữ để bảo toàn lịch sử branch `buoi6`.
+Ứng dụng chỉ dùng migration SQL Server trong `Migrations/SqlServer`.
 
 Khởi tạo/cập nhật SQL Server thủ công khi cần:
 
@@ -86,11 +86,11 @@ Kiểm thử hồi quy tự động vẫn dùng SQLite/InMemory tạm để ch�
 
 Vương Nguyễn Trường Hưng — MSSV 2124110111 — Lớp CCQ2411D.
 
-## Chuyển đổi từ SQLite sang SQL Server
+## SQL Server
 
-- Provider mặc định là `SqlServer` trong `appsettings.json`.
-- EF Core sử dụng `SqlServerSupermarketDbContext` để tách migration SQL Server khỏi lịch sử SQLite.
+- Runtime chỉ đăng ký `SqlServerSupermarketDbContext`; không còn lựa chọn provider hay file database nhúng.
+- Toàn bộ migration chạy thật nằm trong `Migrations/SqlServer`.
 - ADO.NET dùng `Microsoft.Data.SqlClient`, `SqlConnection`, `SqlCommand`, `SqlDataReader`, `SqlDataAdapter` và transaction thật trên SQL Server.
-- File `supermarket.db` cũ không bị xóa; branch `buoi6` vẫn là mốc SQLite ổn định.
+- SQLite chỉ còn là dependency của project kiểm thử để tạo database in-memory cô lập; không được đóng gói trong API.
 
 Trong SSMS, kết nối Server name `localhost\\SQLEXPRESS`, chọn **Windows Authentication**, rồi mở database `MiniSupermarketDb`.
