@@ -10,7 +10,7 @@
 - 100 mặt hàng, mã riêng biệt, 15 danh mục.
 - 100 mặt hàng dùng mã vạch số 12 chữ số liên tiếp từ `893456789001` đến `893456789100`. 80 mặt hàng bổ sung có tồn kho ban đầu 0; nhập tồn kho trước khi bán.
 - Mã nội bộ không phải barcode nhà sản xuất; giá không phải bảng giá xác nhận của cửa hàng.
-- `Products.DataSource` lưu nhãn nguồn tham khảo; mặt hàng nhập thủ công có nhãn riêng.
+- `Products.DataSource` phân biệt `Kho tổng Thiên Ân` với sản phẩm `Nhập thủ công`.
 - CSDL mới không tự tạo khách mẫu. Hồ sơ khách được nhập qua API/WinForms. Migration chỉ dọn hồ sơ còn khớp chính xác tên và mã DEMO; giữ nguyên khách đã sửa và hóa đơn hiện có. Nhân viên và hóa đơn seed là dữ liệu thực hành.
 - Hóa đơn mẫu có đủ 22 dòng chi tiết, tổng tiền và số lượng được đối soát. Số dư điểm seed là số dư thực hành, không phải sổ điểm của cửa hàng.
 

@@ -651,7 +651,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 1,
                             Barcode = "893456789001",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 12500m,
                             ProductName = "Snack Khoai Tây O'Star Gói 60g",
                             StockQuantity = 150
@@ -661,7 +661,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 2,
                             Barcode = "893456789002",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 135000m,
                             ProductName = "Bánh Quy Bơ Danisa Hộp Thiếc 454g",
                             StockQuantity = 40
@@ -671,7 +671,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 3,
                             Barcode = "893456789003",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 15000m,
                             ProductName = "Kẹo Dẻo Chupa Chups Hương Trái Cây 90g",
                             StockQuantity = 120
@@ -681,7 +681,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 4,
                             Barcode = "893456789004",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 54000m,
                             ProductName = "Bánh Chocopie Orion Hộp 12 Cái",
                             StockQuantity = 60
@@ -691,7 +691,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 5,
                             Barcode = "893456789005",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 10000m,
                             ProductName = "Nước Ngọt Coca Cola Lon 320ml",
                             StockQuantity = 320
@@ -701,7 +701,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 6,
                             Barcode = "893456789006",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 6000m,
                             ProductName = "Nước Khoáng Thiên Nhiên Lavie Chai 500ml",
                             StockQuantity = 200
@@ -711,7 +711,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 7,
                             Barcode = "893456789007",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 11000m,
                             ProductName = "Trà Xanh Không Độ Chai 455ml",
                             StockQuantity = 180
@@ -721,7 +721,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 8,
                             Barcode = "893456789008",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 14500m,
                             ProductName = "Nước Tăng Lực Red Bull Lon 250ml",
                             StockQuantity = 150
@@ -731,7 +731,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 9,
                             Barcode = "893456789009",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 34500m,
                             ProductName = "Sữa Tươi Tiệt Trùng Vinamilk Có Đường 1L",
                             StockQuantity = 85
@@ -741,7 +741,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 10,
                             Barcode = "893456789010",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 39000m,
                             ProductName = "Phô Mai Con Bò Cười Hộp 8 Miếng",
                             StockQuantity = 60
@@ -751,7 +751,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 11,
                             Barcode = "893456789011",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 28000m,
                             ProductName = "Sữa Chua Ăn Vinamilk Có Đường Lốc 4 Hộp",
                             StockQuantity = 95
@@ -761,7 +761,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 12,
                             Barcode = "893456789012",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 26000m,
                             ProductName = "Sữa Đặc Có Đường Ông Thọ Lon 380g",
                             StockQuantity = 110
@@ -771,7 +771,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 13,
                             Barcode = "893456789013",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 4500m,
                             ProductName = "Mì Tôm Hảo Hảo Chua Cay Gói 75g",
                             StockQuantity = 500
@@ -781,7 +781,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 14,
                             Barcode = "893456789014",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 8500m,
                             ProductName = "Phở Bò Đệ Nhất Gói 68g",
                             StockQuantity = 140
@@ -791,7 +791,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 15,
                             Barcode = "893456789015",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 14000m,
                             ProductName = "Mì Trộn Tương Đen Koreno Gói 115g",
                             StockQuantity = 80
@@ -801,7 +801,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 16,
                             Barcode = "893456789016",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 125000m,
                             ProductName = "Dầu Ăn Simply Nguyên Chất Can 2L",
                             StockQuantity = 45
@@ -811,7 +811,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 17,
                             Barcode = "893456789017",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 30000m,
                             ProductName = "Nước Mắm Nam Ngư Đệ Nhị Chai 900ml",
                             StockQuantity = 90
@@ -821,7 +821,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 18,
                             Barcode = "893456789018",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 36000m,
                             ProductName = "Hạt Nêm Knorr Từ Thịt Thăn Gói 400g",
                             StockQuantity = 75
@@ -831,7 +831,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 19,
                             Barcode = "893456789019",
                             CategoryId = 6,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 19000m,
                             ProductName = "Cá Nục Sốt Cà Ba Cô Gái Hộp 155g",
                             StockQuantity = 130
@@ -841,7 +841,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 20,
                             Barcode = "893456789020",
                             CategoryId = 7,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 29000m,
                             ProductName = "Nước Rửa Chén Sunlight Chanh Chai 750g",
                             StockQuantity = 80
@@ -851,7 +851,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 21,
                             Barcode = "893456789021",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 18000m,
                             ProductName = "Bánh quy sữa gói 100g",
                             StockQuantity = 0
@@ -861,7 +861,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 22,
                             Barcode = "893456789022",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 22000m,
                             ProductName = "Bánh cracker gói 150g",
                             StockQuantity = 0
@@ -871,7 +871,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 23,
                             Barcode = "893456789023",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 25000m,
                             ProductName = "Bánh gạo gói 150g",
                             StockQuantity = 0
@@ -881,7 +881,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 24,
                             Barcode = "893456789024",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 15000m,
                             ProductName = "Kẹo bạc hà gói 100g",
                             StockQuantity = 0
@@ -891,7 +891,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 25,
                             Barcode = "893456789025",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 18000m,
                             ProductName = "Kẹo sữa gói 100g",
                             StockQuantity = 0
@@ -901,7 +901,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 26,
                             Barcode = "893456789026",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 65000m,
                             ProductName = "Hạt điều rang hộp 200g",
                             StockQuantity = 0
@@ -911,7 +911,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 27,
                             Barcode = "893456789027",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 12000m,
                             ProductName = "Đậu phộng rang gói 100g",
                             StockQuantity = 0
@@ -921,7 +921,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 28,
                             Barcode = "893456789028",
                             CategoryId = 1,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 15000m,
                             ProductName = "Rong biển ăn liền gói 20g",
                             StockQuantity = 0
@@ -931,7 +931,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 29,
                             Barcode = "893456789029",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 10000m,
                             ProductName = "Nước tinh khiết chai 1.5L",
                             StockQuantity = 0
@@ -941,7 +941,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 30,
                             Barcode = "893456789030",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 5000m,
                             ProductName = "Nước khoáng chai 350ml",
                             StockQuantity = 0
@@ -951,7 +951,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 31,
                             Barcode = "893456789031",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 12000m,
                             ProductName = "Trà đào chai 450ml",
                             StockQuantity = 0
@@ -961,7 +961,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 32,
                             Barcode = "893456789032",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 12000m,
                             ProductName = "Trà ô long chai 450ml",
                             StockQuantity = 0
@@ -971,7 +971,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 33,
                             Barcode = "893456789033",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 15000m,
                             ProductName = "Nước cam chai 350ml",
                             StockQuantity = 0
@@ -981,7 +981,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 34,
                             Barcode = "893456789034",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 10000m,
                             ProductName = "Nước chanh chai 350ml",
                             StockQuantity = 0
@@ -991,7 +991,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 35,
                             Barcode = "893456789035",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 35000m,
                             ProductName = "Nước dừa hộp 1L",
                             StockQuantity = 0
@@ -1001,7 +1001,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 36,
                             Barcode = "893456789036",
                             CategoryId = 2,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 10000m,
                             ProductName = "Nước yến lon 190ml",
                             StockQuantity = 0
@@ -1011,7 +1011,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 37,
                             Barcode = "893456789037",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 8000m,
                             ProductName = "Sữa tươi không đường hộp 180ml",
                             StockQuantity = 0
@@ -1021,7 +1021,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 38,
                             Barcode = "893456789038",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 8000m,
                             ProductName = "Sữa tươi có đường hộp 180ml",
                             StockQuantity = 0
@@ -1031,7 +1031,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 39,
                             Barcode = "893456789039",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 28000m,
                             ProductName = "Sữa đậu nành hộp 1L",
                             StockQuantity = 0
@@ -1041,7 +1041,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 40,
                             Barcode = "893456789040",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 9000m,
                             ProductName = "Sữa chua uống chai 180ml",
                             StockQuantity = 0
@@ -1051,7 +1051,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 41,
                             Barcode = "893456789041",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 6500m,
                             ProductName = "Sữa chua không đường hộp 100g",
                             StockQuantity = 0
@@ -1061,7 +1061,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 42,
                             Barcode = "893456789042",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 180000m,
                             ProductName = "Sữa bột hộp 400g",
                             StockQuantity = 0
@@ -1071,7 +1071,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 43,
                             Barcode = "893456789043",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 60000m,
                             ProductName = "Bơ lạt gói 200g",
                             StockQuantity = 0
@@ -1081,7 +1081,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 44,
                             Barcode = "893456789044",
                             CategoryId = 3,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 55000m,
                             ProductName = "Phô mai lát gói 200g",
                             StockQuantity = 0
@@ -1091,7 +1091,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 45,
                             Barcode = "893456789045",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 4500m,
                             ProductName = "Mì bò gói 75g",
                             StockQuantity = 0
@@ -1101,7 +1101,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 46,
                             Barcode = "893456789046",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 4500m,
                             ProductName = "Mì chay gói 75g",
                             StockQuantity = 0
@@ -1111,7 +1111,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 47,
                             Barcode = "893456789047",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 7000m,
                             ProductName = "Cháo thịt gói 50g",
                             StockQuantity = 0
@@ -1121,7 +1121,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 48,
                             Barcode = "893456789048",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 10000m,
                             ProductName = "Miến gà gói 58g",
                             StockQuantity = 0
@@ -1131,7 +1131,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 49,
                             Barcode = "893456789049",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 12000m,
                             ProductName = "Bún bò gói 75g",
                             StockQuantity = 0
@@ -1141,7 +1141,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 50,
                             Barcode = "893456789050",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 8500m,
                             ProductName = "Hủ tiếu gói 65g",
                             StockQuantity = 0
@@ -1151,7 +1151,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 51,
                             Barcode = "893456789051",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 8500m,
                             ProductName = "Phở gà gói 65g",
                             StockQuantity = 0
@@ -1161,7 +1161,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 52,
                             Barcode = "893456789052",
                             CategoryId = 4,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 22000m,
                             ProductName = "Nui khô gói 400g",
                             StockQuantity = 0
@@ -1171,7 +1171,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 53,
                             Barcode = "893456789053",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 26000m,
                             ProductName = "Đường cát trắng túi 1kg",
                             StockQuantity = 0
@@ -1181,7 +1181,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 54,
                             Barcode = "893456789054",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 8000m,
                             ProductName = "Muối iốt gói 500g",
                             StockQuantity = 0
@@ -1191,7 +1191,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 55,
                             Barcode = "893456789055",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 32000m,
                             ProductName = "Bột ngọt gói 400g",
                             StockQuantity = 0
@@ -1201,7 +1201,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 56,
                             Barcode = "893456789056",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 18000m,
                             ProductName = "Tiêu xay lọ 50g",
                             StockQuantity = 0
@@ -1211,7 +1211,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 57,
                             Barcode = "893456789057",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 22000m,
                             ProductName = "Nước tương chai 500ml",
                             StockQuantity = 0
@@ -1221,7 +1221,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 58,
                             Barcode = "893456789058",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 15000m,
                             ProductName = "Tương ớt chai 250g",
                             StockQuantity = 0
@@ -1231,7 +1231,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 59,
                             Barcode = "893456789059",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 14000m,
                             ProductName = "Giấm gạo chai 500ml",
                             StockQuantity = 0
@@ -1241,7 +1241,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 60,
                             Barcode = "893456789060",
                             CategoryId = 5,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 28000m,
                             ProductName = "Dầu hào chai 350g",
                             StockQuantity = 0
@@ -1251,7 +1251,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 61,
                             Barcode = "893456789061",
                             CategoryId = 6,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 35000m,
                             ProductName = "Cá ngừ ngâm dầu hộp 185g",
                             StockQuantity = 0
@@ -1261,7 +1261,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 62,
                             Barcode = "893456789062",
                             CategoryId = 6,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 25000m,
                             ProductName = "Pate gan hộp 150g",
                             StockQuantity = 0
@@ -1271,7 +1271,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 63,
                             Barcode = "893456789063",
                             CategoryId = 6,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 40000m,
                             ProductName = "Thịt heo hộp 170g",
                             StockQuantity = 0
@@ -1281,7 +1281,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 64,
                             Barcode = "893456789064",
                             CategoryId = 6,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 26000m,
                             ProductName = "Bắp ngọt hộp 340g",
                             StockQuantity = 0
@@ -1291,7 +1291,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 65,
                             Barcode = "893456789065",
                             CategoryId = 6,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 28000m,
                             ProductName = "Đậu Hà Lan hộp 400g",
                             StockQuantity = 0
@@ -1301,7 +1301,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 66,
                             Barcode = "893456789066",
                             CategoryId = 6,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 32000m,
                             ProductName = "Xúc xích gói 200g",
                             StockQuantity = 0
@@ -1311,7 +1311,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 67,
                             Barcode = "893456789067",
                             CategoryId = 6,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 55000m,
                             ProductName = "Chà bông heo hộp 100g",
                             StockQuantity = 0
@@ -1321,7 +1321,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 68,
                             Barcode = "893456789068",
                             CategoryId = 6,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 35000m,
                             ProductName = "Dưa leo muối lọ 500g",
                             StockQuantity = 0
@@ -1331,7 +1331,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 69,
                             Barcode = "893456789069",
                             CategoryId = 7,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 95000m,
                             ProductName = "Nước giặt túi 2L",
                             StockQuantity = 0
@@ -1341,7 +1341,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 70,
                             Barcode = "893456789070",
                             CategoryId = 7,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 65000m,
                             ProductName = "Nước xả vải túi 1.6L",
                             StockQuantity = 0
@@ -1351,7 +1351,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 71,
                             Barcode = "893456789071",
                             CategoryId = 7,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 35000m,
                             ProductName = "Bột giặt túi 800g",
                             StockQuantity = 0
@@ -1361,7 +1361,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 72,
                             Barcode = "893456789072",
                             CategoryId = 7,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 32000m,
                             ProductName = "Nước lau sàn chai 1L",
                             StockQuantity = 0
@@ -1371,7 +1371,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 73,
                             Barcode = "893456789073",
                             CategoryId = 7,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 38000m,
                             ProductName = "Nước tẩy nhà vệ sinh chai 900ml",
                             StockQuantity = 0
@@ -1381,7 +1381,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 74,
                             Barcode = "893456789074",
                             CategoryId = 7,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 25000m,
                             ProductName = "Nước lau kính chai 500ml",
                             StockQuantity = 0
@@ -1391,7 +1391,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 75,
                             Barcode = "893456789075",
                             CategoryId = 7,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 28000m,
                             ProductName = "Nước rửa tay chai 250ml",
                             StockQuantity = 0
@@ -1401,7 +1401,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 76,
                             Barcode = "893456789076",
                             CategoryId = 7,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 12000m,
                             ProductName = "Miếng rửa chén bộ 3 miếng",
                             StockQuantity = 0
@@ -1411,7 +1411,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 77,
                             Barcode = "893456789077",
                             CategoryId = 8,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 75000m,
                             ProductName = "Dầu gội chai 340ml",
                             StockQuantity = 0
@@ -1421,7 +1421,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 78,
                             Barcode = "893456789078",
                             CategoryId = 8,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 85000m,
                             ProductName = "Sữa tắm chai 500ml",
                             StockQuantity = 0
@@ -1431,7 +1431,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 79,
                             Barcode = "893456789079",
                             CategoryId = 8,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 35000m,
                             ProductName = "Kem đánh răng tuýp 180g",
                             StockQuantity = 0
@@ -1441,7 +1441,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 80,
                             Barcode = "893456789080",
                             CategoryId = 8,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 18000m,
                             ProductName = "Bàn chải đánh răng chiếc",
                             StockQuantity = 0
@@ -1451,7 +1451,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 81,
                             Barcode = "893456789081",
                             CategoryId = 8,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 12000m,
                             ProductName = "Xà phòng bánh 90g",
                             StockQuantity = 0
@@ -1461,7 +1461,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 82,
                             Barcode = "893456789082",
                             CategoryId = 8,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 25000m,
                             ProductName = "Khăn ướt gói 80 tờ",
                             StockQuantity = 0
@@ -1471,7 +1471,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 83,
                             Barcode = "893456789083",
                             CategoryId = 8,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 28000m,
                             ProductName = "Băng vệ sinh gói 8 miếng",
                             StockQuantity = 0
@@ -1481,7 +1481,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 84,
                             Barcode = "893456789084",
                             CategoryId = 8,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 15000m,
                             ProductName = "Tăm bông hộp 200 que",
                             StockQuantity = 0
@@ -1491,7 +1491,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 85,
                             Barcode = "893456789085",
                             CategoryId = 9,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 22000m,
                             ProductName = "Khăn giấy hộp 180 tờ",
                             StockQuantity = 0
@@ -1501,7 +1501,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 86,
                             Barcode = "893456789086",
                             CategoryId = 9,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 55000m,
                             ProductName = "Giấy vệ sinh lốc 10 cuộn",
                             StockQuantity = 0
@@ -1511,7 +1511,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 87,
                             Barcode = "893456789087",
                             CategoryId = 9,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 25000m,
                             ProductName = "Túi rác cuộn 500g",
                             StockQuantity = 0
@@ -1521,7 +1521,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 88,
                             Barcode = "893456789088",
                             CategoryId = 9,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 28000m,
                             ProductName = "Màng bọc thực phẩm cuộn 30m",
                             StockQuantity = 0
@@ -1531,7 +1531,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 89,
                             Barcode = "893456789089",
                             CategoryId = 9,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 25000m,
                             ProductName = "Giấy bạc cuộn 5m",
                             StockQuantity = 0
@@ -1541,7 +1541,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 90,
                             Barcode = "893456789090",
                             CategoryId = 9,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 15000m,
                             ProductName = "Pin AA vỉ 2 viên",
                             StockQuantity = 0
@@ -1551,7 +1551,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 91,
                             Barcode = "893456789091",
                             CategoryId = 9,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 15000m,
                             ProductName = "Pin AAA vỉ 2 viên",
                             StockQuantity = 0
@@ -1561,7 +1561,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 92,
                             Barcode = "893456789092",
                             CategoryId = 9,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 20000m,
                             ProductName = "Găng tay thực phẩm hộp 100 chiếc",
                             StockQuantity = 0
@@ -1571,7 +1571,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 93,
                             Barcode = "893456789093",
                             CategoryId = 13,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 55000m,
                             ProductName = "Cà phê hòa tan hộp 20 gói",
                             StockQuantity = 0
@@ -1581,7 +1581,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 94,
                             Barcode = "893456789094",
                             CategoryId = 13,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 65000m,
                             ProductName = "Cà phê rang xay gói 250g",
                             StockQuantity = 0
@@ -1591,7 +1591,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 95,
                             Barcode = "893456789095",
                             CategoryId = 13,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 45000m,
                             ProductName = "Yến mạch túi 500g",
                             StockQuantity = 0
@@ -1601,7 +1601,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 96,
                             Barcode = "893456789096",
                             CategoryId = 13,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 48000m,
                             ProductName = "Ngũ cốc dinh dưỡng túi 400g",
                             StockQuantity = 0
@@ -1611,7 +1611,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 97,
                             Barcode = "893456789097",
                             CategoryId = 13,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 35000m,
                             ProductName = "Trà túi lọc hộp 25 túi",
                             StockQuantity = 0
@@ -1621,7 +1621,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 98,
                             Barcode = "893456789098",
                             CategoryId = 13,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 55000m,
                             ProductName = "Bột cacao hộp 200g",
                             StockQuantity = 0
@@ -1631,7 +1631,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 99,
                             Barcode = "893456789099",
                             CategoryId = 13,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 38000m,
                             ProductName = "Bột đậu xanh túi 500g",
                             StockQuantity = 0
@@ -1641,7 +1641,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             ProductId = 100,
                             Barcode = "893456789100",
                             CategoryId = 13,
-                            DataSource = "Tham khảo thực hành; chưa xác minh từ cửa hàng",
+                            DataSource = "Kho tổng Thiên Ân",
                             Price = 95000m,
                             ProductName = "Gạo trắng túi 5kg",
                             StockQuantity = 0

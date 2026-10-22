@@ -44,7 +44,7 @@ public sealed class CheckoutRegressionTests : IDisposable
         Assert.Equal(100, _db.Products.Count());
         Assert.Equal(100, _db.Products.Select(p=>p.Barcode).Distinct().Count());
         Assert.All(_db.Products.ToList(), p => Assert.Matches("^[0-9]+$", p.Barcode));
-        Assert.All(_db.Products.ToList(), p=>Assert.Contains("Tham khảo", p.DataSource));
+        Assert.All(_db.Products.ToList(), p=>Assert.Equal("Kho tổng Thiên Ân", p.DataSource));
         Assert.All(_db.Products.Where(p=>p.ProductId>20).ToList(), p=>Assert.Equal(0,p.StockQuantity));
         foreach (var order in _db.Orders.Include(o=>o.OrderDetails))
         {
@@ -66,11 +66,14 @@ public sealed class CheckoutRegressionTests : IDisposable
         db.Database.ExecuteSqlRaw("UPDATE Products SET StockQuantity=123, Price=777 WHERE ProductId=1");
         db.Database.ExecuteSqlRaw("UPDATE Customers SET CustomerName='Edited customer',PhoneNumber='CUSTOM-1' WHERE CustomerId=1");
         db.Database.ExecuteSqlRaw("INSERT INTO Products (ProductId,Barcode,ProductName,Price,StockQuantity,CategoryId) VALUES(101,'893456789101','User product',500,7,1)");
+        db.GetService<IMigrator>().Migrate("20261022113129_SynchronizeNumericBarcodesSqlite");
+        db.Database.ExecuteSqlRaw("UPDATE Products SET DataSource='Nguồn đã chỉnh sửa' WHERE ProductId=1");
         db.Database.Migrate();
         db.Database.Migrate();
         Assert.Equal(101,db.Products.Count());
         Assert.Equal(123,db.Products.Single(p=>p.ProductId==1).StockQuantity);
         Assert.Equal(777m,db.Products.Single(p=>p.ProductId==1).Price);
+        Assert.Equal("Nguồn đã chỉnh sửa",db.Products.Single(p=>p.ProductId==1).DataSource);
         Assert.Equal(7,db.Products.Single(p=>p.ProductId==101).StockQuantity);
         Assert.Equal("Edited customer",db.Customers.Single(c=>c.CustomerId==1).CustomerName);
         Assert.Equal(1,db.Orders.Single(o=>o.OrderId==1).CustomerId);
