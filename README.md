@@ -1,105 +1,90 @@
-# Hệ thống bán lẻ Thiên Ân
+# Hệ thống Bán lẻ Bách hóa Thiên Ân (MiniSupermarket)
 
-Ứng dụng thực hành .NET 8 gồm ASP.NET Core Web API, WinForms POS và SQL Server Express.
-Đã triển khai nội dung buổi 1–6: CRUD, JWT/phân quyền, EF Core migrations, ADO.NET transaction, phân trang LINQ và WinForms client-server.
+Dự án đồ án học phần **Lập trình ứng dụng C# .NET Core** (Buổi 1 – Buổi 6).  
+Hệ thống quản trị bán lẻ theo kiến trúc phân tầng chuyên nghiệp: **ASP.NET Core Web API (Backend)** kết hợp **Windows Forms Client (Desktop)** và cơ sở dữ liệu **Microsoft SQL Server Express**.
 
-## Nguồn dữ liệu
+---
 
-**Bộ dữ liệu tham khảo phục vụ thực hành, chưa xác minh từ website chính thức Bách Hóa Thiên Ân.**
+## 1. Thành phần kiến trúc hệ thống
 
-- 100 mặt hàng, mã riêng biệt, 15 danh mục.
-- 100 mặt hàng dùng mã vạch số 12 chữ số liên tiếp từ `893456789001` đến `893456789100`. 80 mặt hàng bổ sung có tồn kho ban đầu 0; nhập tồn kho trước khi bán.
-- Mã nội bộ không phải barcode nhà sản xuất; giá không phải bảng giá xác nhận của cửa hàng.
-- `Products.DataSource` phân biệt `Kho tổng Thiên Ân` với sản phẩm `Nhập thủ công`.
-- CSDL mới không tự tạo khách mẫu. Hồ sơ khách được nhập qua API/WinForms. Migration chỉ dọn hồ sơ còn khớp chính xác tên và mã DEMO; giữ nguyên khách đã sửa và hóa đơn hiện có. Nhân viên và hóa đơn seed là dữ liệu thực hành.
-- Hóa đơn mẫu có đủ 22 dòng chi tiết, tổng tiền và số lượng được đối soát. Số dư điểm seed là số dư thực hành, không phải sổ điểm của cửa hàng.
+- **Backend Web API (`HeThongBanLeThienAn.API`)**:
+  - Cung cấp **33 Endpoints RESTful** phục vụ toàn bộ nghiệp vụ bán hàng, quản lý và báo cáo điều hành.
+  - Tích hợp tài liệu tương tác trực quan qua **Swagger UI** tại `http://localhost:5167/swagger`.
+  - Bảo mật không trạng thái bằng **JWT Bearer Token** kết hợp cơ chế kiểm soát truy cập phân quyền dựa trên vai trò (**Role-Based Access Control - RBAC**).
+  - Thuật toán băm mật khẩu chuẩn bảo mật OWASP: **PBKDF2-SHA256** với muối ngẫu nhiên 16 byte (128-bit) và 120.000 vòng lặp, chống tấn công vét cạn bằng GPU và so sánh chuỗi thời gian không đổi chống Timing Attack.
+  - Quản lý dữ liệu hỗn hợp: **Entity Framework Core 8 Code-First Migrations** cho danh mục, phân trang LINQ server-side (`.Skip()`, `.Take()`) kết hợp **ADO.NET thuần (`Microsoft.Data.SqlClient`)** cho giao dịch thanh toán POS đạt chuẩn **ACID** trong `DbTransaction`.
+  - Cơ chế cập nhật kho hàng nguyên tử có điều kiện `AND StockQuantity >= @Qty` triệt tiêu hoàn toàn lỗi bán âm kho khi nhiều quầy thanh toán đồng thời.
 
-## Khởi chạy
+- **Frontend Client (`HeThongBanLeThienAn.WinForms`)**:
+  - Thiết kế theo kiến trúc bàn làm việc đơn thống nhất **Single-Form Shell Workspace (`FormMainShell`)**.
+  - Giao diện quầy thu ngân **POS (`FormPOS`)**: bắt sự kiện phím tắt, quét mã vạch USB HID, tính chiết khấu điểm thưởng thành viên, thanh toán nguyên tử và in hóa đơn.
+  - Quản lý danh mục hàng hóa **(`FormProductManagement`)**: DataGridView phân trang máy chủ, lọc nhóm ngành hàng, tìm kiếm thời gian thực, cảnh báo tồn kho thấp ($\le 10$) bằng màu sắc và xuất dữ liệu ra file CSV chuẩn UTF-8 BOM xem trực tiếp trên Excel không lỗi font.
+  - Quản lý khách hàng thành viên **(`FormCustomerManagement`)**: tra cứu số điện thoại, tích lũy điểm thưởng và phân hạng thẻ tự động (Đồng, Bạc, Vàng, Kim Cương).
+  - Quản lý tài khoản nhân viên **(`FormUserManagement`)**: phân quyền RBAC (Admin, Cashier, Warehouse), quản lý kích hoạt / khóa tài khoản.
+  - Báo cáo thống kê điều hành **(`FormQuickReport`)**: tổng hợp 4 chỉ số KPI kinh doanh, tự động vẽ biểu đồ cột doanh thu bằng **GDI+** và bảng thống kê Top 5 sản phẩm bán chạy qua các Stored Procedure SQL Server.
 
-```powershell
-dotnet run --project HeThongBanLeThienAn.API
-dotnet run --project HeThongBanLeThienAn.WinForms
+---
+
+## 2. Nguồn dữ liệu & Tài khoản kiểm thử
+
+Hệ thống được nạp sẵn bộ dữ liệu danh mục thực hành phong phú thông qua cơ chế Data Seeding:
+- **100 mặt hàng** với mã vạch số 12 chữ số liên tiếp từ `893456789001` đến `893456789100`.
+- **15 nhóm ngành hàng** siêu thị phân loại chi tiết.
+- **15 tài khoản nhân viên** phân quyền mẫu trong SQL Server:
+
+| Tên tài khoản | Vai trò (Role) | Mật khẩu mặc định | Quyền hạn và phạm vi nghiệp vụ |
+| :--- | :---: | :---: | :--- |
+| `admin` | **Admin** | `admin@123` | Toàn quyền quản trị hệ thống, xem báo cáo KPI doanh thu, hủy đơn |
+| `cashier01` | **Cashier** | `cashier@123` | Thu ngân quầy 01, thực thi bán hàng POS và quản lý khách hàng |
+| `warehouse01` | **Warehouse** | `wh@123` | Thủ kho, quản lý danh mục sản phẩm, nhóm hàng và kiểm kê tồn kho |
+
+---
+
+## 3. Hướng dẫn khởi chạy hệ thống
+
+### 3.1. Yêu cầu môi trường
+- .NET 8.0 SDK (hoặc mới hơn).
+- Microsoft SQL Server 2019/2022 hoặc SQL Server Express (`localhost\SQLEXPRESS`).
+
+### 3.2. Cập nhật Cơ sở dữ liệu (Database Migration)
+Cấu hình chuỗi kết nối trong tệp `HeThongBanLeThienAn.API/appsettings.json`:
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=MiniSupermarketDb;Trusted_Connection=True;TrustServerCertificate=True;"
+}
 ```
-
-API: http://localhost:5167; Swagger: http://localhost:5167/swagger.
-Kết nối mặc định: `localhost\\SQLEXPRESS`, database `MiniSupermarketDb`, Windows Authentication.
-
-API áp dụng migration lúc khởi động. **Không dùng EnsureDeleted/EnsureCreated hoặc kiểm tra số lượng bản ghi để reset CSDL.**
-Ứng dụng chỉ dùng migration SQL Server trong `Migrations/SqlServer`.
-
-Khởi tạo/cập nhật SQL Server thủ công khi cần:
-
+Khởi chạy migration để tự động tạo cấu trúc bảng, chỉ mục Unique, Stored Procedure và seed dữ liệu mẫu:
 ```powershell
 dotnet ef database update --context SqlServerSupermarketDbContext --project HeThongBanLeThienAn.API --startup-project HeThongBanLeThienAn.API
 ```
 
-Tài khoản demo trong SQL Server:
+### 3.3. Chạy ứng dụng
+Mở 2 cửa sổ terminal độc lập:
 
-| Vai trò | Tài khoản | Mật khẩu |
-|---|---|---|
-| Admin | admin | admin@123 |
-| Thu ngân | cashier01 | cashier@123 |
-| Thủ kho | warehouse01 | wh@123 |
+1. **Khởi động Backend Web API**:
+   ```powershell
+   dotnet run --project HeThongBanLeThienAn.API --urls "http://localhost:5167"
+   ```
+   Truy cập tài liệu Swagger tại: `http://localhost:5167/swagger`
 
-Mật khẩu được lưu bằng PBKDF2-SHA256 (120.000 vòng lặp, salt ngẫu nhiên); API không trả trường băm ra client.
-Đăng nhập qua CSDL không chấp nhận mật khẩu chung 123456 và không quay về danh sách tài khoản RAM khi sai mật khẩu.
+2. **Khởi động Frontend WinForms Client**:
+   ```powershell
+   dotnet run --project HeThongBanLeThienAn.WinForms
+   ```
 
-## POS và giao dịch
+---
 
-- WinForms gọi `POST /api/checkout`; route cũ `POST /api/orders/checkout` dùng cùng `CheckoutService`.
-- Chỉ Admin/Cashier được thanh toán; danh tính thu ngân lấy từ JWT, không tin danh tính gửi trong body.
-- Gộp dòng trùng sản phẩm; từ chối số lượng <= 0, thiếu hàng, sản phẩm/khách không tồn tại.
-- Giá lấy từ CSDL; giá client không quyết định tiền hóa đơn.
-- Tạo hóa đơn, lưu chi tiết, trừ kho, cộng điểm trong một transaction ADO.NET.
-- Lỗi bất kỳ hoàn tác tất cả thay đổi. Cập nhật kho có điều kiện để không bán âm.
-- Khách vãng lai có CustomerId null, không tích điểm vào thành viên khác.
-- Khách có số điện thoại chưa đăng ký cần được tạo hồ sơ hoặc để trống để bán vãng lai.
-- Admin hủy đơn qua `DELETE /api/checkout/cancel/{orderId}`: hoàn trả tồn, điểm và hạng thẻ trong một transaction.
-- POS khóa thao tác thanh toán khi đang gửi để tránh bấm liên tục; hiển thị số tiền từ kết quả máy chủ.
-- Thành viên có thể đổi theo bội số 50 điểm (50 điểm = 50.000 đ); trừ điểm, giảm tiền, lưu hóa đơn và trừ kho cùng một transaction. Hủy đơn hoàn lại chính xác tồn kho và điểm đã đổi.
+## 4. Báo cáo Đồ án
 
-## Báo cáo và buổi 5
+> **Lưu ý:**
+> Quyển **Báo cáo Đồ án tốt nghiệp chính thức** (định dạng Microsoft Word `.docx` và Adobe PDF `.pdf` đạt chuẩn **80 trang**, đầy đủ mục lục, danh mục bảng biểu, sơ đồ kiến trúc và phân tích học thuật chi tiết) **được nộp riêng trực tiếp cho Giảng viên hướng dẫn / Hội đồng nghiệm thu**, không lưu trữ trực tiếp trên repository GitHub này.
 
-- `GET /api/reports/quick?date=yyyy-MM-dd`: doanh thu/số đơn thực tế theo ngày, hàng bán chạy tính theo tổng số lượng bán; ngày trống trả 0.
-- `GET /api/reports/dashboard-summary?fromDate=...&toDate=...`: trả 4 KPI, chuỗi doanh thu từng ngày và Top 5 sản phẩm bán chạy.
-- `GET /api/reports/revenue-by-cashier`, `/revenue-by-date`, `/top-selling-products`: tổng hợp qua SQL có tham số, chỉ Admin.
-- Khoảng ngày gồm toàn bộ ngày kết thúc, không bỏ giao dịch sau 00:00.
-- `GET /api/ado-products/barcode/{barcode}`, `/disconnected-cache`, `/filter-stock`, `/count-by-category`: tra cứu ADO.NET, yêu cầu Admin/Cashier/Warehouse.
-- Ba Stored Procedure `sp_GetRevenueByCashier`, `sp_GetRevenueByDateRange` và `sp_GetTop5SellingProducts` được tạo thật bằng migration SQL Server.
-- `Data/StoredProcedures_Buoi5.sql` là bản T-SQL có thể mở và trình diễn trực tiếp trong SSMS.
+---
 
-## Buổi 6
+## 5. Thông tin tác giả
 
-- `GET /api/products/paged`: phân trang phía máy chủ bằng `OrderBy`/`Skip`/`Take`, tìm theo tên hoặc barcode, lọc theo danh mục, trả tên danh mục.
-- `GET /api/customers/paged`: bài mở rộng phân trang khách hàng theo điểm thưởng giảm dần.
-- `FormProductManagement` dùng `ApiClientService` chung có JWT, tải 5 sản phẩm mỗi trang, tìm kiếm, lọc nhóm hàng và CRUD trực tiếp qua API.
-- Nút Trang trước/Trang sau bị khóa đúng tại biên và trong lúc request đang chạy để tránh gửi chồng yêu cầu.
-- Hàng tồn `<= 10` được tô đỏ bằng `CellFormatting`; danh mục sản phẩm và báo cáo doanh thu có thể xuất CSV UTF-8.
-- Dashboard cho phép chọn khoảng ngày, hiển thị 4 KPI, biểu đồ cột doanh thu và Top 5 sản phẩm.
-
-## Kiểm thử
-
-```powershell
-dotnet test HeThongBanLeThienAn.Tests --no-restore
-dotnet build HeThongBanLeThienAn.WinForms --no-restore
-```
-
-Kiểm thử hồi quy tự động vẫn dùng SQLite/InMemory tạm để chạy độc lập. Kiểm thử tích hợp SQL Server xác nhận migration, Stored Procedure, đăng nhập, phân trang, checkout, đổi điểm và rollback/hủy đơn.
-
-## Tác giả
-
-Vương Nguyễn Trường Hưng — MSSV 2124110111 — Lớp CCQ2411D.
-
-## Báo cáo đồ án
-
-- `docs/report/BaoCao_DoAn_HeThongBanLeThienAn_2124110111.docx`: bản Word theo mẫu học phần, có mục lục tự động và ma trận 50 tiêu chí.
-- `docs/report/BaoCao_DoAn_HeThongBanLeThienAn_2124110111.pdf`: bản PDF đã render kiểm tra 18 trang.
-
-## SQL Server
-
-- Runtime chỉ đăng ký `SqlServerSupermarketDbContext`; không còn lựa chọn provider hay file database nhúng.
-- Toàn bộ migration chạy thật nằm trong `Migrations/SqlServer`.
-- ADO.NET dùng `Microsoft.Data.SqlClient`, `SqlConnection`, `SqlCommand`, `SqlDataReader`, `SqlDataAdapter` và transaction thật trên SQL Server.
-- SQLite chỉ còn là dependency của project kiểm thử để tạo database in-memory cô lập; không được đóng gói trong API.
-
-Trong SSMS, kết nối Server name `localhost\\SQLEXPRESS`, chọn **Windows Authentication**, rồi mở database `MiniSupermarketDb`.
+- **Sinh viên thực hiện:** Vương Nguyễn Trường Hưng
+- **Mã số sinh viên (MSSV):** 2124110111
+- **Lớp học phần:** CCQ2411D — Lập trình ứng dụng C# .NET Core
+- **Giảng viên giảng dạy:** ThS. Nguyễn Cao Thái
+- **Thời gian hoàn thành:** Học kỳ I, năm học 2026 - 2027
