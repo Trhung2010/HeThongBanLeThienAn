@@ -65,6 +65,26 @@ namespace MiniSupermarket.API.Models
         public string CashierUsername { get; set; } = string.Empty;
         public int? CustomerId { get; set; }
         public string? CustomerPhone { get; set; }
+        public int RedeemPoints { get; set; }
         public List<CartItemCheckoutDto> Items { get; set; } = new();
+    }
+
+    public sealed class RevenuePointDto
+    {
+        public DateTime Date { get; set; }
+        public decimal Revenue { get; set; }
+        public int Orders { get; set; }
+    }
+
+    public sealed class DashboardSummaryDto
+    {
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public decimal RevenueToday { get; set; }
+        public int TotalOrders { get; set; }
+        public int NewCustomers { get; set; }
+        public int LowStockItems { get; set; }
+        public List<RevenuePointDto> RevenueSeries { get; set; } = new();
+        public List<TopSellingProductDto> TopSellingProducts { get; set; } = new();
     }
 }

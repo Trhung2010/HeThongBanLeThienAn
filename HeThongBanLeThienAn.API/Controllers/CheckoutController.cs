@@ -19,9 +19,10 @@ public class CheckoutController : ControllerBase
         try
         {
             string cashier = User?.Identity?.Name ?? request.CashierUsername;
-            var r = _service.Checkout(cashier, request.CustomerId, request.CustomerPhone, request.Items);
+            var r = _service.Checkout(cashier, request.CustomerId, request.CustomerPhone, request.Items, request.RedeemPoints);
             return Ok(new { success = true, orderId = r.OrderId, orderCode = r.OrderCode,
-                totalItems = r.TotalItems, finalAmount = r.FinalAmount, totalAmount = r.FinalAmount,
+                totalItems = r.TotalItems, subtotal = r.Subtotal, discountAmount = r.DiscountAmount,
+                finalAmount = r.FinalAmount, totalAmount = r.FinalAmount, redeemedPoints = r.RedeemedPoints,
                 rewardPointsAdded = r.RewardPointsAdded, customer = r.Customer, timestamp = r.Timestamp });
         }
         catch (Exception ex) when (ex is InvalidOperationException or OverflowException or System.Data.Common.DbException)

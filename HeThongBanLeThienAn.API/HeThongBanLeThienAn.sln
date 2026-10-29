@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeThongBanLeThienAn.API", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeThongBanLeThienAn.WinForms", "..\HeThongBanLeThienAn.WinForms\HeThongBanLeThienAn.WinForms.csproj", "{BCC08111-29E0-400B-A59A-94940E8E95B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeThongBanLeThienAn.Tests", "..\HeThongBanLeThienAn.Tests\HeThongBanLeThienAn.Tests.csproj", "{AFA7F192-F4ED-4507-AC06-4738A7C855E0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,18 +41,6 @@ Global
 		{BCC08111-29E0-400B-A59A-94940E8E95B3}.Release|x64.Build.0 = Release|Any CPU
 		{BCC08111-29E0-400B-A59A-94940E8E95B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{BCC08111-29E0-400B-A59A-94940E8E95B3}.Release|x86.Build.0 = Release|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Debug|x64.Build.0 = Debug|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Debug|x86.Build.0 = Debug|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Release|x64.ActiveCfg = Release|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Release|x64.Build.0 = Release|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Release|x86.ActiveCfg = Release|Any CPU
-		{AFA7F192-F4ED-4507-AC06-4738A7C855E0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

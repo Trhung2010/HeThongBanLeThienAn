@@ -270,33 +270,112 @@ namespace MiniSupermarket.API.Controllers
             });
         }
 
-        // Tương thích ngược với endpoint cũ GET api/reports/quick
+        [HttpGet("dashboard-summary")]
+        public async Task<IActionResult> GetDashboardSummary(
+            [FromQuery] DateTime? fromDate,
+            [FromQuery] DateTime? toDate)
+        {
+            if (_context == null) return StatusCode(500, new { message = "Thiếu kết nối báo cáo." });
+
+            DateTime start = (fromDate ?? DateTime.Today.AddDays(-6)).Date;
+            DateTime endInclusive = (toDate ?? DateTime.Today).Date;
+            if (start > endInclusive)
+                return BadRequest(new { message = "Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc." });
+            if ((endInclusive - start).TotalDays > 366)
+                return BadRequest(new { message = "Khoảng báo cáo tối đa là 366 ngày." });
+
+            DateTime endExclusive = endInclusive.AddDays(1);
+            var orders = await _context.Orders.AsNoTracking()
+                .Where(o => o.CreatedDate >= start && o.CreatedDate < endExclusive)
+                .Select(o => new { o.OrderId, o.CreatedDate, o.FinalAmount })
+                .ToListAsync();
+            var orderIds = orders.Select(o => o.OrderId).ToList();
+
+            var detailRows = await _context.OrderDetails.AsNoTracking()
+                .Where(d => orderIds.Contains(d.OrderId))
+                .Select(d => new
+                {
+                    d.ProductId,
+                    d.Product!.Barcode,
+                    d.Product.ProductName,
+                    d.Product.Price,
+                    d.Quantity,
+                    d.LineTotal
+                })
+                .ToListAsync();
+
+            // Group on the client so the same query works on SQL Server and the
+            // SQLite provider used by regression tests (SQLite cannot SUM decimal).
+            var topSelling = detailRows
+                .GroupBy(d => new { d.ProductId, d.Barcode, d.ProductName, d.Price })
+                .Select(g => new TopSellingProductDto
+                {
+                    ProductId = g.Key.ProductId,
+                    Barcode = g.Key.Barcode,
+                    ProductName = g.Key.ProductName,
+                    Price = g.Key.Price,
+                    TotalSoldQuantity = g.Sum(d => d.Quantity),
+                    TotalSalesAmount = g.Sum(d => d.LineTotal)
+                })
+                .OrderByDescending(x => x.TotalSoldQuantity)
+                .ThenByDescending(x => x.TotalSalesAmount)
+                .Take(5)
+                .ToList();
+
+            var revenueByDate = orders
+                .GroupBy(o => o.CreatedDate.Date)
+                .ToDictionary(g => g.Key, g => new
+                {
+                    Revenue = g.Sum(o => o.FinalAmount),
+                    Orders = g.Count()
+                });
+
+            var series = new List<RevenuePointDto>();
+            for (DateTime day = start; day <= endInclusive; day = day.AddDays(1))
+            {
+                revenueByDate.TryGetValue(day, out var summary);
+                series.Add(new RevenuePointDto
+                {
+                    Date = day,
+                    Revenue = summary?.Revenue ?? 0,
+                    Orders = summary?.Orders ?? 0
+                });
+            }
+
+            return Ok(new DashboardSummaryDto
+            {
+                FromDate = start,
+                ToDate = endInclusive,
+                RevenueToday = orders.Sum(o => o.FinalAmount),
+                TotalOrders = orders.Count,
+                NewCustomers = await _context.Customers.AsNoTracking()
+                    .CountAsync(c => c.CreatedDate >= start && c.CreatedDate < endExclusive),
+                LowStockItems = await _context.Products.AsNoTracking()
+                    .CountAsync(p => p.StockQuantity <= 10),
+                RevenueSeries = series,
+                TopSellingProducts = topSelling
+            });
+        }
+
+        // Endpoint cũ vẫn hoạt động cho client đã phát hành.
         [HttpGet("quick")]
         public async Task<IActionResult> GetQuickReport([FromQuery] string? date)
         {
             DateTime queryDate = DateTime.Today;
-            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out DateTime parsedDate))
-            {
-                queryDate = parsedDate.Date;
-            }
+            if (!string.IsNullOrWhiteSpace(date) && !DateTime.TryParse(date, out queryDate))
+                return BadRequest(new { message = "Ngày báo cáo không hợp lệ." });
 
-            if (_context == null) return StatusCode(500, new { message = "Thiếu kết nối báo cáo." });
-            var nextDay = queryDate.AddDays(1);
-            var orders = await _context.Orders.AsNoTracking()
-                .Where(o => o.CreatedDate >= queryDate && o.CreatedDate < nextDay)
-                .Select(o => new { o.OrderId, o.FinalAmount }).ToListAsync();
-            var orderIds = orders.Select(o => o.OrderId).ToList();
-            var bestSeller = await _context.OrderDetails.AsNoTracking()
-                .Where(d => orderIds.Contains(d.OrderId))
-                .GroupBy(d => new { d.ProductId, d.Product!.ProductName })
-                .OrderByDescending(g => g.Sum(d => d.Quantity)).ThenBy(g => g.Key.ProductId)
-                .Select(g => g.Key.ProductName).FirstOrDefaultAsync();
+            IActionResult dashboardResult = await GetDashboardSummary(queryDate.Date, queryDate.Date);
+            if (dashboardResult is not OkObjectResult { Value: DashboardSummaryDto dashboard })
+                return dashboardResult;
+
             return Ok(new
             {
-                ReportDate = queryDate.ToString("yyyy-MM-dd"),
-                TotalOrders = orders.Count,
-                TotalRevenue = orders.Sum(o => o.FinalAmount),
-                BestSeller = bestSeller ?? "Chưa có giao dịch"
+                dashboard.TotalOrders,
+                TotalRevenue = dashboard.RevenueToday,
+                BestSeller = dashboard.TopSellingProducts.FirstOrDefault()?.ProductName ?? "Chưa có dữ liệu",
+                dashboard.NewCustomers,
+                dashboard.LowStockItems
             });
         }
     }

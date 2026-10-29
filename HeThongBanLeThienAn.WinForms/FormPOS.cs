@@ -12,11 +12,21 @@ namespace MiniSupermarket.WinForms
     {
         private bool _checkoutInProgress;
         private readonly List<CartItemDto> _cart = new List<CartItemDto>();
+        private int _customerRewardPoints;
+        private readonly CheckBox _chkRedeemPoints = new()
+        {
+            AutoSize = true,
+            Location = new Point(12, 320),
+            Text = "Dùng 50 điểm giảm 50.000 đ",
+            Enabled = false
+        };
 
         public FormPOS()
         {
             InitializeComponent();
             SetupCartGrid();
+            grpPayment.Controls.Add(_chkRedeemPoints);
+            _chkRedeemPoints.CheckedChanged += (_, _) => UpdateCartDisplay();
         }
 
         private void SetupCartGrid()
@@ -125,7 +135,7 @@ namespace MiniSupermarket.WinForms
             dgvCart.DataSource = null;
             dgvCart.DataSource = _cart.ToList();
 
-            decimal total = _cart.Sum(x => x.TotalPrice);
+            decimal total = GetFinalAmount();
             lblTotalAmount.Text = $"{total:N0} đ";
 
             CalculateChange();
@@ -138,7 +148,7 @@ namespace MiniSupermarket.WinForms
 
         private void CalculateChange()
         {
-            decimal total = _cart.Sum(x => x.TotalPrice);
+            decimal total = GetFinalAmount();
 
             if (decimal.TryParse(txtCashReceived.Text.Replace(",", "").Replace(".", "").Trim(), out decimal cashReceived))
             {
@@ -159,6 +169,13 @@ namespace MiniSupermarket.WinForms
                 lblChange.Text = "0 đ";
                 lblChange.ForeColor = Color.ForestGreen;
             }
+        }
+
+        private decimal GetFinalAmount()
+        {
+            decimal subtotal = _cart.Sum(x => x.TotalPrice);
+            decimal discount = _chkRedeemPoints.Checked ? 50000m : 0m;
+            return Math.Max(0m, subtotal - discount);
         }
 
         private void btnClearCart_Click(object sender, EventArgs e)
@@ -194,6 +211,9 @@ namespace MiniSupermarket.WinForms
             if (string.IsNullOrEmpty(phone))
             {
                 lblCustomerName.Text = "Khách hàng: Vãng lai";
+                _customerRewardPoints = 0;
+                _chkRedeemPoints.Checked = false;
+                _chkRedeemPoints.Enabled = false;
                 return;
             }
 
@@ -204,15 +224,24 @@ namespace MiniSupermarket.WinForms
                 {
                     var cust = customers.First();
                     lblCustomerName.Text = $"Khách: {cust.CustomerName} ({cust.MembershipRank}) - {cust.RewardPoints}đ";
+                    _customerRewardPoints = cust.RewardPoints;
+                    _chkRedeemPoints.Enabled = cust.RewardPoints >= 50;
+                    if (!_chkRedeemPoints.Enabled) _chkRedeemPoints.Checked = false;
                 }
                 else
                 {
                     lblCustomerName.Text = "SĐT chưa đăng ký (Khách mới)";
+                    _customerRewardPoints = 0;
+                    _chkRedeemPoints.Checked = false;
+                    _chkRedeemPoints.Enabled = false;
                 }
             }
             catch
             {
                 lblCustomerName.Text = "Không tra cứu được khách hàng";
+                _customerRewardPoints = 0;
+                _chkRedeemPoints.Checked = false;
+                _chkRedeemPoints.Enabled = false;
             }
         }
 
@@ -225,7 +254,14 @@ namespace MiniSupermarket.WinForms
                 return;
             }
 
-            decimal total = _cart.Sum(x => x.TotalPrice);
+            decimal subtotal = _cart.Sum(x => x.TotalPrice);
+            if (_chkRedeemPoints.Checked && (_customerRewardPoints < 50 || subtotal < 50000m))
+            {
+                MessageBox.Show("Đổi điểm cần khách hàng có ít nhất 50 điểm và hóa đơn từ 50.000 đ.",
+                    "Không thể đổi điểm", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            decimal total = GetFinalAmount();
             if (!decimal.TryParse(txtCashReceived.Text.Replace(",", "").Replace(".", "").Trim(), out decimal cashReceived) || cashReceived < total)
             {
                 MessageBox.Show("Nhập số tiền khách đưa hợp lệ và đủ thanh toán.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -236,6 +272,7 @@ namespace MiniSupermarket.WinForms
             {
                 CashierUsername = SessionManager.CurrentUsername,
                 CustomerPhone = txtCustomerPhone.Text.Trim(),
+                RedeemPoints = _chkRedeemPoints.Checked ? 50 : 0,
                 Items = _cart.Select(i => new
                 {
                     i.ProductId,
@@ -253,9 +290,10 @@ namespace MiniSupermarket.WinForms
                 if (response.IsSuccessStatusCode)
                 {
                     using var receipt = System.Text.Json.JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-                    total = receipt.RootElement.GetProperty("finalAmount").GetDecimal();
+                    decimal finalAmount = receipt.RootElement.GetProperty("finalAmount").GetDecimal();
+                    decimal discount = receipt.RootElement.GetProperty("discountAmount").GetDecimal();
                     MessageBox.Show(
-                        $"Thanh toán thành công!\nTổng tiền: {total:N0} đ\nĐã xuất hóa đơn và cập nhật kho hàng.",
+                        $"Thanh toán thành công!\nTạm tính: {subtotal:N0} đ\nGiảm từ điểm: {discount:N0} đ\nThanh toán: {finalAmount:N0} đ\nĐã xuất hóa đơn và cập nhật kho hàng.",
                         "Thành công",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
@@ -265,6 +303,9 @@ namespace MiniSupermarket.WinForms
                     txtCashReceived.Clear();
                     txtCustomerPhone.Clear();
                     lblCustomerName.Text = "Khách hàng: Vãng lai";
+                    _customerRewardPoints = 0;
+                    _chkRedeemPoints.Checked = false;
+                    _chkRedeemPoints.Enabled = false;
                     txtBarcode.Focus();
                 }
                 else

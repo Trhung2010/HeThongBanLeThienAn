@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -14,6 +14,10 @@ namespace MiniSupermarket.WinForms
             cboRole.Items.AddRange(new string[] { "Admin", "Cashier", "Warehouse" });
             cboRole.SelectedIndex = 1;
         }
+        private const int PageSize = 5;
+        private int _currentPage = 1;
+        private int _totalPages = 1;
+        private bool _isLoading = false;
 
         private async void FormUserManagement_Load(object sender, EventArgs e)
         {
@@ -71,14 +75,57 @@ namespace MiniSupermarket.WinForms
 
         private async Task LoadUsersAsync()
         {
+            if (_isLoading) return;
+            _isLoading = true;
+            SetPagingControlsEnabled(false);
+
             try
             {
-                var users = await ApiClientService.Client.GetFromJsonAsync<List<UserDto>>("users");
-                dgvUsers.DataSource = users;
+                string url = $"users/paged?pageNumber={_currentPage}&pageSize={PageSize}";
+                var result = await ApiClientService.Client.GetFromJsonAsync<PagedViewResult<UserDto>>(url);
+                if (result != null)
+                {
+                    _currentPage = Math.Max(result.CurrentPage, 1);
+                    _totalPages = result.TotalPages;
+                    dgvUsers.DataSource = result.Items;
+                    lblPaging.Text = result.TotalPages == 0
+                        ? "Trang 0 / 0 (Tổng: 0 tài khoản)"
+                        : $"Trang {_currentPage} / {_totalPages} (Tổng: {result.TotalItems} tài khoản)";
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi lấy danh sách tài khoản: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                _isLoading = false;
+                SetPagingControlsEnabled(true);
+            }
+        }
+
+        private void SetPagingControlsEnabled(bool enabled)
+        {
+            btnPrev.Enabled = enabled && _currentPage > 1;
+            btnNext.Enabled = enabled && _currentPage < _totalPages;
+            btnReload.Enabled = enabled;
+        }
+
+        private async void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                await LoadUsersAsync();
+            }
+        }
+
+        private async void btnNext_Click(object sender, EventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                await LoadUsersAsync();
             }
         }
 
@@ -129,6 +176,7 @@ namespace MiniSupermarket.WinForms
 
         private async void btnReload_Click(object sender, EventArgs e)
         {
+            _currentPage = 1;
             await LoadUsersAsync();
         }
     }

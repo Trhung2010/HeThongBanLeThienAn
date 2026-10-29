@@ -151,6 +151,9 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -196,6 +199,9 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("FinalAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -203,6 +209,9 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("RedeemedPoints")
+                        .HasColumnType("int");
 
                     b.Property<int>("RewardPoints")
                         .HasColumnType("int");
@@ -225,8 +234,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 1,
                             CashierUsername = "cashier01",
                             CreatedDate = new DateTime(2026, 10, 1, 8, 30, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 57000m,
                             OrderCode = "HD20261001-001",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 3
                         },
@@ -235,8 +246,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 2,
                             CashierUsername = "cashier01",
                             CreatedDate = new DateTime(2026, 10, 1, 9, 15, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 145000m,
                             OrderCode = "HD20261001-002",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 2
                         },
@@ -245,8 +258,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 3,
                             CashierUsername = "cashier02",
                             CreatedDate = new DateTime(2026, 10, 1, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 45000m,
                             OrderCode = "HD20261001-003",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 10
                         },
@@ -255,8 +270,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 4,
                             CashierUsername = "cashier02",
                             CreatedDate = new DateTime(2026, 10, 2, 8, 45, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 138000m,
                             OrderCode = "HD20261002-001",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 4
                         },
@@ -265,8 +282,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 5,
                             CashierUsername = "cashier03",
                             CreatedDate = new DateTime(2026, 10, 2, 11, 20, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 69000m,
                             OrderCode = "HD20261002-002",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 2
                         },
@@ -275,8 +294,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 6,
                             CashierUsername = "cashier03",
                             CreatedDate = new DateTime(2026, 10, 3, 14, 10, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 53500m,
                             OrderCode = "HD20261003-001",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 1
                         },
@@ -285,8 +306,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 7,
                             CashierUsername = "cashier04",
                             CreatedDate = new DateTime(2026, 10, 3, 16, 40, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 30000m,
                             OrderCode = "HD20261003-002",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 5
                         },
@@ -295,8 +318,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 8,
                             CashierUsername = "cashier04",
                             CreatedDate = new DateTime(2026, 10, 4, 9, 5, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 155000m,
                             OrderCode = "HD20261004-001",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 2
                         },
@@ -305,8 +330,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 9,
                             CashierUsername = "cashier05",
                             CreatedDate = new DateTime(2026, 10, 4, 13, 30, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 41000m,
                             OrderCode = "HD20261004-002",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 3
                         },
@@ -315,8 +342,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 10,
                             CashierUsername = "cashier05",
                             CreatedDate = new DateTime(2026, 10, 5, 10, 50, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 168000m,
                             OrderCode = "HD20261005-001",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 4
                         },
@@ -325,8 +354,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 11,
                             CashierUsername = "cashier06",
                             CreatedDate = new DateTime(2026, 10, 5, 17, 15, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 36000m,
                             OrderCode = "HD20261005-002",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 8
                         },
@@ -335,8 +366,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 12,
                             CashierUsername = "cashier06",
                             CreatedDate = new DateTime(2026, 10, 6, 8, 20, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 108000m,
                             OrderCode = "HD20261006-001",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 2
                         },
@@ -345,8 +378,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 13,
                             CashierUsername = "cashier07",
                             CreatedDate = new DateTime(2026, 10, 6, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 78000m,
                             OrderCode = "HD20261006-002",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 3
                         },
@@ -355,8 +390,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 14,
                             CashierUsername = "cashier07",
                             CreatedDate = new DateTime(2026, 10, 7, 12, 10, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 125000m,
                             OrderCode = "HD20261007-001",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 1
                         },
@@ -365,8 +402,10 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                             OrderId = 15,
                             CashierUsername = "cashier01",
                             CreatedDate = new DateTime(2026, 10, 7, 18, 45, 0, 0, DateTimeKind.Unspecified),
+                            DiscountAmount = 0m,
                             FinalAmount = 40000m,
                             OrderCode = "HD20261007-002",
+                            RedeemedPoints = 0,
                             RewardPoints = 0,
                             TotalItems = 4
                         });
@@ -1689,135 +1728,135 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                         new
                         {
                             UserId = 1,
-                            FullName = "Nhân viên mẫu 01",
+                            FullName = "Vương Nguyễn Trường Hưng",
                             IsActive = true,
-                            PasswordHash = "admin@123",
+                            PasswordHash = "PBKDF2$120000$fNDfJNL02Yi7roCaKIU0ig==$bFig0dj3BTLMsOZMhdOg6rtg8XBfiEN4lxtuhtbpKjg=",
                             Role = "Admin",
                             Username = "admin"
                         },
                         new
                         {
                             UserId = 2,
-                            FullName = "Nhân viên mẫu 02",
+                            FullName = "Trần Minh Đức",
                             IsActive = true,
-                            PasswordHash = "manager@123",
+                            PasswordHash = "PBKDF2$120000$nk0OWyFDop8TPfATE30SEQ==$uPEDH4XjJUCMGFgcHRQ1SdK/7d+oXI7GIxdfrWKiLNE=",
                             Role = "Admin",
                             Username = "manager01"
                         },
                         new
                         {
                             UserId = 3,
-                            FullName = "Nhân viên mẫu 03",
+                            FullName = "Lê Thị Thảo Trang",
                             IsActive = true,
-                            PasswordHash = "cashier@123",
+                            PasswordHash = "PBKDF2$120000$D+IxvDiAJ9TSI5knsm4m+w==$S7xyaGEyoaW8CvxuzvJzv0+EyCZR39AVhyO896uNMH8=",
                             Role = "Cashier",
                             Username = "cashier01"
                         },
                         new
                         {
                             UserId = 4,
-                            FullName = "Nhân viên mẫu 04",
+                            FullName = "Nguyễn Phạm Hoàng Yến",
                             IsActive = true,
-                            PasswordHash = "cashier@123",
+                            PasswordHash = "PBKDF2$120000$D+IxvDiAJ9TSI5knsm4m+w==$S7xyaGEyoaW8CvxuzvJzv0+EyCZR39AVhyO896uNMH8=",
                             Role = "Cashier",
                             Username = "cashier02"
                         },
                         new
                         {
                             UserId = 5,
-                            FullName = "Nhân viên mẫu 05",
+                            FullName = "Phan Thanh Tùng",
                             IsActive = true,
-                            PasswordHash = "cashier@123",
+                            PasswordHash = "PBKDF2$120000$D+IxvDiAJ9TSI5knsm4m+w==$S7xyaGEyoaW8CvxuzvJzv0+EyCZR39AVhyO896uNMH8=",
                             Role = "Cashier",
                             Username = "cashier03"
                         },
                         new
                         {
                             UserId = 6,
-                            FullName = "Nhân viên mẫu 06",
+                            FullName = "Võ Thị Cẩm Nhung",
                             IsActive = true,
-                            PasswordHash = "cashier@123",
+                            PasswordHash = "PBKDF2$120000$D+IxvDiAJ9TSI5knsm4m+w==$S7xyaGEyoaW8CvxuzvJzv0+EyCZR39AVhyO896uNMH8=",
                             Role = "Cashier",
                             Username = "cashier04"
                         },
                         new
                         {
                             UserId = 7,
-                            FullName = "Nhân viên mẫu 07",
+                            FullName = "Đặng Văn Hữu",
                             IsActive = true,
-                            PasswordHash = "cashier@123",
+                            PasswordHash = "PBKDF2$120000$D+IxvDiAJ9TSI5knsm4m+w==$S7xyaGEyoaW8CvxuzvJzv0+EyCZR39AVhyO896uNMH8=",
                             Role = "Cashier",
                             Username = "cashier05"
                         },
                         new
                         {
                             UserId = 8,
-                            FullName = "Nhân viên mẫu 08",
+                            FullName = "Bùi Ngọc Quỳnh Nga",
                             IsActive = true,
-                            PasswordHash = "cashier@123",
+                            PasswordHash = "PBKDF2$120000$D+IxvDiAJ9TSI5knsm4m+w==$S7xyaGEyoaW8CvxuzvJzv0+EyCZR39AVhyO896uNMH8=",
                             Role = "Cashier",
                             Username = "cashier06"
                         },
                         new
                         {
                             UserId = 9,
-                            FullName = "Nhân viên mẫu 09",
+                            FullName = "Hồ Nhật Huy",
                             IsActive = true,
-                            PasswordHash = "cashier@123",
+                            PasswordHash = "PBKDF2$120000$D+IxvDiAJ9TSI5knsm4m+w==$S7xyaGEyoaW8CvxuzvJzv0+EyCZR39AVhyO896uNMH8=",
                             Role = "Cashier",
                             Username = "cashier07"
                         },
                         new
                         {
                             UserId = 10,
-                            FullName = "Nhân viên mẫu 10",
+                            FullName = "Đỗ Trọng Nhân",
                             IsActive = true,
-                            PasswordHash = "wh@123",
+                            PasswordHash = "PBKDF2$120000$NOHeTrckKdOS9INBWt3sJw==$1Cg/dfN4Tx9uxuhWGNMlFDwKNquQxdkQ+aqpeU279cE=",
                             Role = "Warehouse",
                             Username = "warehouse01"
                         },
                         new
                         {
                             UserId = 11,
-                            FullName = "Nhân viên mẫu 11",
+                            FullName = "Ngô Thành Danh",
                             IsActive = true,
-                            PasswordHash = "wh@123",
+                            PasswordHash = "PBKDF2$120000$NOHeTrckKdOS9INBWt3sJw==$1Cg/dfN4Tx9uxuhWGNMlFDwKNquQxdkQ+aqpeU279cE=",
                             Role = "Warehouse",
                             Username = "warehouse02"
                         },
                         new
                         {
                             UserId = 12,
-                            FullName = "Nhân viên mẫu 12",
+                            FullName = "Dương Quốc Thắng",
                             IsActive = true,
-                            PasswordHash = "wh@123",
+                            PasswordHash = "PBKDF2$120000$NOHeTrckKdOS9INBWt3sJw==$1Cg/dfN4Tx9uxuhWGNMlFDwKNquQxdkQ+aqpeU279cE=",
                             Role = "Warehouse",
                             Username = "warehouse03"
                         },
                         new
                         {
                             UserId = 13,
-                            FullName = "Nhân viên mẫu 13",
+                            FullName = "Trịnh Kim Liên",
                             IsActive = true,
-                            PasswordHash = "cashier@123",
+                            PasswordHash = "PBKDF2$120000$D+IxvDiAJ9TSI5knsm4m+w==$S7xyaGEyoaW8CvxuzvJzv0+EyCZR39AVhyO896uNMH8=",
                             Role = "Cashier",
                             Username = "cashier08"
                         },
                         new
                         {
                             UserId = 14,
-                            FullName = "Nhân viên mẫu 14",
+                            FullName = "Lương Minh Khôi",
                             IsActive = true,
-                            PasswordHash = "cashier@123",
+                            PasswordHash = "PBKDF2$120000$D+IxvDiAJ9TSI5knsm4m+w==$S7xyaGEyoaW8CvxuzvJzv0+EyCZR39AVhyO896uNMH8=",
                             Role = "Cashier",
                             Username = "cashier09"
                         },
                         new
                         {
                             UserId = 15,
-                            FullName = "Nhân viên mẫu 15",
+                            FullName = "Mai Văn Hải",
                             IsActive = false,
-                            PasswordHash = "lock@123",
+                            PasswordHash = "PBKDF2$120000$pBnAQ5ACtef9KhgHUaeRwA==$04ueyv+6TONSsazbvcds4KFrLaqSH3u2koqHqQjhFxY=",
                             Role = "Cashier",
                             Username = "staff_lock"
                         });

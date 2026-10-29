@@ -223,11 +223,11 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (product.Price < 0)
+            if (product.Price <= 0)
             {
                 return BadRequest(new
                 {
-                    message = "Đơn giá không được âm!"
+                    message = "Đơn giá phải lớn hơn 0!"
                 });
             }
 
@@ -289,11 +289,11 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (updateData.Price < 0)
+            if (updateData.Price <= 0)
             {
                 return BadRequest(new
                 {
-                    message = "Đơn giá không được âm!"
+                    message = "Đơn giá phải lớn hơn 0!"
                 });
             }
 

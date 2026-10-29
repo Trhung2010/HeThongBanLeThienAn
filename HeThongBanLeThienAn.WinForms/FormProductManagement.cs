@@ -11,7 +11,17 @@ namespace MiniSupermarket.WinForms
         private bool _isLoading;
         private bool _isInitializing = true;
 
-        public FormProductManagement() => InitializeComponent();
+        public FormProductManagement()
+        {
+            InitializeComponent();
+            dgvProducts.CellFormatting += dgvProducts_CellFormatting;
+            var exportButton = new Button
+            {
+                Text = "CSV", Location = new Point(10, 454), Size = new Size(70, 34)
+            };
+            exportButton.Click += btnExportProducts_Click;
+            grpProductList.Controls.Add(exportButton);
+        }
 
         private async void FormProductManagement_Load(object sender, EventArgs e)
         {
@@ -177,6 +187,41 @@ namespace MiniSupermarket.WinForms
             if (int.TryParse(row.Cells["CategoryId"]?.Value?.ToString(), out int categoryId))
             {
                 cboCategory.SelectedValue = categoryId;
+            }
+        }
+
+        private void dgvProducts_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.CellStyle == null ||
+                dgvProducts.Rows[e.RowIndex].Cells["StockQuantity"].Value is not int stock)
+                return;
+            if (stock <= 10)
+            {
+                e.CellStyle.BackColor = Color.LightCoral;
+                e.CellStyle.ForeColor = Color.DarkRed;
+            }
+        }
+
+        private async void btnExportProducts_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                var products = await ApiClientService.Client.GetFromJsonAsync<List<ProductItemViewDto>>("products/with-category")
+                    ?? new List<ProductItemViewDto>();
+                using var dialog = new SaveFileDialog
+                {
+                    Filter = "CSV UTF-8 (*.csv)|*.csv",
+                    FileName = $"DanhMucSanPhamThienAn_{DateTime.Today:yyyyMMdd}.csv"
+                };
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                CsvExportService.WriteProducts(dialog.FileName, products);
+                MessageBox.Show("Đã xuất danh mục sản phẩm CSV.", "Hoàn tất", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể xuất CSV.\n" + ex.Message, "Lỗi", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 

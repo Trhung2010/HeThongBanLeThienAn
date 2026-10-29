@@ -20,6 +20,10 @@ namespace MiniSupermarket.WinForms
             pnlLeft = new Panel();
             grpList = new GroupBox();
             dgvUsers = new DataGridView();
+            pnlPaging = new Panel();
+            btnPrev = new Button();
+            lblPaging = new Label();
+            btnNext = new Button();
             pnlRight = new Panel();
             grpAdd = new GroupBox();
             btnReload = new Button();
@@ -40,9 +44,9 @@ namespace MiniSupermarket.WinForms
             grpAdd.SuspendLayout();
             SuspendLayout();
 
-            // 
+            //
             // pnlLeft (Vùng hiển thị danh sách tài khoản)
-            // 
+            //
             pnlLeft.Controls.Add(grpList);
             pnlLeft.Dock = DockStyle.Fill;
             pnlLeft.Location = new Point(0, 0);
@@ -51,10 +55,11 @@ namespace MiniSupermarket.WinForms
             pnlLeft.Size = new Size(690, 660);
             pnlLeft.TabIndex = 0;
 
-            // 
+            //
             // grpList
-            // 
+            //
             grpList.Controls.Add(dgvUsers);
+            grpList.Controls.Add(pnlPaging);
             grpList.Dock = DockStyle.Fill;
             grpList.Font = new Font("Segoe UI", 9.5F);
             grpList.Location = new Point(12, 12);
@@ -65,9 +70,48 @@ namespace MiniSupermarket.WinForms
             grpList.TabStop = false;
             grpList.Text = "Danh sách Nhân viên & Tài khoản";
 
-            // 
+                        //
+            // pnlPaging
+            //
+            pnlPaging.Controls.Add(btnPrev);
+            pnlPaging.Controls.Add(lblPaging);
+            pnlPaging.Controls.Add(btnNext);
+            pnlPaging.Dock = DockStyle.Bottom;
+            pnlPaging.Height = 45;
+            pnlPaging.Name = "pnlPaging";
+            pnlPaging.TabIndex = 1;
+            //
+            // btnPrev
+            //
+            btnPrev.Location = new Point(40, 6);
+            btnPrev.Name = "btnPrev";
+            btnPrev.Size = new Size(110, 32);
+            btnPrev.TabIndex = 0;
+            btnPrev.Text = "<< Trang trước";
+            btnPrev.UseVisualStyleBackColor = true;
+            btnPrev.Click += btnPrev_Click;
+            //
+            // lblPaging
+            //
+            lblPaging.Location = new Point(160, 10);
+            lblPaging.Name = "lblPaging";
+            lblPaging.Size = new Size(300, 24);
+            lblPaging.TabIndex = 1;
+            lblPaging.Text = "Trang 0 / 0 (Tổng: 0 user)";
+            lblPaging.TextAlign = ContentAlignment.MiddleCenter;
+            //
+            // btnNext
+            //
+            btnNext.Location = new Point(470, 6);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(110, 32);
+            btnNext.TabIndex = 2;
+            btnNext.Text = "Trang sau >>";
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
+            //
             // dgvUsers
-            // 
+            //
             dgvUsers.AllowUserToAddRows = false;
             dgvUsers.AllowUserToDeleteRows = false;
             dgvUsers.BackgroundColor = Color.White;
@@ -83,9 +127,9 @@ namespace MiniSupermarket.WinForms
             dgvUsers.Size = new Size(650, 598);
             dgvUsers.TabIndex = 0;
 
-            // 
+            //
             // pnlRight (Vùng tạo tài khoản mới)
-            // 
+            //
             pnlRight.Controls.Add(grpAdd);
             pnlRight.Dock = DockStyle.Right;
             pnlRight.Location = new Point(690, 0);
@@ -94,9 +138,9 @@ namespace MiniSupermarket.WinForms
             pnlRight.Size = new Size(360, 660);
             pnlRight.TabIndex = 1;
 
-            // 
+            //
             // grpAdd
-            // 
+            //
             grpAdd.Controls.Add(btnReload);
             grpAdd.Controls.Add(btnAddUser);
             grpAdd.Controls.Add(cboRole);
@@ -117,9 +161,9 @@ namespace MiniSupermarket.WinForms
             grpAdd.TabStop = false;
             grpAdd.Text = "Thêm tài khoản nhân viên";
 
-            // 
+            //
             // lblUsername
-            // 
+            //
             lblUsername.AutoSize = true;
             lblUsername.Location = new Point(15, 35);
             lblUsername.Name = "lblUsername";
@@ -127,18 +171,18 @@ namespace MiniSupermarket.WinForms
             lblUsername.TabIndex = 0;
             lblUsername.Text = "Tên đăng nhập:";
 
-            // 
+            //
             // txtUsername
-            // 
+            //
             txtUsername.Location = new Point(15, 60);
             txtUsername.Name = "txtUsername";
             txtUsername.PlaceholderText = "Ví dụ: cashier07, ware06...";
             txtUsername.Size = new Size(300, 29);
             txtUsername.TabIndex = 1;
 
-            // 
+            //
             // lblPassword
-            // 
+            //
             lblPassword.AutoSize = true;
             lblPassword.Location = new Point(15, 110);
             lblPassword.Name = "lblPassword";
@@ -146,9 +190,9 @@ namespace MiniSupermarket.WinForms
             lblPassword.TabIndex = 2;
             lblPassword.Text = "Mật khẩu:";
 
-            // 
+            //
             // txtPassword
-            // 
+            //
             txtPassword.Location = new Point(15, 135);
             txtPassword.Name = "txtPassword";
             txtPassword.PlaceholderText = "Nhập mật khẩu...";
@@ -156,9 +200,9 @@ namespace MiniSupermarket.WinForms
             txtPassword.TabIndex = 3;
             txtPassword.UseSystemPasswordChar = true;
 
-            // 
+            //
             // lblFullName
-            // 
+            //
             lblFullName.AutoSize = true;
             lblFullName.Location = new Point(15, 185);
             lblFullName.Name = "lblFullName";
@@ -166,18 +210,18 @@ namespace MiniSupermarket.WinForms
             lblFullName.TabIndex = 4;
             lblFullName.Text = "Họ và tên:";
 
-            // 
+            //
             // txtFullName
-            // 
+            //
             txtFullName.Location = new Point(15, 210);
             txtFullName.Name = "txtFullName";
             txtFullName.PlaceholderText = "Ví dụ: Nguyễn Văn Thu Ngân...";
             txtFullName.Size = new Size(300, 29);
             txtFullName.TabIndex = 5;
 
-            // 
+            //
             // lblRole
-            // 
+            //
             lblRole.AutoSize = true;
             lblRole.Location = new Point(15, 260);
             lblRole.Name = "lblRole";
@@ -185,9 +229,9 @@ namespace MiniSupermarket.WinForms
             lblRole.TabIndex = 6;
             lblRole.Text = "Vai trò (Phân quyền):";
 
-            // 
+            //
             // cboRole
-            // 
+            //
             cboRole.DropDownStyle = ComboBoxStyle.DropDownList;
             cboRole.FormattingEnabled = true;
             cboRole.Location = new Point(15, 285);
@@ -195,9 +239,9 @@ namespace MiniSupermarket.WinForms
             cboRole.Size = new Size(300, 29);
             cboRole.TabIndex = 7;
 
-            // 
+            //
             // btnAddUser
-            // 
+            //
             btnAddUser.BackColor = Color.ForestGreen;
             btnAddUser.FlatAppearance.BorderSize = 0;
             btnAddUser.FlatStyle = FlatStyle.Flat;
@@ -211,9 +255,9 @@ namespace MiniSupermarket.WinForms
             btnAddUser.UseVisualStyleBackColor = false;
             btnAddUser.Click += btnAddUser_Click;
 
-            // 
+            //
             // btnReload
-            // 
+            //
             btnReload.BackColor = Color.FromArgb(70, 80, 95);
             btnReload.FlatAppearance.BorderSize = 0;
             btnReload.FlatStyle = FlatStyle.Flat;
@@ -227,9 +271,9 @@ namespace MiniSupermarket.WinForms
             btnReload.UseVisualStyleBackColor = false;
             btnReload.Click += btnReload_Click;
 
-            // 
+            //
             // FormUserManagement
-            // 
+            //
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(244, 245, 247);
@@ -254,6 +298,10 @@ namespace MiniSupermarket.WinForms
         private Panel pnlLeft;
         private GroupBox grpList;
         private DataGridView dgvUsers;
+        private Panel pnlPaging;
+        private Button btnPrev;
+        private Label lblPaging;
+        private Button btnNext;
         private Panel pnlRight;
         private GroupBox grpAdd;
         private Label lblUsername;

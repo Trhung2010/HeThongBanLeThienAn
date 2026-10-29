@@ -18,6 +18,9 @@ namespace MiniSupermarket.WinForms
         private void InitializeComponent()
         {
             dgvCustomers = new DataGridView();
+            btnPrev = new Button();
+            lblPaging = new Label();
+            btnNext = new Button();
             txtKeyword = new TextBox();
             txtCustomerId = new TextBox();
             txtCustomerName = new TextBox();
@@ -108,10 +111,42 @@ namespace MiniSupermarket.WinForms
             grpSearch.TabStop = false;
             grpSearch.Text = "Tìm kiếm Khách hàng";
 
+                        //
+            // btnPrev
+            //
+            btnPrev.Location = new Point(30, 445);
+            btnPrev.Name = "btnPrev";
+            btnPrev.Size = new Size(110, 32);
+            btnPrev.TabIndex = 1;
+            btnPrev.Text = "<< Trang trước";
+            btnPrev.UseVisualStyleBackColor = true;
+            btnPrev.Click += btnPrev_Click;
+            //
+            // lblPaging
+            //
+            lblPaging.Location = new Point(146, 450);
+            lblPaging.Name = "lblPaging";
+            lblPaging.Size = new Size(300, 24);
+            lblPaging.TabIndex = 2;
+            lblPaging.Text = "Trang 0 / 0 (Tổng: 0 KH)";
+            lblPaging.TextAlign = ContentAlignment.MiddleCenter;
+            //
+            // btnNext
+            //
+            btnNext.Location = new Point(456, 445);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(110, 32);
+            btnNext.TabIndex = 3;
+            btnNext.Text = "Trang sau >>";
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
             //
             // grpCustomerList
             //
             grpCustomerList.Controls.Add(dgvCustomers);
+            grpCustomerList.Controls.Add(btnPrev);
+            grpCustomerList.Controls.Add(lblPaging);
+            grpCustomerList.Controls.Add(btnNext);
             grpCustomerList.Location = new Point(20, 125);
             grpCustomerList.Name = "grpCustomerList";
             grpCustomerList.Size = new Size(605, 485);
@@ -234,6 +269,9 @@ namespace MiniSupermarket.WinForms
         #endregion
 
         private DataGridView dgvCustomers;
+        private Button btnPrev;
+        private Label lblPaging;
+        private Button btnNext;
         private TextBox txtKeyword;
         private TextBox txtCustomerId;
         private TextBox txtCustomerName;

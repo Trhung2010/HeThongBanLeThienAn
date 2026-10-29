@@ -41,7 +41,7 @@ Tài khoản demo trong SQL Server:
 | Thu ngân | cashier01 | cashier@123 |
 | Thủ kho | warehouse01 | wh@123 |
 
-Mật khẩu demo hiện lưu dạng rõ; chưa triển khai lưu mật khẩu băm. Không dùng tài khoản/mật khẩu demo cho vận hành thực tế.
+Mật khẩu được lưu bằng PBKDF2-SHA256 (120.000 vòng lặp, salt ngẫu nhiên); API không trả trường băm ra client.
 Đăng nhập qua CSDL không chấp nhận mật khẩu chung 123456 và không quay về danh sách tài khoản RAM khi sai mật khẩu.
 
 ## POS và giao dịch
@@ -56,10 +56,12 @@ Mật khẩu demo hiện lưu dạng rõ; chưa triển khai lưu mật khẩu b
 - Khách có số điện thoại chưa đăng ký cần được tạo hồ sơ hoặc để trống để bán vãng lai.
 - Admin hủy đơn qua `DELETE /api/checkout/cancel/{orderId}`: hoàn trả tồn, điểm và hạng thẻ trong một transaction.
 - POS khóa thao tác thanh toán khi đang gửi để tránh bấm liên tục; hiển thị số tiền từ kết quả máy chủ.
+- Thành viên có thể đổi theo bội số 50 điểm (50 điểm = 50.000 đ); trừ điểm, giảm tiền, lưu hóa đơn và trừ kho cùng một transaction. Hủy đơn hoàn lại chính xác tồn kho và điểm đã đổi.
 
 ## Báo cáo và buổi 5
 
 - `GET /api/reports/quick?date=yyyy-MM-dd`: doanh thu/số đơn thực tế theo ngày, hàng bán chạy tính theo tổng số lượng bán; ngày trống trả 0.
+- `GET /api/reports/dashboard-summary?fromDate=...&toDate=...`: trả 4 KPI, chuỗi doanh thu từng ngày và Top 5 sản phẩm bán chạy.
 - `GET /api/reports/revenue-by-cashier`, `/revenue-by-date`, `/top-selling-products`: tổng hợp qua SQL có tham số, chỉ Admin.
 - Khoảng ngày gồm toàn bộ ngày kết thúc, không bỏ giao dịch sau 00:00.
 - `GET /api/ado-products/barcode/{barcode}`, `/disconnected-cache`, `/filter-stock`, `/count-by-category`: tra cứu ADO.NET, yêu cầu Admin/Cashier/Warehouse.
@@ -72,6 +74,8 @@ Mật khẩu demo hiện lưu dạng rõ; chưa triển khai lưu mật khẩu b
 - `GET /api/customers/paged`: bài mở rộng phân trang khách hàng theo điểm thưởng giảm dần.
 - `FormProductManagement` dùng `ApiClientService` chung có JWT, tải 5 sản phẩm mỗi trang, tìm kiếm, lọc nhóm hàng và CRUD trực tiếp qua API.
 - Nút Trang trước/Trang sau bị khóa đúng tại biên và trong lúc request đang chạy để tránh gửi chồng yêu cầu.
+- Hàng tồn `<= 10` được tô đỏ bằng `CellFormatting`; danh mục sản phẩm và báo cáo doanh thu có thể xuất CSV UTF-8.
+- Dashboard cho phép chọn khoảng ngày, hiển thị 4 KPI, biểu đồ cột doanh thu và Top 5 sản phẩm.
 
 ## Kiểm thử
 
@@ -80,11 +84,16 @@ dotnet test HeThongBanLeThienAn.Tests --no-restore
 dotnet build HeThongBanLeThienAn.WinForms --no-restore
 ```
 
-Kiểm thử hồi quy tự động vẫn dùng SQLite/InMemory tạm để chạy độc lập. Kiểm thử tích hợp SQL Server xác nhận migration, Stored Procedure, đăng nhập, phân trang, checkout và rollback/hủy đơn.
+Kiểm thử hồi quy tự động vẫn dùng SQLite/InMemory tạm để chạy độc lập. Kiểm thử tích hợp SQL Server xác nhận migration, Stored Procedure, đăng nhập, phân trang, checkout, đổi điểm và rollback/hủy đơn.
 
 ## Tác giả
 
 Vương Nguyễn Trường Hưng — MSSV 2124110111 — Lớp CCQ2411D.
+
+## Báo cáo đồ án
+
+- `docs/report/BaoCao_DoAn_HeThongBanLeThienAn_2124110111.docx`: bản Word theo mẫu học phần, có mục lục tự động và ma trận 50 tiêu chí.
+- `docs/report/BaoCao_DoAn_HeThongBanLeThienAn_2124110111.pdf`: bản PDF đã render kiểm tra 18 trang.
 
 ## SQL Server
 

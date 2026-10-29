@@ -95,9 +95,9 @@ namespace MiniSupermarket.WinForms
                     break;
 
                 case "CASHIER":
-                    // Thu ngân: Chỉ truy cập màn hình Bán hàng (POS) và Khách hàng
+                    // Thu ngân: chỉ truy cập màn hình bán hàng POS.
                     btnPOS.Visible = true;
-                    btnCustomer.Visible = true;
+                    btnCustomer.Visible = false;
                     btnCategory.Visible = false;
                     btnProduct.Visible = false;
                     btnReports.Visible = false;

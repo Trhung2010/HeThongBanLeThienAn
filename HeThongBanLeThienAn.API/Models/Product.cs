@@ -30,7 +30,7 @@ namespace MiniSupermarket.API.Models
 
         // 4. Giá bán lẻ niêm yết: Kiểu tiền tệ chính xác decimal(18,2)
         [Column(TypeName = "decimal(18,2)")]
-        [Range(0, double.MaxValue, ErrorMessage = "Giá bán phải lớn hơn hoặc bằng 0!")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Giá bán phải lớn hơn 0!")]
         public decimal Price { get; set; }
 
         [StringLength(255)]
@@ -53,6 +53,6 @@ namespace MiniSupermarket.API.Models
         public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
         // Bài tập 2: Thêm một cột trạng thái hàng sắp hết (IsLowStock)
-        public bool IsLowStock => StockQuantity <= 20; // Trả về true nếu tồn kho <= 20
+        public bool IsLowStock => StockQuantity <= 10;
     }
 }

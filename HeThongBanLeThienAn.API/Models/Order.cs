@@ -43,6 +43,12 @@ namespace MiniSupermarket.API.Models
         // 8. Số điểm thưởng cộng cho khách từ hóa đơn này
         public int RewardPoints { get; set; } = 0;
 
+        // Điểm đã dùng để giảm tiền và số tiền giảm tại thời điểm thanh toán.
+        public int RedeemedPoints { get; set; } = 0;
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal DiscountAmount { get; set; } = 0;
+
         // Thuộc tính điều hướng về khách hàng
         [ForeignKey(nameof(CustomerId))]
         public virtual Customer? Customer { get; set; }

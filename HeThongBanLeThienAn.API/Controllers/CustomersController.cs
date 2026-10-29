@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSupermarket.API.Data;
@@ -19,10 +19,11 @@ namespace MiniSupermarket.API.Controllers
         }
 
         // Bài tập mở rộng Buổi 6: khách hàng có điểm cao hiển thị trước.
-        // GET /api/customers/paged?pageNumber=1&pageSize=5
+        // GET /api/customers/paged?keyword=...&pageNumber=1&pageSize=5
         [HttpGet("paged")]
         [Authorize(Roles = "Admin,Cashier")]
         public async Task<ActionResult<PagedResult<Customer>>> GetPaged(
+            [FromQuery] string? keyword,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 5)
         {
@@ -30,6 +31,16 @@ namespace MiniSupermarket.API.Controllers
             pageSize = pageSize is >= 1 and <= 50 ? pageSize : 5;
 
             var query = _context.Customers.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                string search = keyword.Trim().ToLower();
+                query = query.Where(c => c.CustomerName.ToLower().Contains(search) ||
+                                         c.PhoneNumber.ToLower().Contains(search) ||
+                                         c.MembershipRank.ToLower().Contains(search) ||
+                                         (c.Address != null && c.Address.ToLower().Contains(search)));
+            }
+
             int totalItems = await query.CountAsync();
             int maxSafePage = (int.MaxValue / pageSize) + 1;
             pageNumber = Math.Min(pageNumber, maxSafePage);
@@ -132,6 +143,8 @@ namespace MiniSupermarket.API.Controllers
                     message = "Điểm thưởng không được âm!"
                 });
             }
+
+            customer.CreatedDate = DateTime.Now;
 
             await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();

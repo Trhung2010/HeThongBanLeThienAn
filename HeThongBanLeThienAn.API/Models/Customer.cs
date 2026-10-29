@@ -38,6 +38,9 @@ namespace MiniSupermarket.API.Models
         [StringLength(50)]
         public string MembershipRank { get; set; } = "Chuẩn";
 
+        // Ngày đăng ký dùng cho KPI khách hàng mới trên Dashboard.
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
         // Thuộc tính điều hướng: Một khách hàng có thể có nhiều hóa đơn mua hàng
         [JsonIgnore]
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();

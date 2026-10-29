@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSupermarket.API.Data;
@@ -16,6 +16,48 @@ namespace MiniSupermarket.API.Controllers
         public CategoriesController(SupermarketDbContext context)
         {
             _context = context;
+        }
+
+        // PHÂN TRANG PHÍA MÁY CHỦ: Phân trang danh mục nhóm hàng
+        // GET /api/categories/paged?keyword=...&pageNumber=1&pageSize=5
+        [HttpGet("paged")]
+        [Authorize(Roles = "Admin,Cashier,Warehouse")]
+        public async Task<ActionResult<PagedResult<Category>>> GetPaged(
+            [FromQuery] string? keyword,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 5)
+        {
+            pageNumber = Math.Max(pageNumber, 1);
+            pageSize = pageSize is >= 1 and <= 50 ? pageSize : 5;
+
+            var query = _context.Categories.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                string search = keyword.Trim().ToLower();
+                query = query.Where(c => c.CategoryName.ToLower().Contains(search) ||
+                                         (c.Description != null && c.Description.ToLower().Contains(search)));
+            }
+
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            int maxSafePage = (int.MaxValue / pageSize) + 1;
+            pageNumber = Math.Min(pageNumber, maxSafePage);
+
+            var items = await query
+                .OrderBy(c => c.CategoryId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(new PagedResult<Category>
+            {
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                Items = items
+            });
         }
 
         // 1. READ: Lấy toàn bộ danh sách nhóm hàng

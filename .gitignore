@@ -12,5 +12,16 @@
 *.db-shm
 *.db-wal
 
-# Local database snapshots
+# Local database snapshots and backups
 backups/
+
+# Reports and documentation (kept locally, not committed to git)
+docs/
+*.docx
+*.pdf
+*.pptx
+*.xlsx
+
+# Temporary and AI assistant artifacts
+brain/
+.gemini/

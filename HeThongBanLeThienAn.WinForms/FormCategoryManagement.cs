@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Http.Json;
-using System.Net.Http.Headers;
 
 namespace MiniSupermarket.WinForms
 {
@@ -17,10 +16,10 @@ namespace MiniSupermarket.WinForms
     // =============================================================
     public partial class FormCategoryManagement : Form
     {
-        private static readonly HttpClient _client = new HttpClient
-        {
-            BaseAddress = new Uri("http://localhost:5167/api/")
-        };
+        private const int PageSize = 5;
+        private int _currentPage = 1;
+        private int _totalPages = 1;
+        private bool _isLoading = false;
 
         public FormCategoryManagement()
         {
@@ -41,43 +40,31 @@ namespace MiniSupermarket.WinForms
         }
 
         // =========================================================
-        // TẠO HTTP CLIENT KÈM JWT TOKEN
-        // =========================================================
-        private HttpClient GetAuthenticatedClient()
-        {
-            var client = new HttpClient
-            {
-                BaseAddress = new Uri("http://localhost:5167/api/")
-            };
-
-            // Gắn Bearer Token vào Header
-            if (!string.IsNullOrEmpty(SessionManager.JwtToken))
-            {
-                client.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue(
-                        "Bearer",
-                        SessionManager.JwtToken);
-            }
-
-            return client;
-        }
-
-        // =========================================================
-        // LOAD DATA
+        // LOAD DATA PHÂN TRANG PHÍA SERVER
         // =========================================================
         private async Task LoadDataAsync()
         {
+            if (_isLoading) return;
+            _isLoading = true;
+            SetPagingControlsEnabled(false);
+
             try
             {
-                // Tạo HttpClient đã được gắn JWT Token
-                using var client = GetAuthenticatedClient();
+                var client = ApiClientService.Client;
+                string keyword = Uri.EscapeDataString(txtKeyword.Text.Trim());
+                string url = $"categories/paged?keyword={keyword}&pageNumber={_currentPage}&pageSize={PageSize}";
 
-                var categories =
-                    await client.GetFromJsonAsync<List<CategoryDto>>("categories");
-
-                dgvCategories.DataSource = categories;
-
-                FormatDataGridView();
+                var result = await client.GetFromJsonAsync<PagedViewResult<CategoryDto>>(url);
+                if (result != null)
+                {
+                    _currentPage = Math.Max(result.CurrentPage, 1);
+                    _totalPages = result.TotalPages;
+                    dgvCategories.DataSource = result.Items;
+                    FormatDataGridView();
+                    lblPaging.Text = result.TotalPages == 0
+                        ? "Trang 0 / 0 (Tổng: 0 nhóm)"
+                        : $"Trang {_currentPage} / {_totalPages} (Tổng: {result.TotalItems} nhóm)";
+                }
                 UpdatePermissionButtons();
             }
             catch (Exception ex)
@@ -87,6 +74,37 @@ namespace MiniSupermarket.WinForms
                     "Lỗi",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+            finally
+            {
+                _isLoading = false;
+                SetPagingControlsEnabled(true);
+            }
+        }
+
+        private void SetPagingControlsEnabled(bool enabled)
+        {
+            btnPrev.Enabled = enabled && _currentPage > 1;
+            btnNext.Enabled = enabled && _currentPage < _totalPages;
+            btnSearch.Enabled = enabled;
+            btnLoad.Enabled = enabled;
+        }
+
+        private async void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                await LoadDataAsync();
+            }
+        }
+
+        private async void btnNext_Click(object sender, EventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                await LoadDataAsync();
             }
         }
 
@@ -228,7 +246,7 @@ namespace MiniSupermarket.WinForms
 
             try
             {
-                using var client = GetAuthenticatedClient();
+                var client = ApiClientService.Client;
                 var newCat = new
                 {
                     CategoryName = txtCategoryName.Text.Trim(),
@@ -318,7 +336,7 @@ namespace MiniSupermarket.WinForms
 
             try
             {
-                using var client = GetAuthenticatedClient();
+                var client = ApiClientService.Client;
                 var updateCat = new
                 {
                     CategoryId = id,
@@ -409,7 +427,7 @@ namespace MiniSupermarket.WinForms
 
             try
             {
-                using var client = GetAuthenticatedClient();
+                var client = ApiClientService.Client;
                 var response =
                     await client.DeleteAsync($"categories/{id}");
 
@@ -444,40 +462,12 @@ namespace MiniSupermarket.WinForms
         }
 
         // =========================================================
-        // TÌM KIẾM
+        // TÌM KIẾM (ĐỒNG BỘ PHÂN TRANG)
         // =========================================================
         private async void btnSearch_Click(object sender, EventArgs e)
         {
-            string keyword = txtKeyword.Text.Trim();
-
-            if (string.IsNullOrEmpty(keyword))
-            {
-                await LoadDataAsync();
-                return;
-            }
-
-            try
-            {
-                using var client = GetAuthenticatedClient();
-                string encodedKeyword =
-                    Uri.EscapeDataString(keyword);
-
-                var result =
-                    await client.GetFromJsonAsync<List<CategoryDto>>(
-                        $"categories/search?keyword={encodedKeyword}");
-
-                dgvCategories.DataSource = result;
-
-                FormatDataGridView();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "Không tìm thấy kết quả phù hợp!\n" + ex.Message,
-                    "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
+            _currentPage = 1;
+            await LoadDataAsync();
         }
 
         // =========================================================

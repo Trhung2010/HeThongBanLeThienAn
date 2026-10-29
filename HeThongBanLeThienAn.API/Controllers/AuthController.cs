@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MiniSupermarket.API.Data;
 using MiniSupermarket.API.Models;
+using MiniSupermarket.API.Security;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace MiniSupermarket.API.Controllers
                         return Unauthorized(new { success = false, message = "Tài khoản nhân viên này đã bị khóa!" });
                     }
 
-                    if (dbUser.PasswordHash == inputPassword)
+                    if (PasswordSecurity.Verify(inputPassword, dbUser.PasswordHash))
                     {
                         var token = GenerateJwtToken(dbUser.Username, dbUser.Role);
                         return Ok(new
@@ -70,7 +71,7 @@ namespace MiniSupermarket.API.Controllers
             // Isolated teaching fixture used only when no database context is supplied.
             var user = UserDataStore.Users.FirstOrDefault(u =>
                 u.Username.Equals(inputUsername, StringComparison.OrdinalIgnoreCase) &&
-                u.Password == inputPassword &&
+                PasswordSecurity.Verify(inputPassword, u.PasswordHash) &&
                 u.IsActive);
 
             if (user != null)

@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,6 +15,10 @@ namespace MiniSupermarket.WinForms
         {
             InitializeComponent();
         }
+        private const int PageSize = 5;
+        private int _currentPage = 1;
+        private int _totalPages = 1;
+        private bool _isLoading = false;
 
         private async void FormCustomerManagement_Load(object sender, EventArgs e)
         {
@@ -29,31 +32,29 @@ namespace MiniSupermarket.WinForms
             await LoadDataAsync();
         }
 
-        private HttpClient GetAuthenticatedClient()
-        {
-            var client = new HttpClient
-            {
-                BaseAddress = new Uri("http://localhost:5167/api/")
-            };
-
-            if (!string.IsNullOrEmpty(SessionManager.JwtToken))
-            {
-                client.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", SessionManager.JwtToken);
-            }
-
-            return client;
-        }
-
         private async Task LoadDataAsync()
         {
+            if (_isLoading) return;
+            _isLoading = true;
+            SetPagingControlsEnabled(false);
+
             try
             {
-                using var client = GetAuthenticatedClient();
-                var customers = await client.GetFromJsonAsync<List<CustomerDto>>("customers");
+                var client = ApiClientService.Client;
+                string keyword = Uri.EscapeDataString(txtKeyword.Text.Trim());
+                string url = $"customers/paged?keyword={keyword}&pageNumber={_currentPage}&pageSize={PageSize}";
 
-                dgvCustomers.DataSource = customers;
-                FormatDataGridView();
+                var result = await client.GetFromJsonAsync<PagedViewResult<CustomerDto>>(url);
+                if (result != null)
+                {
+                    _currentPage = Math.Max(result.CurrentPage, 1);
+                    _totalPages = result.TotalPages;
+                    dgvCustomers.DataSource = result.Items;
+                    FormatDataGridView();
+                    lblPaging.Text = result.TotalPages == 0
+                        ? "Trang 0 / 0 (Tổng: 0 KH)"
+                        : $"Trang {_currentPage} / {_totalPages} (Tổng: {result.TotalItems} KH)";
+                }
                 UpdatePermissionButtons();
             }
             catch (Exception ex)
@@ -63,6 +64,37 @@ namespace MiniSupermarket.WinForms
                     "Lỗi",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+            finally
+            {
+                _isLoading = false;
+                SetPagingControlsEnabled(true);
+            }
+        }
+
+        private void SetPagingControlsEnabled(bool enabled)
+        {
+            btnPrev.Enabled = enabled && _currentPage > 1;
+            btnNext.Enabled = enabled && _currentPage < _totalPages;
+            btnSearch.Enabled = enabled;
+            btnLoad.Enabled = enabled;
+        }
+
+        private async void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                await LoadDataAsync();
+            }
+        }
+
+        private async void btnNext_Click(object sender, EventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                await LoadDataAsync();
             }
         }
 
@@ -131,6 +163,7 @@ namespace MiniSupermarket.WinForms
         {
             txtKeyword.Clear();
             ClearInputs();
+            _currentPage = 1;
             await LoadDataAsync();
         }
 
@@ -180,7 +213,7 @@ namespace MiniSupermarket.WinForms
 
             try
             {
-                using var client = GetAuthenticatedClient();
+                var client = ApiClientService.Client;
                 var newCustomer = new
                 {
                     CustomerName = txtCustomerName.Text.Trim(),
@@ -225,7 +258,7 @@ namespace MiniSupermarket.WinForms
 
             try
             {
-                using var client = GetAuthenticatedClient();
+                var client = ApiClientService.Client;
                 var updateCustomer = new
                 {
                     CustomerId = id,
@@ -275,7 +308,7 @@ namespace MiniSupermarket.WinForms
 
             try
             {
-                using var client = GetAuthenticatedClient();
+                var client = ApiClientService.Client;
                 var response = await client.DeleteAsync($"customers/{id}");
 
                 if (response.IsSuccessStatusCode)
@@ -297,26 +330,8 @@ namespace MiniSupermarket.WinForms
 
         private async void btnSearch_Click(object sender, EventArgs e)
         {
-            string keyword = txtKeyword.Text.Trim();
-            if (string.IsNullOrEmpty(keyword))
-            {
-                await LoadDataAsync();
-                return;
-            }
-
-            try
-            {
-                using var client = GetAuthenticatedClient();
-                string encodedKeyword = Uri.EscapeDataString(keyword);
-                var result = await client.GetFromJsonAsync<List<CustomerDto>>($"customers/search?keyword={encodedKeyword}");
-
-                dgvCustomers.DataSource = result;
-                FormatDataGridView();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Không tìm thấy kết quả phù hợp!\n" + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            _currentPage = 1;
+            await LoadDataAsync();
         }
 
         private void ClearInputs()
