@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSupermarket.API.Data;
@@ -58,23 +58,23 @@ namespace MiniSupermarket.API.Controllers
                 .OrderByDescending(o => o.CreatedDate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(o => new
+                .Select(o => new OrderSummaryDto
                 {
-                    o.OrderId,
-                    o.OrderCode,
-                    o.CreatedDate,
-                    o.CashierUsername,
-                    o.CustomerId,
+                    OrderId = o.OrderId,
+                    OrderCode = o.OrderCode,
+                    CreatedDate = o.CreatedDate,
+                    CashierUsername = o.CashierUsername,
+                    CustomerId = o.CustomerId,
                     CustomerName = o.Customer != null ? o.Customer.CustomerName : "Khách vãng lai",
-                    o.TotalItems,
-                    o.FinalAmount,
-                    o.RewardPoints,
-                    o.RedeemedPoints,
-                    o.DiscountAmount
+                    TotalItems = o.TotalItems,
+                    FinalAmount = o.FinalAmount,
+                    RewardPoints = o.RewardPoints,
+                    RedeemedPoints = o.RedeemedPoints,
+                    DiscountAmount = o.DiscountAmount
                 })
                 .ToListAsync();
 
-            return Ok(new
+            return Ok(new PagedResult<OrderSummaryDto>
             {
                 CurrentPage = pageNumber,
                 PageSize = pageSize,
@@ -90,50 +90,115 @@ namespace MiniSupermarket.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var orders = await _context.Orders
-                .Include(o => o.Customer)
-                .Include(o => o.OrderDetails)
-                .ThenInclude(od => od.Product)
+                .AsNoTracking()
                 .OrderByDescending(o => o.CreatedDate)
+                .Select(o => new OrderDto
+                {
+                    OrderId = o.OrderId,
+                    OrderCode = o.OrderCode,
+                    CreatedDate = o.CreatedDate,
+                    CustomerId = o.CustomerId,
+                    CustomerName = o.Customer != null ? o.Customer.CustomerName : "Khách vãng lai",
+                    CashierUsername = o.CashierUsername,
+                    TotalItems = o.TotalItems,
+                    FinalAmount = o.FinalAmount,
+                    RewardPoints = o.RewardPoints,
+                    RedeemedPoints = o.RedeemedPoints,
+                    DiscountAmount = o.DiscountAmount,
+                    OrderDetails = o.OrderDetails
+                        .OrderBy(d => d.OrderDetailId)
+                        .Select(d => new OrderDetailDto
+                        {
+                            OrderDetailId = d.OrderDetailId,
+                            ProductId = d.ProductId,
+                            Barcode = d.Product == null ? string.Empty : d.Product.Barcode,
+                            ProductName = d.Product == null ? string.Empty : d.Product.ProductName,
+                            Quantity = d.Quantity,
+                            UnitPrice = d.UnitPrice,
+                            LineTotal = d.LineTotal
+                        })
+                        .ToList()
+                })
                 .ToListAsync();
 
             return Ok(orders);
         }
 
+        // GET /api/orders/{id}
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Cashier")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var order = await _context.Orders
+                .AsNoTracking()
+                .Where(o => o.OrderId == id)
+                .Select(o => new OrderDto
+                {
+                    OrderId = o.OrderId,
+                    OrderCode = o.OrderCode,
+                    CreatedDate = o.CreatedDate,
+                    CustomerId = o.CustomerId,
+                    CustomerName = o.Customer != null ? o.Customer.CustomerName : "Khách vãng lai",
+                    CashierUsername = o.CashierUsername,
+                    TotalItems = o.TotalItems,
+                    FinalAmount = o.FinalAmount,
+                    RewardPoints = o.RewardPoints,
+                    RedeemedPoints = o.RedeemedPoints,
+                    DiscountAmount = o.DiscountAmount,
+                    OrderDetails = o.OrderDetails
+                        .OrderBy(d => d.OrderDetailId)
+                        .Select(d => new OrderDetailDto
+                        {
+                            OrderDetailId = d.OrderDetailId,
+                            ProductId = d.ProductId,
+                            Barcode = d.Product == null ? string.Empty : d.Product.Barcode,
+                            ProductName = d.Product == null ? string.Empty : d.Product.ProductName,
+                            Quantity = d.Quantity,
+                            UnitPrice = d.UnitPrice,
+                            LineTotal = d.LineTotal
+                        })
+                        .ToList()
+                })
+                .SingleOrDefaultAsync();
+
+            if (order == null)
+            {
+                return NotFound(new { message = "Không tìm thấy đơn hàng!" });
+            }
+
+            return Ok(order);
+        }
+
         // Compatibility route for existing clients; shares the same ADO.NET transaction.
         [HttpPost("checkout")]
         [Authorize(Roles = "Admin,Cashier")]
-        public IActionResult Checkout([FromBody] CheckoutRequestDto request)
+        public IActionResult Checkout([FromBody] PosCheckoutRequestDto request)
         {
             try
             {
                 var r = _checkout.Checkout(User?.Identity?.Name ?? request.CashierUsername,
                     request.CustomerId, request.CustomerPhone,
-                    request.Items?.Select(i => new CartItemCheckoutDto { ProductId = i.ProductId, Quantity = i.Quantity }).ToList()!,
+                    request.Items,
                     request.RedeemPoints);
-                return Ok(new { success = true, orderId = r.OrderId, orderCode = r.OrderCode,
-                    subtotal = r.Subtotal, discountAmount = r.DiscountAmount,
-                    totalAmount = r.FinalAmount, finalAmount = r.FinalAmount, totalItems = r.TotalItems,
-                    redeemedPoints = r.RedeemedPoints,
-                    cashier = r.Cashier, customer = r.Customer, timestamp = r.Timestamp });
+                return Ok(new CheckoutResponseDto
+                {
+                    Success = true,
+                    OrderId = r.OrderId,
+                    OrderCode = r.OrderCode,
+                    Subtotal = r.Subtotal,
+                    DiscountAmount = r.DiscountAmount,
+                    TotalAmount = r.FinalAmount,
+                    FinalAmount = r.FinalAmount,
+                    TotalItems = r.TotalItems,
+                    RedeemedPoints = r.RedeemedPoints,
+                    Cashier = r.Cashier,
+                    Customer = r.Customer,
+                    Timestamp = r.Timestamp
+                });
             }
             catch (Exception ex) when (ex is InvalidOperationException or OverflowException or System.Data.Common.DbException)
             { return BadRequest(new { success = false, message = "Thanh toán thất bại; không lưu thay đổi.", errorDetail = ex.Message }); }
         }
     }
 
-    public class CheckoutRequestDto
-    {
-        public string CashierUsername { get; set; } = string.Empty;
-        public int? CustomerId { get; set; }
-        public string? CustomerPhone { get; set; }
-        public int RedeemPoints { get; set; }
-        public List<CheckoutItemDto> Items { get; set; } = new();
-    }
-
-    public class CheckoutItemDto
-    {
-        public int ProductId { get; set; }
-        public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-    }
 }

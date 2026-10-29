@@ -25,7 +25,7 @@ namespace MiniSupermarket.API.Controllers
         // GET /api/products/paged?keyword=Coca&categoryId=2&pageNumber=1&pageSize=5
         [HttpGet("paged")]
         [Authorize(Roles = "Admin,Cashier,Warehouse")]
-        public async Task<ActionResult<PagedResult<ProductItemDto>>> GetPagedProducts(
+        public async Task<ActionResult<PagedResult<ProductDto>>> GetPagedProducts(
             [FromQuery] string? keyword,
             [FromQuery] int? categoryId,
             [FromQuery] int pageNumber = 1,
@@ -59,7 +59,7 @@ namespace MiniSupermarket.API.Controllers
                 .OrderBy(p => p.ProductId)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(p => new ProductItemDto
+                .Select(p => new ProductDto
                 {
                     ProductId = p.ProductId,
                     Barcode = p.Barcode,
@@ -67,11 +67,13 @@ namespace MiniSupermarket.API.Controllers
                     Price = p.Price,
                     StockQuantity = p.StockQuantity,
                     CategoryId = p.CategoryId,
-                    CategoryName = p.Category == null ? string.Empty : p.Category.CategoryName
+                    CategoryName = p.Category == null ? string.Empty : p.Category.CategoryName,
+                    DataSource = p.DataSource,
+                    IsLowStock = p.StockQuantity <= 10
                 })
                 .ToListAsync();
 
-            return Ok(new PagedResult<ProductItemDto>
+            return Ok(new PagedResult<ProductDto>
             {
                 CurrentPage = pageNumber,
                 PageSize = pageSize,
@@ -87,7 +89,20 @@ namespace MiniSupermarket.API.Controllers
         [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> GetAll()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products
+                .AsNoTracking()
+                .Select(p => new ProductDto
+                {
+                    ProductId = p.ProductId,
+                    Barcode = p.Barcode,
+                    ProductName = p.ProductName,
+                    Price = p.Price,
+                    DataSource = p.DataSource,
+                    StockQuantity = p.StockQuantity,
+                    CategoryId = p.CategoryId,
+                    IsLowStock = p.StockQuantity <= 10
+                })
+                .ToListAsync();
             return Ok(products);
         }
 
@@ -100,15 +115,16 @@ namespace MiniSupermarket.API.Controllers
             var products = await _context.Products
                 .Include(p => p.Category)
                 .AsNoTracking()
-                .Select(p => new
+                .Select(p => new ProductDto
                 {
-                    p.ProductId,
-                    p.Barcode,
-                    p.ProductName,
-                    p.Price,
-                    p.StockQuantity,
-                    p.IsLowStock,
-                    p.CategoryId,
+                    ProductId = p.ProductId,
+                    Barcode = p.Barcode,
+                    ProductName = p.ProductName,
+                    Price = p.Price,
+                    StockQuantity = p.StockQuantity,
+                    IsLowStock = p.StockQuantity <= 10,
+                    DataSource = p.DataSource,
+                    CategoryId = p.CategoryId,
                     CategoryName = p.Category != null ? p.Category.CategoryName : string.Empty
                 })
                 .ToListAsync();
@@ -122,7 +138,21 @@ namespace MiniSupermarket.API.Controllers
         [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> GetById(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products
+                .AsNoTracking()
+                .Where(p => p.ProductId == id)
+                .Select(p => new ProductDto
+                {
+                    ProductId = p.ProductId,
+                    Barcode = p.Barcode,
+                    ProductName = p.ProductName,
+                    Price = p.Price,
+                    DataSource = p.DataSource,
+                    StockQuantity = p.StockQuantity,
+                    CategoryId = p.CategoryId,
+                    IsLowStock = p.StockQuantity <= 10
+                })
+                .SingleOrDefaultAsync();
 
             if (product == null)
             {
@@ -158,7 +188,21 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Barcode == barcode);
+            var product = await _context.Products
+                .AsNoTracking()
+                .Where(p => p.Barcode == barcode)
+                .Select(p => new ProductDto
+                {
+                    ProductId = p.ProductId,
+                    Barcode = p.Barcode,
+                    ProductName = p.ProductName,
+                    Price = p.Price,
+                    DataSource = p.DataSource,
+                    StockQuantity = p.StockQuantity,
+                    CategoryId = p.CategoryId,
+                    IsLowStock = p.StockQuantity <= 10
+                })
+                .SingleOrDefaultAsync();
 
             if (product == null)
             {
@@ -187,6 +231,17 @@ namespace MiniSupermarket.API.Controllers
 
             var result = await _context.Products
                 .Where(p => p.ProductName.Contains(keyword) || p.Barcode.Contains(keyword))
+                .Select(p => new ProductDto
+                {
+                    ProductId = p.ProductId,
+                    Barcode = p.Barcode,
+                    ProductName = p.ProductName,
+                    Price = p.Price,
+                    DataSource = p.DataSource,
+                    StockQuantity = p.StockQuantity,
+                    CategoryId = p.CategoryId,
+                    IsLowStock = p.StockQuantity <= 10
+                })
                 .ToListAsync();
 
             return Ok(result);
@@ -196,9 +251,9 @@ namespace MiniSupermarket.API.Controllers
         // POST /api/products
         [HttpPost]
         [Authorize(Roles = "Admin,Warehouse")]
-        public async Task<IActionResult> Create([FromBody] Product product)
+        public async Task<IActionResult> Create([FromBody] ProductUpsertDto request)
         {
-            if (string.IsNullOrWhiteSpace(product.ProductName))
+            if (string.IsNullOrWhiteSpace(request.ProductName))
             {
                 return BadRequest(new
                 {
@@ -206,7 +261,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(product.Barcode))
+            if (string.IsNullOrWhiteSpace(request.Barcode))
             {
                 return BadRequest(new
                 {
@@ -214,8 +269,8 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            product.Barcode = product.Barcode.Trim();
-            if (!IsNumericBarcode(product.Barcode))
+            request.Barcode = request.Barcode.Trim();
+            if (!IsNumericBarcode(request.Barcode))
             {
                 return BadRequest(new
                 {
@@ -223,7 +278,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (product.Price <= 0)
+            if (request.Price <= 0)
             {
                 return BadRequest(new
                 {
@@ -231,7 +286,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (product.StockQuantity < 0)
+            if (request.StockQuantity < 0)
             {
                 return BadRequest(new
                 {
@@ -239,20 +294,30 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            var product = new Product
+            {
+                Barcode = request.Barcode,
+                ProductName = request.ProductName.Trim(),
+                Price = request.Price,
+                StockQuantity = request.StockQuantity,
+                CategoryId = request.CategoryId,
+                DataSource = "Nhập thủ công"
+            };
+
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = product.ProductId },
-                product);
+                product.ToDto());
         }
 
         // 6. UPDATE: Cập nhật thông tin sản phẩm (Admin và Warehouse)
         // PUT /api/products/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin,Warehouse")]
-        public async Task<IActionResult> Update(int id, [FromBody] Product updateData)
+        public async Task<IActionResult> Update(int id, [FromBody] ProductUpsertDto request)
         {
             var product = await _context.Products.FindAsync(id);
 
@@ -264,7 +329,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(updateData.ProductName))
+            if (string.IsNullOrWhiteSpace(request.ProductName))
             {
                 return BadRequest(new
                 {
@@ -272,7 +337,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(updateData.Barcode))
+            if (string.IsNullOrWhiteSpace(request.Barcode))
             {
                 return BadRequest(new
                 {
@@ -280,8 +345,8 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            updateData.Barcode = updateData.Barcode.Trim();
-            if (!IsNumericBarcode(updateData.Barcode))
+            request.Barcode = request.Barcode.Trim();
+            if (!IsNumericBarcode(request.Barcode))
             {
                 return BadRequest(new
                 {
@@ -289,7 +354,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (updateData.Price <= 0)
+            if (request.Price <= 0)
             {
                 return BadRequest(new
                 {
@@ -297,7 +362,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (updateData.StockQuantity < 0)
+            if (request.StockQuantity < 0)
             {
                 return BadRequest(new
                 {
@@ -305,13 +370,13 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            product.ProductName = updateData.ProductName.Trim();
-            product.Barcode = updateData.Barcode.Trim();
-            product.Price = updateData.Price;
-            product.StockQuantity = updateData.StockQuantity;
-            if (updateData.CategoryId > 0)
+            product.ProductName = request.ProductName.Trim();
+            product.Barcode = request.Barcode;
+            product.Price = request.Price;
+            product.StockQuantity = request.StockQuantity;
+            if (request.CategoryId > 0)
             {
-                product.CategoryId = updateData.CategoryId;
+                product.CategoryId = request.CategoryId;
             }
 
             await _context.SaveChangesAsync();

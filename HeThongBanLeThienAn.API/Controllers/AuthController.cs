@@ -53,13 +53,13 @@ namespace MiniSupermarket.API.Controllers
                     if (PasswordSecurity.Verify(inputPassword, dbUser.PasswordHash))
                     {
                         var token = GenerateJwtToken(dbUser.Username, dbUser.Role);
-                        return Ok(new
+                        return Ok(new LoginResponseDto
                         {
-                            success = true,
-                            token = token,
-                            role = dbUser.Role,
-                            username = dbUser.Username,
-                            fullName = dbUser.FullName
+                            Success = true,
+                            Token = token,
+                            Role = dbUser.Role,
+                            Username = dbUser.Username,
+                            FullName = dbUser.FullName
                         });
                     }
                 }
@@ -77,13 +77,13 @@ namespace MiniSupermarket.API.Controllers
             if (user != null)
             {
                 var token = GenerateJwtToken(user.Username, user.Role);
-                return Ok(new
+                return Ok(new LoginResponseDto
                 {
-                    success = true,
-                    token = token,
-                    role = user.Role,
-                    username = user.Username,
-                    fullName = user.FullName
+                    Success = true,
+                    Token = token,
+                    Role = user.Role,
+                    Username = user.Username,
+                    FullName = user.FullName
                 });
             }
 
@@ -112,11 +112,5 @@ namespace MiniSupermarket.API.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-    }
-
-    public class LoginRequestDto
-    {
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
     }
 }

@@ -153,11 +153,11 @@ namespace MiniSupermarket.API.Controllers
             }
 
             // Trả về danh sách sản phẩm đã được lưu đệm trên RAM
-            return Ok(new
+            return Ok(new CachedProductsReportDto
             {
-                totalLoaded = productTable.Rows.Count,
-                cachedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                data = resultList
+                TotalLoaded = productTable.Rows.Count,
+                CachedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                Data = resultList
             });
         }
 
@@ -207,11 +207,11 @@ namespace MiniSupermarket.API.Controllers
                 }
             }
 
-            return Ok(new
+            return Ok(new StockFilterReportDto
             {
-                minStockThreshold = minStock,
-                totalFound = resultList.Count,
-                data = resultList
+                MinStockThreshold = minStock,
+                TotalFound = resultList.Count,
+                Data = resultList
             });
         }
 
@@ -263,10 +263,10 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            return Ok(new
+            return Ok(new CategoryProductCountReportDto
             {
-                totalCategories = categoryTable.Rows.Count,
-                data = result
+                TotalCategories = categoryTable.Rows.Count,
+                Data = result
             });
         }
     }

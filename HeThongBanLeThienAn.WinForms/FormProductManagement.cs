@@ -277,7 +277,7 @@ namespace MiniSupermarket.WinForms
                 return;
             }
 
-            if (!TryReadProduct(out ProductDto product))
+            if (!TryReadProduct(out ProductUpsertRequestDto product))
             {
                 return;
             }
@@ -299,12 +299,11 @@ namespace MiniSupermarket.WinForms
                 return;
             }
 
-            if (!TryReadProduct(out ProductDto product))
+            if (!TryReadProduct(out ProductUpsertRequestDto product))
             {
                 return;
             }
 
-            product.ProductId = id;
             await SaveProductAsync(() => ApiClientService.Client.PutAsJsonAsync($"products/{id}", product), "Cập nhật sản phẩm thành công!");
         }
 
@@ -330,9 +329,9 @@ namespace MiniSupermarket.WinForms
             await SaveProductAsync(() => ApiClientService.Client.DeleteAsync($"products/{id}"), "Đã xóa sản phẩm thành công!");
         }
 
-        private bool TryReadProduct(out ProductDto product)
+        private bool TryReadProduct(out ProductUpsertRequestDto product)
         {
-            product = new ProductDto();
+            product = new ProductUpsertRequestDto();
             string barcode = txtBarcode.Text.Trim();
             string name = txtProductName.Text.Trim();
 
@@ -366,7 +365,7 @@ namespace MiniSupermarket.WinForms
                 return false;
             }
 
-            product = new ProductDto
+            product = new ProductUpsertRequestDto
             {
                 Barcode = barcode,
                 ProductName = name,
@@ -413,27 +412,4 @@ namespace MiniSupermarket.WinForms
         }
     }
 
-    public class ProductDto
-    {
-        public int ProductId { get; set; }
-        public string Barcode { get; set; } = string.Empty;
-        public string ProductName { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public int StockQuantity { get; set; }
-        public int CategoryId { get; set; }
-    }
-
-    public sealed class ProductItemViewDto : ProductDto
-    {
-        public string CategoryName { get; set; } = string.Empty;
-    }
-
-    public sealed class PagedViewResult<T>
-    {
-        public int CurrentPage { get; set; }
-        public int PageSize { get; set; }
-        public int TotalItems { get; set; }
-        public int TotalPages { get; set; }
-        public List<T> Items { get; set; } = new();
-    }
 }

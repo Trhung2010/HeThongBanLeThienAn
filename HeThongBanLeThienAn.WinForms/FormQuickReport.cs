@@ -172,35 +172,6 @@ namespace MiniSupermarket.WinForms
         }
     }
 
-    public sealed class DashboardSummaryViewDto
-    {
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
-        public decimal RevenueToday { get; set; }
-        public int TotalOrders { get; set; }
-        public int NewCustomers { get; set; }
-        public int LowStockItems { get; set; }
-        public List<RevenuePointViewDto> RevenueSeries { get; set; } = new();
-        public List<TopSellingProductViewDto> TopSellingProducts { get; set; } = new();
-    }
-
-    public sealed class RevenuePointViewDto
-    {
-        public DateTime Date { get; set; }
-        public decimal Revenue { get; set; }
-        public int Orders { get; set; }
-    }
-
-    public sealed class TopSellingProductViewDto
-    {
-        public int ProductId { get; set; }
-        public string Barcode { get; set; } = string.Empty;
-        public string ProductName { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public int TotalSoldQuantity { get; set; }
-        public decimal TotalSalesAmount { get; set; }
-    }
-
     internal sealed class RevenueBarChartPanel : Panel
     {
         private IReadOnlyList<RevenuePointViewDto> _data = Array.Empty<RevenuePointViewDto>();

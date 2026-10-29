@@ -33,7 +33,6 @@ namespace MiniSupermarket.WinForms
             txtDescription = new TextBox();
             txtId = new TextBox();
             txtCategoryName = new TextBox();
-            txtStockQuantity = new TextBox();
             btnSearch = new Button();
             btnDelete = new Button();
             btnUpdate = new Button();
@@ -45,7 +44,6 @@ namespace MiniSupermarket.WinForms
             lblId = new Label();
             lblCategoryName = new Label();
             lblDescription = new Label();
-            lblStockQuantity = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCategories).BeginInit();
             grpSearch.SuspendLayout();
             grpCategoryList.SuspendLayout();
@@ -120,7 +118,7 @@ namespace MiniSupermarket.WinForms
             //
             // btnDelete
             //
-            btnDelete.Location = new Point(189, 405);
+            btnDelete.Location = new Point(189, 350);
             btnDelete.Margin = new Padding(3, 4, 3, 4);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(69, 40);
@@ -131,7 +129,7 @@ namespace MiniSupermarket.WinForms
             //
             // btnUpdate
             //
-            btnUpdate.Location = new Point(97, 405);
+            btnUpdate.Location = new Point(97, 350);
             btnUpdate.Margin = new Padding(3, 4, 3, 4);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(86, 40);
@@ -142,7 +140,7 @@ namespace MiniSupermarket.WinForms
             //
             // btnAdd
             //
-            btnAdd.Location = new Point(17, 405);
+            btnAdd.Location = new Point(17, 350);
             btnAdd.Margin = new Padding(3, 4, 3, 4);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(74, 40);
@@ -229,8 +227,6 @@ namespace MiniSupermarket.WinForms
             grpCategoryInfo.Controls.Add(txtCategoryName);
             grpCategoryInfo.Controls.Add(lblDescription);
             grpCategoryInfo.Controls.Add(txtDescription);
-            grpCategoryInfo.Controls.Add(lblStockQuantity);
-            grpCategoryInfo.Controls.Add(txtStockQuantity);
             grpCategoryInfo.Controls.Add(btnAdd);
             grpCategoryInfo.Controls.Add(btnUpdate);
             grpCategoryInfo.Controls.Add(btnDelete);
@@ -269,23 +265,6 @@ namespace MiniSupermarket.WinForms
             lblDescription.Size = new Size(162, 20);
             lblDescription.TabIndex = 4;
             lblDescription.Text = "Mô Tả (Mô tả chi tiết...)";
-            //
-            // lblStockQuantity
-            //
-            lblStockQuantity.AutoSize = true;
-            lblStockQuantity.Location = new Point(17, 330);
-            lblStockQuantity.Name = "lblStockQuantity";
-            lblStockQuantity.Size = new Size(130, 20);
-            lblStockQuantity.TabIndex = 6;
-            lblStockQuantity.Text = "Số lượng tồn kho";
-            //
-            // txtStockQuantity
-            //
-            txtStockQuantity.Location = new Point(17, 350);
-            txtStockQuantity.Name = "txtStockQuantity";
-            txtStockQuantity.PlaceholderText = "Ví dụ: 100";
-            txtStockQuantity.Size = new Size(245, 27);
-            txtStockQuantity.TabIndex = 6;
             //
             // FormCategoryManagement
             //
@@ -328,7 +307,6 @@ namespace MiniSupermarket.WinForms
         private TextBox txtDescription;
         private TextBox txtId;
         private TextBox txtCategoryName;
-        private TextBox txtStockQuantity;
 
         // =========================================================
         // BUTTON
@@ -355,6 +333,5 @@ namespace MiniSupermarket.WinForms
         private Label lblId;
         private Label lblCategoryName;
         private Label lblDescription;
-        private Label lblStockQuantity;
     }
 }

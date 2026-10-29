@@ -150,11 +150,6 @@ namespace MiniSupermarket.WinForms
                 dgvCategories.Columns["Description"].Width = 260;
             }
 
-            if (dgvCategories.Columns["StockQuantity"] != null)
-            {
-                dgvCategories.Columns["StockQuantity"].HeaderText = "Tồn kho";
-                dgvCategories.Columns["StockQuantity"].Width = 90;
-            }
 
             dgvCategories.SelectionMode =
                 DataGridViewSelectionMode.FullRowSelect;
@@ -211,10 +206,6 @@ namespace MiniSupermarket.WinForms
                 txtDescription.Clear();
             }
 
-            if (row.Cells["StockQuantity"].Value != null)
-            {
-                txtStockQuantity.Text = row.Cells["StockQuantity"].Value.ToString();
-            }
         }
 
         // =========================================================
@@ -247,7 +238,7 @@ namespace MiniSupermarket.WinForms
             try
             {
                 var client = ApiClientService.Client;
-                var newCat = new
+                var newCat = new CategoryUpsertRequestDto
                 {
                     CategoryName = txtCategoryName.Text.Trim(),
                     Description = txtDescription.Text.Trim()
@@ -337,9 +328,8 @@ namespace MiniSupermarket.WinForms
             try
             {
                 var client = ApiClientService.Client;
-                var updateCat = new
+                var updateCat = new CategoryUpsertRequestDto
                 {
-                    CategoryId = id,
                     CategoryName = txtCategoryName.Text.Trim(),
                     Description = txtDescription.Text.Trim()
                 };
@@ -478,14 +468,6 @@ namespace MiniSupermarket.WinForms
             txtId.Clear();
             txtCategoryName.Clear();
             txtDescription.Clear();
-            txtStockQuantity.Clear();
-        }
-
-        private int ParseStockQuantity()
-        {
-            return int.TryParse(txtStockQuantity.Text.Trim(), out int quantity) && quantity >= 0
-                ? quantity
-                : 0;
         }
 
         private void grpCategoryList_Enter(object sender, EventArgs e)
@@ -494,17 +476,4 @@ namespace MiniSupermarket.WinForms
         }
     }
 
-    // =============================================================
-    // DTO (Data Transfer Object) cho Category
-    // =============================================================
-    public class CategoryDto
-    {
-        public int CategoryId { get; set; }
-
-        public string CategoryName { get; set; } = string.Empty;
-
-        public string? Description { get; set; }
-
-        public int StockQuantity { get; set; }
-    }
 }

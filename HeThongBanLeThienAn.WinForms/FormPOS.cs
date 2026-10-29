@@ -11,7 +11,7 @@ namespace MiniSupermarket.WinForms
     public partial class FormPOS : Form
     {
         private bool _checkoutInProgress;
-        private readonly List<CartItemDto> _cart = new List<CartItemDto>();
+        private readonly List<CartItemViewModel> _cart = new List<CartItemViewModel>();
         private int _customerRewardPoints;
         private readonly CheckBox _chkRedeemPoints = new()
         {
@@ -112,7 +112,7 @@ namespace MiniSupermarket.WinForms
                 }
                 else
                 {
-                    _cart.Add(new CartItemDto
+                    _cart.Add(new CartItemViewModel
                     {
                         ProductId = product.ProductId,
                         Barcode = product.Barcode,
@@ -268,16 +268,16 @@ namespace MiniSupermarket.WinForms
                 return;
             }
 
-            var orderRequest = new
+            var orderRequest = new CheckoutRequestDto
             {
                 CashierUsername = SessionManager.CurrentUsername,
                 CustomerPhone = txtCustomerPhone.Text.Trim(),
                 RedeemPoints = _chkRedeemPoints.Checked ? 50 : 0,
-                Items = _cart.Select(i => new
+                Items = _cart.Select(i => new CheckoutItemRequestDto
                 {
-                    i.ProductId,
-                    i.Quantity,
-                    i.UnitPrice
+                    ProductId = i.ProductId,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice
                 }).ToList()
             };
 
@@ -289,9 +289,13 @@ namespace MiniSupermarket.WinForms
 
                 if (response.IsSuccessStatusCode)
                 {
-                    using var receipt = System.Text.Json.JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-                    decimal finalAmount = receipt.RootElement.GetProperty("finalAmount").GetDecimal();
-                    decimal discount = receipt.RootElement.GetProperty("discountAmount").GetDecimal();
+                    var receipt = await response.Content.ReadFromJsonAsync<CheckoutResponseDto>();
+                    if (receipt == null)
+                    {
+                        throw new InvalidOperationException("Máy chủ trả về hóa đơn không hợp lệ.");
+                    }
+                    decimal finalAmount = receipt.FinalAmount;
+                    decimal discount = receipt.DiscountAmount;
                     MessageBox.Show(
                         $"Thanh toán thành công!\nTạm tính: {subtotal:N0} đ\nGiảm từ điểm: {discount:N0} đ\nThanh toán: {finalAmount:N0} đ\nĐã xuất hóa đơn và cập nhật kho hàng.",
                         "Thành công",
@@ -334,7 +338,7 @@ namespace MiniSupermarket.WinForms
         }
     }
 
-    public class CartItemDto
+    public class CartItemViewModel
     {
         public int ProductId { get; set; }
         public string Barcode { get; set; } = string.Empty;

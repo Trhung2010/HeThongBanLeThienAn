@@ -20,10 +20,22 @@ public class CheckoutController : ControllerBase
         {
             string cashier = User?.Identity?.Name ?? request.CashierUsername;
             var r = _service.Checkout(cashier, request.CustomerId, request.CustomerPhone, request.Items, request.RedeemPoints);
-            return Ok(new { success = true, orderId = r.OrderId, orderCode = r.OrderCode,
-                totalItems = r.TotalItems, subtotal = r.Subtotal, discountAmount = r.DiscountAmount,
-                finalAmount = r.FinalAmount, totalAmount = r.FinalAmount, redeemedPoints = r.RedeemedPoints,
-                rewardPointsAdded = r.RewardPointsAdded, customer = r.Customer, timestamp = r.Timestamp });
+            return Ok(new CheckoutResponseDto
+            {
+                Success = true,
+                OrderId = r.OrderId,
+                OrderCode = r.OrderCode,
+                TotalItems = r.TotalItems,
+                Subtotal = r.Subtotal,
+                DiscountAmount = r.DiscountAmount,
+                FinalAmount = r.FinalAmount,
+                TotalAmount = r.FinalAmount,
+                RedeemedPoints = r.RedeemedPoints,
+                RewardPointsAdded = r.RewardPointsAdded,
+                Cashier = r.Cashier,
+                Customer = r.Customer,
+                Timestamp = r.Timestamp
+            });
         }
         catch (Exception ex) when (ex is InvalidOperationException or OverflowException or System.Data.Common.DbException)
         { return BadRequest(new { success = false, message = "Thanh toán thất bại; không lưu thay đổi.", errorDetail = ex.Message }); }

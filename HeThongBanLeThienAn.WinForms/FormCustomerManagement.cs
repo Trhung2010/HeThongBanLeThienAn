@@ -214,7 +214,7 @@ namespace MiniSupermarket.WinForms
             try
             {
                 var client = ApiClientService.Client;
-                var newCustomer = new
+                var newCustomer = new CustomerUpsertRequestDto
                 {
                     CustomerName = txtCustomerName.Text.Trim(),
                     PhoneNumber = txtPhoneNumber.Text.Trim(),
@@ -259,9 +259,8 @@ namespace MiniSupermarket.WinForms
             try
             {
                 var client = ApiClientService.Client;
-                var updateCustomer = new
+                var updateCustomer = new CustomerUpsertRequestDto
                 {
-                    CustomerId = id,
                     CustomerName = txtCustomerName.Text.Trim(),
                     PhoneNumber = txtPhoneNumber.Text.Trim(),
                     Address = txtAddress.Text.Trim(),
@@ -351,13 +350,4 @@ namespace MiniSupermarket.WinForms
         }
     }
 
-    public class CustomerDto
-    {
-        public int CustomerId { get; set; }
-        public string CustomerName { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
-        public string? Address { get; set; }
-        public int RewardPoints { get; set; }
-        public string MembershipRank { get; set; } = "Chuẩn";
-    }
 }

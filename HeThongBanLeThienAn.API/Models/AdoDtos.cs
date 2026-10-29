@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MiniSupermarket.API.Models
 {
@@ -52,7 +53,9 @@ namespace MiniSupermarket.API.Models
     /// </summary>
     public class CartItemCheckoutDto
     {
+        [Range(1, int.MaxValue)]
         public int ProductId { get; set; }
+        [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
     }
@@ -65,7 +68,9 @@ namespace MiniSupermarket.API.Models
         public string CashierUsername { get; set; } = string.Empty;
         public int? CustomerId { get; set; }
         public string? CustomerPhone { get; set; }
+        [Range(0, int.MaxValue)]
         public int RedeemPoints { get; set; }
+        [Required, MinLength(1)]
         public List<CartItemCheckoutDto> Items { get; set; } = new();
     }
 

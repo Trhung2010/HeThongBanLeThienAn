@@ -22,7 +22,7 @@ namespace MiniSupermarket.API.Controllers
         // GET /api/categories/paged?keyword=...&pageNumber=1&pageSize=5
         [HttpGet("paged")]
         [Authorize(Roles = "Admin,Cashier,Warehouse")]
-        public async Task<ActionResult<PagedResult<Category>>> GetPaged(
+        public async Task<ActionResult<PagedResult<CategoryDto>>> GetPaged(
             [FromQuery] string? keyword,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 5)
@@ -48,9 +48,15 @@ namespace MiniSupermarket.API.Controllers
                 .OrderBy(c => c.CategoryId)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Select(c => new CategoryDto
+                {
+                    CategoryId = c.CategoryId,
+                    CategoryName = c.CategoryName,
+                    Description = c.Description
+                })
                 .ToListAsync();
 
-            return Ok(new PagedResult<Category>
+            return Ok(new PagedResult<CategoryDto>
             {
                 CurrentPage = pageNumber,
                 PageSize = pageSize,
@@ -66,7 +72,15 @@ namespace MiniSupermarket.API.Controllers
         [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> GetAll()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var categories = await _context.Categories
+                .AsNoTracking()
+                .Select(c => new CategoryDto
+                {
+                    CategoryId = c.CategoryId,
+                    CategoryName = c.CategoryName,
+                    Description = c.Description
+                })
+                .ToListAsync();
             return Ok(categories);
         }
 
@@ -76,7 +90,16 @@ namespace MiniSupermarket.API.Controllers
         [Authorize(Roles = "Admin,Cashier,Warehouse")]
         public async Task<IActionResult> GetById(int id)
         {
-            var cat = await _context.Categories.FindAsync(id);
+            var cat = await _context.Categories
+                .AsNoTracking()
+                .Where(c => c.CategoryId == id)
+                .Select(c => new CategoryDto
+                {
+                    CategoryId = c.CategoryId,
+                    CategoryName = c.CategoryName,
+                    Description = c.Description
+                })
+                .SingleOrDefaultAsync();
 
             if (cat == null)
             {
@@ -105,6 +128,12 @@ namespace MiniSupermarket.API.Controllers
 
             var result = await _context.Categories
                 .Where(c => c.CategoryName.Contains(keyword))
+                .Select(c => new CategoryDto
+                {
+                    CategoryId = c.CategoryId,
+                    CategoryName = c.CategoryName,
+                    Description = c.Description
+                })
                 .ToListAsync();
 
             return Ok(result);
@@ -114,9 +143,9 @@ namespace MiniSupermarket.API.Controllers
         // POST /api/categories
         [HttpPost]
         [Authorize(Roles = "Admin,Warehouse")]
-        public async Task<IActionResult> Create([FromBody] Category newCat)
+        public async Task<IActionResult> Create([FromBody] CategoryUpsertDto request)
         {
-            if (string.IsNullOrWhiteSpace(newCat.CategoryName))
+            if (string.IsNullOrWhiteSpace(request.CategoryName))
             {
                 return BadRequest(new
                 {
@@ -124,20 +153,26 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            await _context.Categories.AddAsync(newCat);
+            var category = new Category
+            {
+                CategoryName = request.CategoryName.Trim(),
+                Description = request.Description?.Trim()
+            };
+
+            await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(
                 nameof(GetById),
-                new { id = newCat.CategoryId },
-                newCat);
+                new { id = category.CategoryId },
+                category.ToDto());
         }
 
         // 5. UPDATE: Cập nhật thông tin nhóm hàng
         // PUT /api/categories/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin,Warehouse")]
-        public async Task<IActionResult> Update(int id, [FromBody] Category updateCat)
+        public async Task<IActionResult> Update(int id, [FromBody] CategoryUpsertDto request)
         {
             var cat = await _context.Categories.FindAsync(id);
 
@@ -149,8 +184,13 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            cat.CategoryName = updateCat.CategoryName;
-            cat.Description = updateCat.Description;
+            if (string.IsNullOrWhiteSpace(request.CategoryName))
+            {
+                return BadRequest(new { message = "Tên không được trống!" });
+            }
+
+            cat.CategoryName = request.CategoryName.Trim();
+            cat.Description = request.Description?.Trim();
 
             await _context.SaveChangesAsync();
 

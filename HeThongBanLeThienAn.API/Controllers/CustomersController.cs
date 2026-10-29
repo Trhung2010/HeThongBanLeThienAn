@@ -22,7 +22,7 @@ namespace MiniSupermarket.API.Controllers
         // GET /api/customers/paged?keyword=...&pageNumber=1&pageSize=5
         [HttpGet("paged")]
         [Authorize(Roles = "Admin,Cashier")]
-        public async Task<ActionResult<PagedResult<Customer>>> GetPaged(
+        public async Task<ActionResult<PagedResult<CustomerDto>>> GetPaged(
             [FromQuery] string? keyword,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 5)
@@ -50,9 +50,19 @@ namespace MiniSupermarket.API.Controllers
                 .ThenBy(c => c.CustomerId)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Select(c => new CustomerDto
+                {
+                    CustomerId = c.CustomerId,
+                    CustomerName = c.CustomerName,
+                    PhoneNumber = c.PhoneNumber,
+                    Address = c.Address,
+                    RewardPoints = c.RewardPoints,
+                    MembershipRank = c.MembershipRank,
+                    CreatedDate = c.CreatedDate
+                })
                 .ToListAsync();
 
-            return Ok(new PagedResult<Customer>
+            return Ok(new PagedResult<CustomerDto>
             {
                 CurrentPage = pageNumber,
                 PageSize = pageSize,
@@ -68,7 +78,19 @@ namespace MiniSupermarket.API.Controllers
         [Authorize(Roles = "Admin,Cashier")]
         public async Task<IActionResult> GetAll()
         {
-            var customers = await _context.Customers.ToListAsync();
+            var customers = await _context.Customers
+                .AsNoTracking()
+                .Select(c => new CustomerDto
+                {
+                    CustomerId = c.CustomerId,
+                    CustomerName = c.CustomerName,
+                    PhoneNumber = c.PhoneNumber,
+                    Address = c.Address,
+                    RewardPoints = c.RewardPoints,
+                    MembershipRank = c.MembershipRank,
+                    CreatedDate = c.CreatedDate
+                })
+                .ToListAsync();
             return Ok(customers);
         }
 
@@ -78,7 +100,20 @@ namespace MiniSupermarket.API.Controllers
         [Authorize(Roles = "Admin,Cashier")]
         public async Task<IActionResult> GetById(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _context.Customers
+                .AsNoTracking()
+                .Where(c => c.CustomerId == id)
+                .Select(c => new CustomerDto
+                {
+                    CustomerId = c.CustomerId,
+                    CustomerName = c.CustomerName,
+                    PhoneNumber = c.PhoneNumber,
+                    Address = c.Address,
+                    RewardPoints = c.RewardPoints,
+                    MembershipRank = c.MembershipRank,
+                    CreatedDate = c.CreatedDate
+                })
+                .SingleOrDefaultAsync();
 
             if (customer == null)
             {
@@ -109,6 +144,16 @@ namespace MiniSupermarket.API.Controllers
                 .Where(c => c.CustomerName.Contains(keyword) ||
                             c.PhoneNumber.Contains(keyword) ||
                             c.MembershipRank.Contains(keyword))
+                .Select(c => new CustomerDto
+                {
+                    CustomerId = c.CustomerId,
+                    CustomerName = c.CustomerName,
+                    PhoneNumber = c.PhoneNumber,
+                    Address = c.Address,
+                    RewardPoints = c.RewardPoints,
+                    MembershipRank = c.MembershipRank,
+                    CreatedDate = c.CreatedDate
+                })
                 .ToListAsync();
 
             return Ok(result);
@@ -118,9 +163,9 @@ namespace MiniSupermarket.API.Controllers
         // POST /api/customers
         [HttpPost]
         [Authorize(Roles = "Admin,Cashier")]
-        public async Task<IActionResult> Create([FromBody] Customer customer)
+        public async Task<IActionResult> Create([FromBody] CustomerUpsertDto request)
         {
-            if (string.IsNullOrWhiteSpace(customer.CustomerName))
+            if (string.IsNullOrWhiteSpace(request.CustomerName))
             {
                 return BadRequest(new
                 {
@@ -128,7 +173,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(customer.PhoneNumber))
+            if (string.IsNullOrWhiteSpace(request.PhoneNumber))
             {
                 return BadRequest(new
                 {
@@ -136,7 +181,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (customer.RewardPoints < 0)
+            if (request.RewardPoints < 0)
             {
                 return BadRequest(new
                 {
@@ -144,7 +189,15 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            customer.CreatedDate = DateTime.Now;
+            var customer = new Customer
+            {
+                CustomerName = request.CustomerName.Trim(),
+                PhoneNumber = request.PhoneNumber.Trim(),
+                Address = request.Address?.Trim(),
+                RewardPoints = request.RewardPoints,
+                MembershipRank = string.IsNullOrWhiteSpace(request.MembershipRank) ? "Chuẩn" : request.MembershipRank.Trim(),
+                CreatedDate = DateTime.Now
+            };
 
             await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();
@@ -152,14 +205,14 @@ namespace MiniSupermarket.API.Controllers
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = customer.CustomerId },
-                customer);
+                customer.ToDto());
         }
 
         // 5. UPDATE: Cập nhật thông tin khách hàng
         // PUT /api/customers/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin,Cashier")]
-        public async Task<IActionResult> Update(int id, [FromBody] Customer updateData)
+        public async Task<IActionResult> Update(int id, [FromBody] CustomerUpsertDto request)
         {
             var customer = await _context.Customers.FindAsync(id);
 
@@ -171,7 +224,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(updateData.CustomerName))
+            if (string.IsNullOrWhiteSpace(request.CustomerName))
             {
                 return BadRequest(new
                 {
@@ -179,7 +232,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(updateData.PhoneNumber))
+            if (string.IsNullOrWhiteSpace(request.PhoneNumber))
             {
                 return BadRequest(new
                 {
@@ -187,7 +240,7 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            if (updateData.RewardPoints < 0)
+            if (request.RewardPoints < 0)
             {
                 return BadRequest(new
                 {
@@ -195,11 +248,11 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
-            customer.CustomerName = updateData.CustomerName.Trim();
-            customer.PhoneNumber = updateData.PhoneNumber.Trim();
-            customer.Address = updateData.Address?.Trim();
-            customer.RewardPoints = updateData.RewardPoints;
-            customer.MembershipRank = string.IsNullOrWhiteSpace(updateData.MembershipRank) ? "Chuẩn" : updateData.MembershipRank.Trim();
+            customer.CustomerName = request.CustomerName.Trim();
+            customer.PhoneNumber = request.PhoneNumber.Trim();
+            customer.Address = request.Address?.Trim();
+            customer.RewardPoints = request.RewardPoints;
+            customer.MembershipRank = string.IsNullOrWhiteSpace(request.MembershipRank) ? "Chuẩn" : request.MembershipRank.Trim();
 
             await _context.SaveChangesAsync();
 

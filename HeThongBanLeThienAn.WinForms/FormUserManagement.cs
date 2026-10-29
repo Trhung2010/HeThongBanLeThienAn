@@ -142,7 +142,7 @@ namespace MiniSupermarket.WinForms
                 return;
             }
 
-            var newUser = new
+            var newUser = new CreateUserRequestDto
             {
                 Username = username,
                 Password = password,
@@ -181,12 +181,4 @@ namespace MiniSupermarket.WinForms
         }
     }
 
-    public class UserDto
-    {
-        public int Id { get; set; }
-        public string Username { get; set; } = string.Empty;
-        public string FullName { get; set; } = string.Empty;
-        public string Role { get; set; } = string.Empty;
-        public bool IsActive { get; set; }
-    }
 }

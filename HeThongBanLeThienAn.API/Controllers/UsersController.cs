@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniSupermarket.API.Data;
 using MiniSupermarket.API.Models;
@@ -54,7 +54,7 @@ namespace MiniSupermarket.API.Controllers
                     .OrderBy(u => u.UserId)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
-                    .Select(u => new
+                    .Select(u => new UserDto
                     {
                         Id = u.UserId,
                         Username = u.Username,
@@ -64,7 +64,7 @@ namespace MiniSupermarket.API.Controllers
                     })
                     .ToListAsync();
 
-                return Ok(new
+                return Ok(new PagedResult<UserDto>
                 {
                     CurrentPage = pageNumber,
                     PageSize = pageSize,
@@ -89,7 +89,7 @@ namespace MiniSupermarket.API.Controllers
                 .OrderBy(u => u.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(u => new
+                .Select(u => new UserDto
                 {
                     Id = u.Id,
                     Username = u.Username,
@@ -99,7 +99,7 @@ namespace MiniSupermarket.API.Controllers
                 })
                 .ToList();
 
-            return Ok(new
+            return Ok(new PagedResult<UserDto>
             {
                 CurrentPage = pageNumber,
                 PageSize = pageSize,
@@ -115,7 +115,7 @@ namespace MiniSupermarket.API.Controllers
         {
             if (_context != null)
             {
-                var dbUserDtos = _context.Users.Select(u => new
+                var dbUserDtos = _context.Users.Select(u => new UserDto
                 {
                     Id = u.UserId,
                     Username = u.Username,
@@ -127,7 +127,7 @@ namespace MiniSupermarket.API.Controllers
                 return Ok(dbUserDtos);
             }
 
-            var userDtos = UserDataStore.Users.Select(u => new
+            var userDtos = UserDataStore.Users.Select(u => new UserDto
             {
                 Id = u.Id,
                 Username = u.Username,
@@ -137,6 +137,49 @@ namespace MiniSupermarket.API.Controllers
             }).ToList();
 
             return Ok(userDtos);
+        }
+
+        // GET: /api/users/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            if (_context != null)
+            {
+                var user = await _context.Users
+                    .AsNoTracking()
+                    .Where(u => u.UserId == id)
+                    .Select(u => new UserDto
+                    {
+                        Id = u.UserId,
+                        Username = u.Username,
+                        FullName = u.FullName,
+                        Role = u.Role,
+                        IsActive = u.IsActive
+                    })
+                    .SingleOrDefaultAsync();
+
+                if (user == null)
+                    return NotFound(new { message = "Không tìm thấy người dùng!" });
+
+                return Ok(user);
+            }
+
+            var memUser = UserDataStore.Users
+                .Where(u => u.Id == id)
+                .Select(u => new UserDto
+                {
+                    Id = u.Id,
+                    Username = u.Username,
+                    FullName = u.FullName,
+                    Role = u.Role,
+                    IsActive = u.IsActive
+                })
+                .SingleOrDefault();
+
+            if (memUser == null)
+                return NotFound(new { message = "Không tìm thấy người dùng!" });
+
+            return Ok(memUser);
         }
 
         // POST: /api/users
@@ -197,7 +240,7 @@ namespace MiniSupermarket.API.Controllers
             };
             UserDataStore.Users.Add(newUser);
 
-            return CreatedAtAction(nameof(GetAll), new { id = createdId }, new
+            return CreatedAtAction(nameof(GetById), new { id = createdId }, new UserDto
             {
                 Id = createdId,
                 Username = username,
@@ -208,11 +251,4 @@ namespace MiniSupermarket.API.Controllers
         }
     }
 
-    public class CreateUserDto
-    {
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string FullName { get; set; } = string.Empty;
-        public string Role { get; set; } = "Cashier";
-    }
 }

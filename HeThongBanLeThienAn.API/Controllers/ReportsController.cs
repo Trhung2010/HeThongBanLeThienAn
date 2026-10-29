@@ -109,11 +109,11 @@ namespace MiniSupermarket.API.Controllers
                 }
             }
 
-            return Ok(new
+            return Ok(new CashierRevenueReportDto
             {
-                success = true,
-                totalCashiers = reportList.Count,
-                data = reportList
+                Success = true,
+                TotalCashiers = reportList.Count,
+                Data = reportList
             });
         }
 
@@ -187,12 +187,12 @@ namespace MiniSupermarket.API.Controllers
                 }
             }
 
-            return Ok(new
+            return Ok(new DateRangeRevenueReportDto
             {
-                success = true,
-                fromDate = start.ToString("yyyy-MM-dd"),
-                toDate = end.ToString("yyyy-MM-dd"),
-                data = reportList
+                Success = true,
+                FromDate = start.ToString("yyyy-MM-dd"),
+                ToDate = end.ToString("yyyy-MM-dd"),
+                Data = reportList
             });
         }
 
@@ -262,11 +262,11 @@ namespace MiniSupermarket.API.Controllers
                 }
             }
 
-            return Ok(new
+            return Ok(new TopSellingReportDto
             {
-                success = true,
-                totalItems = topList.Count,
-                data = topList
+                Success = true,
+                TotalItems = topList.Count,
+                Data = topList
             });
         }
 
@@ -369,13 +369,13 @@ namespace MiniSupermarket.API.Controllers
             if (dashboardResult is not OkObjectResult { Value: DashboardSummaryDto dashboard })
                 return dashboardResult;
 
-            return Ok(new
+            return Ok(new QuickReportDto
             {
-                dashboard.TotalOrders,
+                TotalOrders = dashboard.TotalOrders,
                 TotalRevenue = dashboard.RevenueToday,
                 BestSeller = dashboard.TopSellingProducts.FirstOrDefault()?.ProductName ?? "Chưa có dữ liệu",
-                dashboard.NewCustomers,
-                dashboard.LowStockItems
+                NewCustomers = dashboard.NewCustomers,
+                LowStockItems = dashboard.LowStockItems
             });
         }
     }

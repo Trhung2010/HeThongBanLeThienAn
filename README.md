@@ -95,8 +95,8 @@ c:\HeThongBanLeThienAn
 ├── README.md
 ├── .gitignore
 ├── MiniSupermarket.postman_collection.json
-├── HeThongBanLeThienAn.sln
 ├── HeThongBanLeThienAn.API/
+│   ├── HeThongBanLeThienAn.sln
 │   ├── Controllers/
 │   │   ├── AuthController.cs
 │   │   ├── ProductsController.cs
@@ -120,30 +120,33 @@ c:\HeThongBanLeThienAn
 │   │   ├── Customer.cs
 │   │   ├── Order.cs
 │   │   ├── User.cs
-│   │   ├── AuthDtos.cs
-│   │   ├── CheckoutDtos.cs
-│   │   ├── ReportDtos.cs
-│   │   └── AdoDtos.cs
+│   │   ├── OrderDetail.cs
+│   │   ├── PagedResult.cs
+│   │   ├── AdoDtos.cs
+│   │   ├── ApiDtos.cs
+│   │   └── DtoMappings.cs
 │   ├── Security/
 │   │   └── PasswordSecurity.cs
 │   ├── Program.cs
 │   ├── appsettings.json
 │   ├── appsettings.Development.json
 │   └── HeThongBanLeThienAn.API.csproj
-└── HeThongBanLeThienAn.WinForms/
-    ├── FormMainShell.cs
-    ├── FormLogin.cs
-    ├── FormPOS.cs
-    ├── FormProductManagement.cs
-    ├── FormCategoryManagement.cs
-    ├── FormCustomerManagement.cs
-    ├── FormUserManagement.cs
-    ├── FormQuickReport.cs
-    ├── CsvExportService.cs
-    ├── ApiClientService.cs
-    ├── SessionManager.cs
-    ├── Program.cs
-    └── HeThongBanLeThienAn.WinForms.csproj
+├── HeThongBanLeThienAn.WinForms/
+│   ├── FormMainShell.cs
+│   ├── FormLogin.cs
+│   ├── FormPOS.cs
+│   ├── FormProductManagement.cs
+│   ├── FormCategoryManagement.cs
+│   ├── FormCustomerManagement.cs
+│   ├── FormUserManagement.cs
+│   ├── FormQuickReport.cs
+│   ├── CsvExportService.cs
+│   ├── ApiContracts.cs
+│   ├── SessionManager.cs (chứa SessionManager và ApiClientService)
+│   ├── Program.cs
+│   └── HeThongBanLeThienAn.WinForms.csproj
+└── HeThongBanLeThienAn.Tests/
+    └── HeThongBanLeThienAn.Tests.csproj
 ```
 
 > **Lưu ý:** Mã nguồn sử dụng namespace `MiniSupermarket.*`, trong khi thư mục project hiển thị là `HeThongBanLeThienAn.*`. Đây là sự quy ước tổ chức mã nguồn và namespace đã được thống nhất xuyên suốt dự án, không ảnh hưởng đến chức năng và kiến trúc hoạt động.
@@ -165,7 +168,7 @@ Hệ thống đã nạp sẵn 15 tài khoản nhân sự mẫu trong cơ sở d�
 
 ### 2. Quản lý Sản phẩm (`/api/Products` & `/api/ado-products`)
 - `GET /api/products`: Lấy toàn bộ 100 sản phẩm.
-- `GET /api/products/paged?page=1&pageSize=5`: Phân trang sản phẩm máy chủ qua LINQ `.Skip().Take()`, tìm kiếm và lọc theo danh mục.
+- `GET /api/products/paged?pageNumber=1&pageSize=5`: Phân trang sản phẩm máy chủ qua LINQ `.Skip().Take()`, tìm kiếm và lọc theo danh mục.
 - `GET /api/products/{id}`: Xem chi tiết sản phẩm theo mã ID.
 - `GET /api/products/barcode/{barcode}`: Tra cứu siêu tốc sản phẩm theo chuỗi mã vạch phục vụ thu ngân.
 - `POST /api/products`: Thêm mới sản phẩm (`Admin, Warehouse`).
@@ -220,7 +223,7 @@ Kết quả kiểm thử tiêu biểu:
 
 ### 1. Restore dependencies
 ```powershell
-dotnet restore
+dotnet restore .\HeThongBanLeThienAn.API\HeThongBanLeThienAn.sln
 ```
 
 ### 2. Cập nhật Cơ sở dữ liệu SQL Server
@@ -242,6 +245,11 @@ Mở cửa sổ terminal mới và khởi chạy:
 dotnet run --project .\HeThongBanLeThienAn.WinForms\HeThongBanLeThienAn.WinForms.csproj
 ```
 Ứng dụng WinForms sẽ mở màn hình đăng nhập `FormLogin`.
+
+### 5. Chạy bộ kiểm thử xUnit
+```powershell
+dotnet test .\HeThongBanLeThienAn.Tests\HeThongBanLeThienAn.Tests.csproj
+```
 
 ## Kiểm thử nhanh
 
@@ -277,8 +285,8 @@ Kết quả mong đợi: Nhận được chuỗi JWT Bearer Token, thời gian h
 ## Lưu ý triển khai & Báo cáo đồ án
 
 - Cơ sở dữ liệu hoạt động trực tiếp trên **Microsoft SQL Server Express** với đầy đủ ràng buộc khóa chính, khóa ngoại, chỉ mục duy nhất và 3 Stored Procedures.
-- Chuỗi khóa bí mật JWT được bảo vệ trong `appsettings.json`.
-- **Báo cáo đồ án tốt nghiệp**: Bản báo cáo chính thức (định dạng Microsoft Word `.docx` và Adobe PDF `.pdf` chuẩn **80 trang**, đầy đủ mục lục, danh mục hình ảnh - bảng biểu, phân tích chuyên sâu lý thuyết và thực nghiệm) **được nộp riêng trực tiếp cho Giảng viên hướng dẫn / Hội đồng nghiệm thu**, không đưa lên GitHub repository.
+- Khóa JWT trong `appsettings.json` chỉ là cấu hình demo. Khi triển khai thật phải chuyển sang User Secrets, biến môi trường hoặc kho bí mật và thay khóa mặc định.
+- **Báo cáo đồ án**: Bản Word/PDF chính thức có mục lục, danh mục hình ảnh - bảng biểu, phân tích lý thuyết và kết quả kiểm thử; báo cáo được nộp riêng cho giảng viên, không lưu trong repository.
 
 ## Tác giả
 

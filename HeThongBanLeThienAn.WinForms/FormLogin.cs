@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace MiniSupermarket.WinForms
 {
@@ -38,7 +37,7 @@ namespace MiniSupermarket.WinForms
             try
             {
                 // Tạo dữ liệu đăng nhập gửi đến API
-                var loginData = new
+                var loginData = new LoginRequestDto
                 {
                     Username = username,
                     Password = password
@@ -52,34 +51,22 @@ namespace MiniSupermarket.WinForms
                 // Kiểm tra đăng nhập thành công
                 if (response.IsSuccessStatusCode)
                 {
-                    // Đọc dữ liệu JSON trả về từ Server
-                    var jsonString =
-                        await response.Content.ReadAsStringAsync();
-
-                    using var doc = JsonDocument.Parse(jsonString);
+                    var loginResult = await response.Content.ReadFromJsonAsync<LoginResponseDto>();
+                    if (loginResult == null || string.IsNullOrWhiteSpace(loginResult.Token))
+                    {
+                        MessageBox.Show("Phản hồi đăng nhập không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
                     // Lưu JWT Token vào SessionManager
-                    SessionManager.JwtToken =
-                        doc.RootElement
-                            .GetProperty("token")
-                            .GetString() ?? string.Empty;
+                    SessionManager.JwtToken = loginResult.Token;
 
                     // Lưu quyền người dùng vào SessionManager
-                    SessionManager.CurrentRole =
-                        doc.RootElement
-                            .GetProperty("role")
-                            .GetString() ?? string.Empty;
+                    SessionManager.CurrentRole = loginResult.Role;
 
                     // Lưu username và họ tên vào SessionManager
-                    SessionManager.CurrentUsername =
-                        doc.RootElement.TryGetProperty("username", out var pUser)
-                            ? pUser.GetString() ?? username
-                            : username;
-
-                    SessionManager.CurrentFullName =
-                        doc.RootElement.TryGetProperty("fullName", out var pName)
-                            ? pName.GetString() ?? username
-                            : username;
+                    SessionManager.CurrentUsername = string.IsNullOrWhiteSpace(loginResult.Username) ? username : loginResult.Username;
+                    SessionManager.CurrentFullName = string.IsNullOrWhiteSpace(loginResult.FullName) ? username : loginResult.FullName;
 
                     // Hiển thị thông báo đăng nhập thành công
                     MessageBox.Show(
