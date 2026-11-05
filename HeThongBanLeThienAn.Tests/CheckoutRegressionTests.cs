@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -70,10 +70,10 @@ public sealed class CheckoutRegressionTests : IDisposable
     }
 
     [Fact]
-    public void Checkout_UsesDatabasePriceAndCommitsAllTables()
+    public async Task Checkout_UsesDatabasePriceAndCommitsAllTables()
     {
         int stock=Stock, points=Points, orders=_db.Orders.Count();
-        var receipt=_checkout.Checkout("cashier01",1,null,Cart(2,0.01m));
+        var receipt=await _checkout.Checkout("cashier01",1,null,Cart(2,0.01m));
         Assert.Equal(25000m,receipt.FinalAmount);
         Assert.Equal(stock-2,Stock);
         Assert.Equal(points+2,Points);
@@ -87,55 +87,55 @@ public sealed class CheckoutRegressionTests : IDisposable
     [InlineData(0)]
     [InlineData(-1)]
     [InlineData(99999)]
-    public void Checkout_RejectsInvalidQuantitiesWithoutMutation(int quantity)
+    public async Task Checkout_RejectsInvalidQuantitiesWithoutMutation(int quantity)
     {
         int stock=Stock, orders=_db.Orders.Count(), points=Points;
-        Assert.Throws<InvalidOperationException>(()=>_checkout.Checkout("cashier01",1,null,Cart(quantity)));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _checkout.Checkout("cashier01",1,null,Cart(quantity)));
         Assert.Equal(stock,Stock); Assert.Equal(orders,_db.Orders.Count()); Assert.Equal(points,Points);
     }
 
     [Fact]
-    public void Checkout_DuplicateLinesCannotExceedStock()
+    public async Task Checkout_DuplicateLinesCannotExceedStock()
     {
         int stock=Stock, orders=_db.Orders.Count();
         var cart=Cart(stock); cart.Add(new() { ProductId=1, Quantity=1 });
-        Assert.Throws<InvalidOperationException>(()=>_checkout.Checkout("cashier01",1,null,cart));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _checkout.Checkout("cashier01",1,null,cart));
         Assert.Equal(stock,Stock); Assert.Equal(orders,_db.Orders.Count());
     }
 
     [Fact]
-    public void Checkout_LateDatabaseFailureRollsBackOrderStockDetailsAndPoints()
+    public async Task Checkout_LateDatabaseFailureRollsBackOrderStockDetailsAndPoints()
     {
         int stock=Stock, points=Points, orders=_db.Orders.Count(), details=_db.OrderDetails.Count();
         _db.Database.ExecuteSqlRaw("CREATE TRIGGER RejectNewDetail BEFORE INSERT ON OrderDetails BEGIN SELECT RAISE(ABORT,'test failure'); END;");
-        Assert.Throws<SqliteException>(()=>_checkout.Checkout("cashier01",1,null,Cart(2)));
+        await Assert.ThrowsAsync<SqliteException>(() => _checkout.Checkout("cashier01",1,null,Cart(2)));
         Assert.Equal(stock,Stock); Assert.Equal(points,Points);
         Assert.Equal(orders,_db.Orders.Count()); Assert.Equal(details,_db.OrderDetails.Count());
     }
 
     [Fact]
-    public void GuestCheckout_DoesNotAttachOrRewardAnUnrelatedMember()
+    public async Task GuestCheckout_DoesNotAttachOrRewardAnUnrelatedMember()
     {
         int points=Points;
-        var receipt=_checkout.Checkout("cashier01",null,null,Cart());
+        var receipt=await _checkout.Checkout("cashier01",null,null,Cart());
         Assert.Null(_db.Orders.Single(o=>o.OrderId==receipt.OrderId).CustomerId);
         Assert.Equal(0,receipt.RewardPointsAdded); Assert.Equal(points,Points);
-        _checkout.Cancel(receipt.OrderId);
+        await _checkout.Cancel(receipt.OrderId);
         Assert.Equal(points,Points);
     }
 
     [Fact]
-    public void Cancel_RestoresStockPointsAndRankExactlyOnce()
+    public async Task Cancel_RestoresStockPointsAndRankExactlyOnce()
     {
         _db.Database.ExecuteSqlRaw("UPDATE Customers SET RewardPoints=199,MembershipRank='Chuẩn' WHERE CustomerId=1");
         int stock=Stock;
-        var receipt=_checkout.Checkout("cashier01",1,null,Cart());
+        var receipt=await _checkout.Checkout("cashier01",1,null,Cart());
         Assert.Equal(200,Points);
         Assert.Equal("Bạc",_db.Customers.AsNoTracking().Single(c=>c.CustomerId==1).MembershipRank);
-        _checkout.Cancel(receipt.OrderId);
+        await _checkout.Cancel(receipt.OrderId);
         Assert.Equal(stock,Stock); Assert.Equal(199,Points);
         Assert.Equal("Chuẩn",_db.Customers.AsNoTracking().Single(c=>c.CustomerId==1).MembershipRank);
-        Assert.Throws<InvalidOperationException>(()=>_checkout.Cancel(receipt.OrderId));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _checkout.Cancel(receipt.OrderId));
         Assert.Equal(stock,Stock); Assert.Equal(199,Points);
         Assert.False(_db.OrderDetails.Any(d=>d.OrderId==receipt.OrderId));
     }
@@ -154,19 +154,27 @@ public sealed class CheckoutRegressionTests : IDisposable
     }
 
     [Fact]
-    public void Login_DatabaseAccountRejectsCommonPasswordAndMissingFixtureAccount()
+
+    public async Task Login_DatabaseAccountRejectsCommonPasswordAndMissingFixtureAccount()
+
     {
+
         var auth=new AuthController(_config,_db);
-        Assert.IsType<UnauthorizedObjectResult>(auth.Login(new(){Username="admin",Password="123456"}));
-        Assert.IsType<UnauthorizedObjectResult>(auth.Login(new(){Username="admin01",Password="123456"}));
-        Assert.IsType<OkObjectResult>(auth.Login(new(){Username="admin",Password="admin@123"}));
+
+        Assert.IsType<UnauthorizedObjectResult>(await auth.Login(new(){Username="admin",Password="123456"}));
+
+        Assert.IsType<UnauthorizedObjectResult>(await auth.Login(new(){Username="admin01",Password="123456"}));
+
+        Assert.IsType<OkObjectResult>(await auth.Login(new(){Username="admin",Password="admin@123"}));
+
     }
 
+
     [Fact]
-    public void LegacyRoute_UsesSameTransactionAndServerPrice()
+    public async Task LegacyRoute_UsesSameTransactionAndServerPrice()
     {
         var controller=new OrdersController(_db,_checkout);
-        var action = Assert.IsType<OkObjectResult>(controller.Checkout(new(){CashierUsername="cashier01",Items=new(){new(){ProductId=1,Quantity=1,UnitPrice=0}}}));
+        var action = Assert.IsType<OkObjectResult>(await controller.Checkout(new(){CashierUsername="cashier01",Items=new(){new(){ProductId=1,Quantity=1,UnitPrice=0}}}));
         var result = Assert.IsType<CheckoutResponseDto>(action.Value);
         Assert.Equal(12500m,result.TotalAmount);
         Assert.Null(_db.Orders.Single(o=>o.OrderId==result.OrderId).CustomerId);

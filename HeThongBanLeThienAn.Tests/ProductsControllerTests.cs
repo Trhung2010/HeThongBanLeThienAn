@@ -205,7 +205,8 @@ namespace HeThongBanLeThienAn.Tests
                 ProductName = "Bánh quy AFC Dinh Dưỡng Cải Tiến",
                 Price = 30000m,
                 StockQuantity = 80,
-                CategoryId = 1
+                CategoryId = 1,
+                ExpectedStockQuantity = 150
             };
 
             // Act
@@ -222,21 +223,20 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public async Task Delete_ExistingProduct_ReturnsNoContent()
+        public async Task Delete_ProductWithInvoices_ReturnsConflict()
         {
             // Arrange
             using var context = GetDbContext();
             var controller = new ProductsController(context);
 
             // Act
-            var result = await controller.Delete(1) as NoContentResult;
+            var result = await controller.Delete(1) as ConflictObjectResult;
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(204, result.StatusCode);
+            Assert.Equal(409, result.StatusCode);
 
-            var deleted = await context.Products.FindAsync(1);
-            Assert.Null(deleted);
+            Assert.NotNull(await context.Products.FindAsync(1));
         }
 
         [Fact]

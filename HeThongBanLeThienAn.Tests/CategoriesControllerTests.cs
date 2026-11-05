@@ -179,29 +179,29 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public async Task Delete_ExistingCategory_ReturnsNoContent()
+        public async Task Delete_CategoryWithProducts_ReturnsConflict()
         {
             // Arrange
             using var context = GetDbContext();
             var controller = new CategoriesController(context);
 
             // Act
-            var result = await controller.Delete(1) as NoContentResult;
+            var result = await controller.Delete(1) as ConflictObjectResult;
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(204, result.StatusCode);
+            Assert.Equal(409, result.StatusCode);
         }
 
         [Fact]
-        public void GetAdminDashboard_ReturnsOkResult()
+        public async Task GetAdminDashboard_ReturnsOkResult()
         {
             // Arrange
             using var context = GetDbContext();
             var controller = new CategoriesController(context);
 
             // Act
-            var result = controller.GetAdminDashboard() as OkObjectResult;
+            var result = await controller.GetAdminDashboard() as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -209,14 +209,14 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void GetStaffPos_ReturnsOkResult()
+        public async Task GetStaffPos_ReturnsOkResult()
         {
             // Arrange
             using var context = GetDbContext();
             var controller = new CategoriesController(context);
 
             // Act
-            var result = controller.GetStaffPos() as OkObjectResult;
+            var result = await controller.GetStaffPos() as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);

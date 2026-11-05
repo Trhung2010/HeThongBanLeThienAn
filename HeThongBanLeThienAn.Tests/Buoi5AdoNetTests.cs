@@ -35,13 +35,13 @@ namespace HeThongBanLeThienAn.Tests
         // TEST TIẾT 2: TRA CỨU BARCODE & DISCONNECTED CACHE & BÀI TẬP 2.1, 2.2
         // =====================================================================
         [Fact]
-        public void AdoProductController_GetProductByBarcode_ReturnsSuccess()
+        public async Task AdoProductController_GetProductByBarcode_ReturnsSuccess()
         {
             var (_, factory, conn) = SetupTestDb();
             try
             {
                 var controller = new AdoProductController(null!, factory);
-                var result = controller.GetProductByBarcode("893456789001") as OkObjectResult;
+                var result = await controller.GetProductByBarcode("893456789001") as OkObjectResult;
 
                 Assert.NotNull(result);
                 Assert.Equal(200, result.StatusCode);
@@ -56,13 +56,13 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void AdoProductController_GetProductByBarcode_NotFound_Returns404()
+        public async Task AdoProductController_GetProductByBarcode_NotFound_Returns404()
         {
             var (_, factory, conn) = SetupTestDb();
             try
             {
                 var controller = new AdoProductController(null!, factory);
-                var result = controller.GetProductByBarcode("000000000000") as NotFoundObjectResult;
+                var result = await controller.GetProductByBarcode("000000000000") as NotFoundObjectResult;
 
                 Assert.NotNull(result);
                 Assert.Equal(404, result.StatusCode);
@@ -74,13 +74,13 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void AdoProductController_GetProductsDisconnected_Returns20CachedProducts()
+        public async Task AdoProductController_GetProductsDisconnected_Returns20CachedProducts()
         {
             var (_, factory, conn) = SetupTestDb();
             try
             {
                 var controller = new AdoProductController(null!, factory);
-                var result = controller.GetProductsDisconnected() as OkObjectResult;
+                var result = await controller.GetProductsDisconnected() as OkObjectResult;
 
                 Assert.NotNull(result);
                 Assert.Equal(200, result.StatusCode);
@@ -92,13 +92,13 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void AdoProductController_FilterStock_ReturnsFilteredProducts()
+        public async Task AdoProductController_FilterStock_ReturnsFilteredProducts()
         {
             var (_, factory, conn) = SetupTestDb();
             try
             {
                 var controller = new AdoProductController(null!, factory);
-                var result = controller.FilterStock(50) as OkObjectResult;
+                var result = await controller.FilterStock(50) as OkObjectResult;
 
                 Assert.NotNull(result);
                 Assert.Equal(200, result.StatusCode);
@@ -110,13 +110,13 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void AdoProductController_CountByCategory_ReturnsTotalCategories()
+        public async Task AdoProductController_CountByCategory_ReturnsTotalCategories()
         {
             var (_, factory, conn) = SetupTestDb();
             try
             {
                 var controller = new AdoProductController(null!, factory);
-                var result = controller.CountByCategory() as OkObjectResult;
+                var result = await controller.CountByCategory() as OkObjectResult;
 
                 Assert.NotNull(result);
                 Assert.Equal(200, result.StatusCode);
@@ -131,13 +131,13 @@ namespace HeThongBanLeThienAn.Tests
         // TEST TIẾT 3: BÁO CÁO DOANH THU & TOP SELLING PRODUCTS
         // =====================================================================
         [Fact]
-        public void ReportsController_GetRevenueByCashier_ReturnsAllActiveCashiers()
+        public async Task ReportsController_GetRevenueByCashier_ReturnsAllActiveCashiers()
         {
             var (_, factory, conn) = SetupTestDb();
             try
             {
                 var controller = new ReportsController(null!, factory);
-                var result = controller.GetRevenueByCashier() as OkObjectResult;
+                var result = await controller.GetRevenueByCashier() as OkObjectResult;
 
                 Assert.NotNull(result);
                 Assert.Equal(200, result.StatusCode);
@@ -149,13 +149,13 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void ReportsController_GetRevenueByDateRange_ReturnsCorrectData()
+        public async Task ReportsController_GetRevenueByDateRange_ReturnsCorrectData()
         {
             var (_, factory, conn) = SetupTestDb();
             try
             {
                 var controller = new ReportsController(null!, factory);
-                var result = controller.GetRevenueByDateRange(new DateTime(2026, 10, 1), new DateTime(2026, 10, 31)) as OkObjectResult;
+                var result = await controller.GetRevenueByDateRange(new DateTime(2026, 10, 1), new DateTime(2026, 10, 31)) as OkObjectResult;
 
                 Assert.NotNull(result);
                 Assert.Equal(200, result.StatusCode);
@@ -167,13 +167,13 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void ReportsController_GetTop5SellingProducts_ReturnsTopItems()
+        public async Task ReportsController_GetTop5SellingProducts_ReturnsTopItems()
         {
             var (_, factory, conn) = SetupTestDb();
             try
             {
                 var controller = new ReportsController(null!, factory);
-                var result = controller.GetTop5SellingProducts() as OkObjectResult;
+                var result = await controller.GetTop5SellingProducts() as OkObjectResult;
 
                 Assert.NotNull(result);
                 Assert.Equal(200, result.StatusCode);
@@ -188,7 +188,7 @@ namespace HeThongBanLeThienAn.Tests
         // TEST TIẾT 5: CHECKOUT BỌC TRANSACTION (ACID) & ROLLBACK KHI THẤT BẠI
         // =====================================================================
         [Fact]
-        public void CheckoutController_ProcessCheckout_Success_CommitsAndReducesStock()
+        public async Task CheckoutController_ProcessCheckout_Success_CommitsAndReducesStock()
         {
             var (context, factory, conn) = SetupTestDb();
             try
@@ -208,7 +208,7 @@ namespace HeThongBanLeThienAn.Tests
                 };
 
                 // Act
-                var result = controller.ProcessCheckout(request) as OkObjectResult;
+                var result = await controller.ProcessCheckout(request) as OkObjectResult;
 
                 // Assert
                 Assert.NotNull(result);
@@ -225,7 +225,7 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void CheckoutController_ProcessCheckout_ExceedStock_RollsBackCleanly()
+        public async Task CheckoutController_ProcessCheckout_ExceedStock_RollsBackCleanly()
         {
             var (context, factory, conn) = SetupTestDb();
             try
@@ -247,7 +247,7 @@ namespace HeThongBanLeThienAn.Tests
                 };
 
                 // Act
-                var result = controller.ProcessCheckout(request) as BadRequestObjectResult;
+                var result = await controller.ProcessCheckout(request) as BadRequestObjectResult;
 
                 // Assert
                 Assert.NotNull(result);
@@ -265,7 +265,7 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void CheckoutController_CancelOrder_RestoresStockAndPoints()
+        public async Task CheckoutController_CancelOrder_RestoresStockAndPoints()
         {
             var (context, factory, conn) = SetupTestDb();
             try
@@ -282,7 +282,7 @@ namespace HeThongBanLeThienAn.Tests
                         new CartItemCheckoutDto { ProductId = 2, Quantity = 2, UnitPrice = 135000m }
                     }
                 };
-                var checkoutRes = controller.ProcessCheckout(request) as OkObjectResult;
+                var checkoutRes = await controller.ProcessCheckout(request) as OkObjectResult;
                 Assert.NotNull(checkoutRes);
 
                 // Lấy ID hóa đơn vừa tạo
@@ -290,7 +290,7 @@ namespace HeThongBanLeThienAn.Tests
                 int orderId = value.OrderId;
 
                 // Bước 2: Hủy hóa đơn vừa tạo
-                var cancelRes = controller.CancelOrder(orderId) as OkObjectResult;
+                var cancelRes = await controller.CancelOrder(orderId) as OkObjectResult;
                 Assert.NotNull(cancelRes);
                 Assert.Equal(200, cancelRes.StatusCode);
 

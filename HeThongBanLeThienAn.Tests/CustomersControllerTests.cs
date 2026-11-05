@@ -184,6 +184,14 @@ namespace HeThongBanLeThienAn.Tests
             // Arrange
             using var context = GetDbContext();
             var controller = new CustomersController(context);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext
+                {
+                    User = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity(
+                        new[] { new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, "Admin") }, "Test"))
+                }
+            };
 
             var updateData = new CustomerUpsertDto
             {

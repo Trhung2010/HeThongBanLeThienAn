@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniSupermarket.API.Controllers;
 using MiniSupermarket.API.Data;
@@ -24,12 +24,12 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void GetAll_WithDbContext_ReturnsUserDtoList()
+        public async Task GetAll_WithDbContext_ReturnsUserDtoList()
         {
             using var context = GetDbContext();
             var controller = new UsersController(context);
 
-            var action = controller.GetAll();
+            var action = await controller.GetAll();
             var result = Assert.IsType<OkObjectResult>(action);
             Assert.Equal(200, result.StatusCode);
 
@@ -85,7 +85,7 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void Create_ValidUser_ReturnsCreatedAtActionWithUserDto()
+        public async Task Create_ValidUser_ReturnsCreatedAtActionWithUserDto()
         {
             using var context = GetDbContext();
             var controller = new UsersController(context);
@@ -98,7 +98,7 @@ namespace HeThongBanLeThienAn.Tests
                 Role = "Cashier"
             };
 
-            var action = controller.Create(request);
+            var action = await controller.Create(request);
             var result = Assert.IsType<CreatedAtActionResult>(action);
             Assert.Equal(201, result.StatusCode);
 
@@ -110,7 +110,7 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void Create_EmptyUsernameOrPassword_ReturnsBadRequest()
+        public async Task Create_EmptyUsernameOrPassword_ReturnsBadRequest()
         {
             using var context = GetDbContext();
             var controller = new UsersController(context);
@@ -121,7 +121,7 @@ namespace HeThongBanLeThienAn.Tests
                 Password = ""
             };
 
-            var action = controller.Create(request);
+            var action = await controller.Create(request);
             var result = Assert.IsType<BadRequestObjectResult>(action);
             Assert.Equal(400, result.StatusCode);
         }

@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MiniSupermarket.API.Controllers;
 using MiniSupermarket.API.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HeThongBanLeThienAn.Tests
@@ -26,7 +27,7 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void Login_WithAdminCredentials_ReturnsOkWithTokenAndRole()
+        public async Task Login_WithAdminCredentials_ReturnsOkWithTokenAndRole()
         {
             // Arrange
             var request = new LoginRequestDto
@@ -36,7 +37,7 @@ namespace HeThongBanLeThienAn.Tests
             };
 
             // Act
-            var result = _authController.Login(request) as OkObjectResult;
+            var result = await _authController.Login(request) as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -50,7 +51,7 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void Login_WithCashierCredentials_ReturnsOkWithTokenAndRole()
+        public async Task Login_WithCashierCredentials_ReturnsOkWithTokenAndRole()
         {
             // Arrange
             var request = new LoginRequestDto
@@ -60,7 +61,7 @@ namespace HeThongBanLeThienAn.Tests
             };
 
             // Act
-            var result = _authController.Login(request) as OkObjectResult;
+            var result = await _authController.Login(request) as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -73,7 +74,7 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void Login_WithWarehouseCredentials_ReturnsOkWithTokenAndRole()
+        public async Task Login_WithWarehouseCredentials_ReturnsOkWithTokenAndRole()
         {
             // Arrange
             var request = new LoginRequestDto
@@ -83,7 +84,7 @@ namespace HeThongBanLeThienAn.Tests
             };
 
             // Act
-            var result = _authController.Login(request) as OkObjectResult;
+            var result = await _authController.Login(request) as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -97,7 +98,7 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
-        public void Login_WithInvalidCredentials_ReturnsUnauthorized()
+        public async Task Login_WithInvalidCredentials_ReturnsUnauthorized()
         {
             // Arrange
             var request = new LoginRequestDto
@@ -107,7 +108,7 @@ namespace HeThongBanLeThienAn.Tests
             };
 
             // Act
-            var result = _authController.Login(request) as UnauthorizedObjectResult;
+            var result = await _authController.Login(request) as UnauthorizedObjectResult;
 
             // Assert
             Assert.NotNull(result);
