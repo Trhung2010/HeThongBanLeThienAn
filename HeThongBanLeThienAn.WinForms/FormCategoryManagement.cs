@@ -130,24 +130,27 @@ namespace MiniSupermarket.WinForms
                 return;
 
             dgvCategories.AutoGenerateColumns = true;
-            dgvCategories.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvCategories.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             if (dgvCategories.Columns["CategoryId"] != null)
             {
                 dgvCategories.Columns["CategoryId"].HeaderText = "Mã ID";
-                dgvCategories.Columns["CategoryId"].Width = 65;
+                dgvCategories.Columns["CategoryId"].FillWeight = 15;
+                dgvCategories.Columns["CategoryId"].MinimumWidth = 65;
             }
 
             if (dgvCategories.Columns["CategoryName"] != null)
             {
-                dgvCategories.Columns["CategoryName"].HeaderText = "Tên sản phẩm";
-                dgvCategories.Columns["CategoryName"].Width = 275;
+                dgvCategories.Columns["CategoryName"].HeaderText = "Tên nhóm hàng";
+                dgvCategories.Columns["CategoryName"].FillWeight = 35;
+                dgvCategories.Columns["CategoryName"].MinimumWidth = 150;
             }
 
             if (dgvCategories.Columns["Description"] != null)
             {
                 dgvCategories.Columns["Description"].HeaderText = "Mô Tả";
-                dgvCategories.Columns["Description"].Width = 260;
+                dgvCategories.Columns["Description"].FillWeight = 50;
+                dgvCategories.Columns["Description"].MinimumWidth = 200;
             }
 
 

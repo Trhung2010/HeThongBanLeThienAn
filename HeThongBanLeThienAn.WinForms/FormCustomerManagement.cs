@@ -107,6 +107,8 @@ namespace MiniSupermarket.WinForms
         {
             // Cashier và Admin đều được xem/thêm/sửa khách hàng. Chỉ Admin được xóa.
             btnDelete.Enabled = !IsCashier();
+            txtRewardPoints.ReadOnly = IsCashier();
+            cboMembershipRank.Enabled = !IsCashier();
         }
 
         private void FormatDataGridView()
@@ -115,7 +117,7 @@ namespace MiniSupermarket.WinForms
                 return;
 
             dgvCustomers.AutoGenerateColumns = true;
-            dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             if (dgvCustomers.Columns["CustomerId"] != null)
             {

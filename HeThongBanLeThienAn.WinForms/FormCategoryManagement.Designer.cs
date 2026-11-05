@@ -58,7 +58,8 @@ namespace MiniSupermarket.WinForms
             dgvCategories.BackgroundColor = Color.White;
             dgvCategories.BorderStyle = BorderStyle.Fixed3D;
             dgvCategories.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCategories.Location = new Point(11, 33);
+            dgvCategories.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvCategories.Location = new Point(12, 28);
             dgvCategories.Margin = new Padding(3, 4, 3, 4);
             dgvCategories.MultiSelect = false;
             dgvCategories.Name = "dgvCategories";
@@ -71,46 +72,51 @@ namespace MiniSupermarket.WinForms
             //
             // txtKeyword
             //
-            txtKeyword.Location = new Point(17, 29);
+            txtKeyword.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtKeyword.Location = new Point(17, 28);
             txtKeyword.Margin = new Padding(3, 4, 3, 4);
             txtKeyword.Name = "txtKeyword";
             txtKeyword.PlaceholderText = "Nhập từ khóa...";
-            txtKeyword.Size = new Size(502, 27);
+            txtKeyword.Size = new Size(610, 27);
             txtKeyword.TabIndex = 1;
             //
             // txtDescription
             //
+            txtDescription.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtDescription.Location = new Point(17, 227);
             txtDescription.Margin = new Padding(3, 4, 3, 4);
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
             txtDescription.ScrollBars = ScrollBars.Vertical;
-            txtDescription.Size = new Size(245, 92);
+            txtDescription.Size = new Size(265, 110);
             txtDescription.TabIndex = 5;
             //
             // txtId
             //
+            txtId.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtId.Location = new Point(17, 67);
             txtId.Margin = new Padding(3, 4, 3, 4);
             txtId.Name = "txtId";
             txtId.ReadOnly = true;
-            txtId.Size = new Size(245, 27);
+            txtId.Size = new Size(265, 27);
             txtId.TabIndex = 1;
             //
             // txtCategoryName
             //
+            txtCategoryName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtCategoryName.Location = new Point(17, 147);
             txtCategoryName.Margin = new Padding(3, 4, 3, 4);
             txtCategoryName.Name = "txtCategoryName";
-            txtCategoryName.Size = new Size(245, 27);
+            txtCategoryName.Size = new Size(265, 27);
             txtCategoryName.TabIndex = 3;
             //
             // btnSearch
             //
-            btnSearch.Location = new Point(531, 28);
+            btnSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnSearch.Location = new Point(637, 25);
             btnSearch.Margin = new Padding(3, 4, 3, 4);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(114, 33);
+            btnSearch.Size = new Size(110, 31);
             btnSearch.TabIndex = 2;
             btnSearch.Text = "Tìm kiếm";
             btnSearch.UseVisualStyleBackColor = true;
@@ -151,10 +157,11 @@ namespace MiniSupermarket.WinForms
             //
             // btnLoad
             //
-            btnLoad.Location = new Point(657, 28);
+            btnLoad.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLoad.Location = new Point(753, 25);
             btnLoad.Margin = new Padding(3, 4, 3, 4);
             btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(114, 33);
+            btnLoad.Size = new Size(105, 31);
             btnLoad.TabIndex = 3;
             btnLoad.Text = "Tải lại";
             btnLoad.UseVisualStyleBackColor = true;
@@ -165,18 +172,20 @@ namespace MiniSupermarket.WinForms
             grpSearch.Controls.Add(txtKeyword);
             grpSearch.Controls.Add(btnSearch);
             grpSearch.Controls.Add(btnLoad);
-            grpSearch.Location = new Point(23, 38);
+            grpSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            grpSearch.Location = new Point(20, 15);
             grpSearch.Margin = new Padding(3, 4, 3, 4);
             grpSearch.Name = "grpSearch";
             grpSearch.Padding = new Padding(3, 4, 3, 4);
-            grpSearch.Size = new Size(869, 80);
+            grpSearch.Size = new Size(874, 75);
             grpSearch.TabIndex = 0;
             grpSearch.TabStop = false;
             grpSearch.Text = "Tìm kiếm";
                         //
             // btnPrev
             //
-            btnPrev.Location = new Point(40, 448);
+            btnPrev.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnPrev.Location = new Point(15, 470);
             btnPrev.Name = "btnPrev";
             btnPrev.Size = new Size(110, 32);
             btnPrev.TabIndex = 1;
@@ -186,7 +195,8 @@ namespace MiniSupermarket.WinForms
             //
             // lblPaging
             //
-            lblPaging.Location = new Point(160, 452);
+            lblPaging.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblPaging.Location = new Point(135, 475);
             lblPaging.Name = "lblPaging";
             lblPaging.Size = new Size(250, 24);
             lblPaging.TabIndex = 2;
@@ -195,7 +205,8 @@ namespace MiniSupermarket.WinForms
             //
             // btnNext
             //
-            btnNext.Location = new Point(420, 448);
+            btnNext.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnNext.Location = new Point(395, 470);
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(110, 32);
             btnNext.TabIndex = 3;
@@ -209,11 +220,12 @@ namespace MiniSupermarket.WinForms
             grpCategoryList.Controls.Add(btnPrev);
             grpCategoryList.Controls.Add(lblPaging);
             grpCategoryList.Controls.Add(btnNext);
-            grpCategoryList.Location = new Point(23, 126);
+            grpCategoryList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grpCategoryList.Location = new Point(20, 100);
             grpCategoryList.Margin = new Padding(3, 4, 3, 4);
             grpCategoryList.Name = "grpCategoryList";
             grpCategoryList.Padding = new Padding(3, 4, 3, 4);
-            grpCategoryList.Size = new Size(571, 490);
+            grpCategoryList.Size = new Size(560, 515);
             grpCategoryList.TabIndex = 4;
             grpCategoryList.TabStop = false;
             grpCategoryList.Text = "Danh sách Nhóm hàng";
@@ -230,11 +242,12 @@ namespace MiniSupermarket.WinForms
             grpCategoryInfo.Controls.Add(btnAdd);
             grpCategoryInfo.Controls.Add(btnUpdate);
             grpCategoryInfo.Controls.Add(btnDelete);
-            grpCategoryInfo.Location = new Point(611, 126);
+            grpCategoryInfo.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            grpCategoryInfo.Location = new Point(594, 100);
             grpCategoryInfo.Margin = new Padding(3, 4, 3, 4);
             grpCategoryInfo.Name = "grpCategoryInfo";
             grpCategoryInfo.Padding = new Padding(3, 4, 3, 4);
-            grpCategoryInfo.Size = new Size(280, 490);
+            grpCategoryInfo.Size = new Size(300, 515);
             grpCategoryInfo.TabIndex = 5;
             grpCategoryInfo.TabStop = false;
             grpCategoryInfo.Text = "Thông tin Nhóm hàng";

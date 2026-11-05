@@ -60,6 +60,7 @@ namespace MiniSupermarket.WinForms
             dgvProducts.BackgroundColor = Color.White;
             dgvProducts.BorderStyle = BorderStyle.Fixed3D;
             dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProducts.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvProducts.Location = new Point(12, 28);
             dgvProducts.Margin = new Padding(3, 4, 3, 4);
             dgvProducts.MultiSelect = false;
@@ -74,16 +75,18 @@ namespace MiniSupermarket.WinForms
             //
             // txtKeyword
             //
-            txtKeyword.Location = new Point(17, 30);
-            txtKeyword.Margin = new Padding(3, 4, 3, 4);
-            txtKeyword.Name = "txtKeyword";
-            txtKeyword.PlaceholderText = "Nhập tên sản phẩm hoặc mã vạch cần tìm...";
+            txtKeyword.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtKeyword.Location = new Point(17, 30);
+            txtKeyword.Margin = new Padding(3, 4, 3, 4);
+            txtKeyword.Name = "txtKeyword";
+            txtKeyword.PlaceholderText = "Nhập tên sản phẩm hoặc mã vạch cần tìm...";
             txtKeyword.Size = new Size(330, 27);
             txtKeyword.TabIndex = 0;
 
             //
             // btnSearch
             //
+            btnSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnSearch.Location = new Point(650, 27);
             btnSearch.Margin = new Padding(3, 4, 3, 4);
             btnSearch.Name = "btnSearch";
@@ -96,6 +99,7 @@ namespace MiniSupermarket.WinForms
             //
             // btnLoad
             //
+            btnLoad.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnLoad.Location = new Point(775, 27);
             btnLoad.Margin = new Padding(3, 4, 3, 4);
             btnLoad.Name = "btnLoad";
@@ -109,6 +113,7 @@ namespace MiniSupermarket.WinForms
             // lblCategoryFilter
             //
             lblCategoryFilter.AutoSize = true;
+            lblCategoryFilter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblCategoryFilter.Location = new Point(360, 33);
             lblCategoryFilter.Name = "lblCategoryFilter";
             lblCategoryFilter.Size = new Size(52, 20);
@@ -120,6 +125,7 @@ namespace MiniSupermarket.WinForms
             //
             cboCategoryFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             cboCategoryFilter.FormattingEnabled = true;
+            cboCategoryFilter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             cboCategoryFilter.Location = new Point(418, 29);
             cboCategoryFilter.Name = "cboCategoryFilter";
             cboCategoryFilter.Size = new Size(220, 28);
@@ -134,10 +140,11 @@ namespace MiniSupermarket.WinForms
             grpSearch.Controls.Add(cboCategoryFilter);
             grpSearch.Controls.Add(btnSearch);
             grpSearch.Controls.Add(btnLoad);
-            grpSearch.Location = new Point(20, 40);
-            grpSearch.Margin = new Padding(3, 4, 3, 4);
-            grpSearch.Name = "grpSearch";
-            grpSearch.Padding = new Padding(3, 4, 3, 4);
+            grpSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            grpSearch.Location = new Point(20, 15);
+            grpSearch.Margin = new Padding(3, 4, 3, 4);
+            grpSearch.Name = "grpSearch";
+            grpSearch.Padding = new Padding(3, 4, 3, 4);
             grpSearch.Size = new Size(910, 75);
             grpSearch.TabIndex = 0;
             grpSearch.TabStop = false;
@@ -150,11 +157,12 @@ namespace MiniSupermarket.WinForms
             grpProductList.Controls.Add(btnPrev);
             grpProductList.Controls.Add(lblPaging);
             grpProductList.Controls.Add(btnNext);
-            grpProductList.Location = new Point(20, 125);
-            grpProductList.Margin = new Padding(3, 4, 3, 4);
-            grpProductList.Name = "grpProductList";
-            grpProductList.Padding = new Padding(3, 4, 3, 4);
-            grpProductList.Size = new Size(600, 500);
+            grpProductList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grpProductList.Location = new Point(20, 100);
+            grpProductList.Margin = new Padding(3, 4, 3, 4);
+            grpProductList.Name = "grpProductList";
+            grpProductList.Padding = new Padding(3, 4, 3, 4);
+            grpProductList.Size = new Size(600, 525);
             grpProductList.TabIndex = 1;
             grpProductList.TabStop = false;
             grpProductList.Text = "Danh sách Sản phẩm";
@@ -162,7 +170,8 @@ namespace MiniSupermarket.WinForms
             //
             // btnPrev
             //
-            btnPrev.Location = new Point(90, 454);
+            btnPrev.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnPrev.Location = new Point(20, 480);
             btnPrev.Name = "btnPrev";
             btnPrev.Size = new Size(110, 34);
             btnPrev.TabIndex = 1;
@@ -173,7 +182,8 @@ namespace MiniSupermarket.WinForms
             //
             // lblPaging
             //
-            lblPaging.Location = new Point(206, 459);
+            lblPaging.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblPaging.Location = new Point(140, 485);
             lblPaging.Name = "lblPaging";
             lblPaging.Size = new Size(190, 24);
             lblPaging.TabIndex = 2;
@@ -183,7 +193,8 @@ namespace MiniSupermarket.WinForms
             //
             // btnNext
             //
-            btnNext.Location = new Point(402, 454);
+            btnNext.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnNext.Location = new Point(340, 480);
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(110, 34);
             btnNext.TabIndex = 3;
@@ -209,11 +220,12 @@ namespace MiniSupermarket.WinForms
             grpProductInfo.Controls.Add(btnAdd);
             grpProductInfo.Controls.Add(btnUpdate);
             grpProductInfo.Controls.Add(btnDelete);
-            grpProductInfo.Location = new Point(635, 125);
-            grpProductInfo.Margin = new Padding(3, 4, 3, 4);
-            grpProductInfo.Name = "grpProductInfo";
-            grpProductInfo.Padding = new Padding(3, 4, 3, 4);
-            grpProductInfo.Size = new Size(295, 500);
+            grpProductInfo.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            grpProductInfo.Location = new Point(635, 100);
+            grpProductInfo.Margin = new Padding(3, 4, 3, 4);
+            grpProductInfo.Name = "grpProductInfo";
+            grpProductInfo.Padding = new Padding(3, 4, 3, 4);
+            grpProductInfo.Size = new Size(295, 525);
             grpProductInfo.TabIndex = 2;
             grpProductInfo.TabStop = false;
             grpProductInfo.Text = "Thông tin Sản phẩm";

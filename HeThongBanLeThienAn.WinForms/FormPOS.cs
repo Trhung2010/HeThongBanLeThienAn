@@ -11,6 +11,7 @@ namespace MiniSupermarket.WinForms
     public partial class FormPOS : Form
     {
         private bool _checkoutInProgress;
+        private int _pendingLookups;
         private readonly List<CartItemViewModel> _cart = new List<CartItemViewModel>();
         private int _customerRewardPoints;
         private readonly CheckBox _chkRedeemPoints = new()
@@ -94,6 +95,8 @@ namespace MiniSupermarket.WinForms
 
         private async Task AddProductToCartByBarcodeAsync(string barcode)
         {
+            if (_checkoutInProgress) return;
+            _pendingLookups++;
             try
             {
                 // Gọi API tra cứu sản phẩm theo Barcode
@@ -128,6 +131,7 @@ namespace MiniSupermarket.WinForms
             {
                 MessageBox.Show("Lỗi tra cứu sản phẩm: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally { _pendingLookups--; }
         }
 
         private void UpdateCartDisplay()
@@ -207,6 +211,7 @@ namespace MiniSupermarket.WinForms
 
         private async Task LookupCustomerAsync()
         {
+            if (_checkoutInProgress) return;
             string phone = txtCustomerPhone.Text.Trim();
             if (string.IsNullOrEmpty(phone))
             {
@@ -217,6 +222,7 @@ namespace MiniSupermarket.WinForms
                 return;
             }
 
+            _pendingLookups++;
             try
             {
                 var customers = await ApiClientService.Client.GetFromJsonAsync<List<CustomerDto>>($"customers/search?keyword={Uri.EscapeDataString(phone)}");
@@ -243,11 +249,17 @@ namespace MiniSupermarket.WinForms
                 _chkRedeemPoints.Checked = false;
                 _chkRedeemPoints.Enabled = false;
             }
+            finally { _pendingLookups--; }
         }
 
         private async void btnCheckout_Click(object sender, EventArgs e)
         {
             if (_checkoutInProgress) return;
+            if (_pendingLookups > 0)
+            {
+                MessageBox.Show("Vui lòng chờ tra cứu sản phẩm/khách hàng hoàn tất.");
+                return;
+            }
             if (_cart.Count == 0)
             {
                 MessageBox.Show("Giỏ hàng đang trống! Vui lòng quét sản phẩm trước khi thanh toán.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -284,6 +296,11 @@ namespace MiniSupermarket.WinForms
             try
             {
                 _checkoutInProgress = true;
+                txtBarcode.Enabled = false;
+                grpCustomer.Enabled = false;
+                grpCart.Enabled = false;
+                txtCashReceived.Enabled = false;
+                _chkRedeemPoints.Enabled = false;
                 btnCheckout.Enabled = false;
                 var response = await ApiClientService.Client.PostAsJsonAsync("checkout", orderRequest);
 
@@ -325,6 +342,11 @@ namespace MiniSupermarket.WinForms
             finally
             {
                 _checkoutInProgress = false;
+                txtBarcode.Enabled = true;
+                grpCustomer.Enabled = true;
+                grpCart.Enabled = true;
+                txtCashReceived.Enabled = true;
+                _chkRedeemPoints.Enabled = _customerRewardPoints >= 50;
                 btnCheckout.Enabled = true;
             }
         }

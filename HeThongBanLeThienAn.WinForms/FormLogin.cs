@@ -20,7 +20,7 @@ namespace MiniSupermarket.WinForms
         private async void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtUser.Text.Trim();
-            string password = txtPass.Text.Trim();
+            string password = txtPass.Text;
 
             // Kiểm tra tài khoản và mật khẩu có bị bỏ trống không
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))

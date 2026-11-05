@@ -5,6 +5,7 @@ namespace MiniSupermarket.WinForms
     public partial class FormProductManagement : Form
     {
         private const int PageSize = 5;
+        private int? _expectedStockQuantity;
         private readonly List<CategoryDto> _categoryList = new();
         private int _currentPage = 1;
         private int _totalPages;
@@ -145,7 +146,7 @@ namespace MiniSupermarket.WinForms
                 return;
             }
 
-            dgvProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             SetColumn("ProductId", "Mã SP", 65);
             SetColumn("Barcode", "Mã vạch", 110);
             SetColumn("ProductName", "Tên sản phẩm", 190);
@@ -183,6 +184,7 @@ namespace MiniSupermarket.WinForms
             txtProductName.Text = row.Cells["ProductName"]?.Value?.ToString() ?? string.Empty;
             txtPrice.Text = row.Cells["Price"]?.Value?.ToString() ?? string.Empty;
             txtStockQuantity.Text = row.Cells["StockQuantity"]?.Value?.ToString() ?? string.Empty;
+            _expectedStockQuantity = int.TryParse(txtStockQuantity.Text, out int stock) ? stock : null;
 
             if (int.TryParse(row.Cells["CategoryId"]?.Value?.ToString(), out int categoryId))
             {
@@ -304,6 +306,7 @@ namespace MiniSupermarket.WinForms
                 return;
             }
 
+            product.ExpectedStockQuantity = _expectedStockQuantity;
             await SaveProductAsync(() => ApiClientService.Client.PutAsJsonAsync($"products/{id}", product), "Cập nhật sản phẩm thành công!");
         }
 
@@ -400,6 +403,7 @@ namespace MiniSupermarket.WinForms
 
         private void ClearInputs()
         {
+            _expectedStockQuantity = null;
             txtId.Clear();
             txtBarcode.Clear();
             txtProductName.Clear();

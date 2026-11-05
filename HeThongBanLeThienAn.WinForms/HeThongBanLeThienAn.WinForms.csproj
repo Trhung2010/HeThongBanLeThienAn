@@ -10,6 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Windows.Forms.DataVisualization" Version="1.0.0-prerelease.20110.1" />
+    <!-- Required by Chart's internal data-binding code, not used for client DB access. -->
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
     <PackageReference Include="System.Net.Http.Json" Version="10.0.12" />
   </ItemGroup>
 

@@ -57,6 +57,7 @@ namespace MiniSupermarket.WinForms
             dgvCustomers.BackgroundColor = Color.White;
             dgvCustomers.BorderStyle = BorderStyle.Fixed3D;
             dgvCustomers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCustomers.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvCustomers.Location = new Point(11, 30);
             dgvCustomers.Margin = new Padding(3, 4, 3, 4);
             dgvCustomers.Name = "dgvCustomers";
@@ -79,7 +80,8 @@ namespace MiniSupermarket.WinForms
             //
             // btnSearch
             //
-            btnSearch.Location = new Point(550, 26);
+            btnSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnSearch.Location = new Point(660, 26);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(110, 31);
             btnSearch.TabIndex = 1;
@@ -90,7 +92,8 @@ namespace MiniSupermarket.WinForms
             //
             // btnLoad
             //
-            btnLoad.Location = new Point(670, 26);
+            btnLoad.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLoad.Location = new Point(780, 26);
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(110, 31);
             btnLoad.TabIndex = 2;
@@ -114,7 +117,8 @@ namespace MiniSupermarket.WinForms
                         //
             // btnPrev
             //
-            btnPrev.Location = new Point(30, 445);
+            btnPrev.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnPrev.Location = new Point(20, 480);
             btnPrev.Name = "btnPrev";
             btnPrev.Size = new Size(110, 32);
             btnPrev.TabIndex = 1;
@@ -124,7 +128,8 @@ namespace MiniSupermarket.WinForms
             //
             // lblPaging
             //
-            lblPaging.Location = new Point(146, 450);
+            lblPaging.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblPaging.Location = new Point(140, 485);
             lblPaging.Name = "lblPaging";
             lblPaging.Size = new Size(300, 24);
             lblPaging.TabIndex = 2;
@@ -133,7 +138,8 @@ namespace MiniSupermarket.WinForms
             //
             // btnNext
             //
-            btnNext.Location = new Point(456, 445);
+            btnNext.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnNext.Location = new Point(450, 480);
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(110, 32);
             btnNext.TabIndex = 3;

@@ -1,4 +1,4 @@
-using System.Drawing.Drawing2D;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Net.Http.Json;
 
 namespace MiniSupermarket.WinForms
@@ -8,7 +8,7 @@ namespace MiniSupermarket.WinForms
         private readonly DateTimePicker _fromDate = new();
         private readonly Button _btnExportCsv = new();
         private readonly Label _lblLowStock = new();
-        private readonly RevenueBarChartPanel _revenueChart = new();
+        private readonly RevenueBarChart _revenueChart = new();
         private readonly DataGridView _topSellingGrid = new();
         private DashboardSummaryViewDto? _currentReport;
 
@@ -21,6 +21,7 @@ namespace MiniSupermarket.WinForms
         private void ConfigureAdvancedReportUi()
         {
             lblFilter.Text = "Từ ngày:";
+            lblRevenueTitle.Text = "DOANH THU HÔM NAY";
             _fromDate.Format = DateTimePickerFormat.Short;
             _fromDate.Value = DateTime.Today.AddDays(-6);
             _fromDate.Font = new Font("Segoe UI", 10F);
@@ -166,44 +167,51 @@ namespace MiniSupermarket.WinForms
                 FileName = $"BaoCaoThienAn_{_currentReport.FromDate:yyyyMMdd}_{_currentReport.ToDate:yyyyMMdd}.csv"
             };
             if (dialog.ShowDialog(this) != DialogResult.OK) return;
-            CsvExportService.WriteReport(dialog.FileName, _currentReport);
-            MessageBox.Show("Đã xuất báo cáo CSV thành công.", "Hoàn tất", MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            try
+            {
+                CsvExportService.WriteReport(dialog.FileName, _currentReport);
+                MessageBox.Show("Đã xuất báo cáo CSV thành công.", "Hoàn tất", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                MessageBox.Show("Không thể ghi tệp. Hãy đóng tệp đang mở trong Excel, kiểm tra dung lượng hoặc chọn thư mục khác.",
+                    "Xuất CSV thất bại", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 
-    internal sealed class RevenueBarChartPanel : Panel
+    internal sealed class RevenueBarChart : Chart
     {
-        private IReadOnlyList<RevenuePointViewDto> _data = Array.Empty<RevenuePointViewDto>();
-        public RevenueBarChartPanel() => DoubleBuffered = true;
-        public void SetData(IReadOnlyList<RevenuePointViewDto> data) { _data = data; Invalidate(); }
-
-        protected override void OnPaint(PaintEventArgs e)
+        public RevenueBarChart()
         {
-            base.OnPaint(e);
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            using var titleFont = new Font("Segoe UI", 10F, FontStyle.Bold);
-            using var labelFont = new Font("Segoe UI", 8F);
-            e.Graphics.DrawString("Doanh thu theo ngày", titleFont, Brushes.DimGray, 12, 8);
-            if (_data.Count == 0 || _data.All(x => x.Revenue == 0))
+            var area = new ChartArea("Revenue");
+            area.AxisX.LabelStyle.Format = "dd/MM";
+            area.AxisX.MajorGrid.Enabled = false;
+            area.AxisY.LabelStyle.Format = "N0";
+            area.AxisY.Title = "VNĐ";
+            area.AxisY.Minimum = 0;
+            ChartAreas.Add(area);
+            Titles.Add("Doanh thu theo ngày");
+            Series.Add(new Series("Doanh thu")
             {
-                e.Graphics.DrawString("Chưa có giao dịch trong khoảng đã chọn.", labelFont, Brushes.Gray, 12, 45);
-                return;
-            }
-            var plot = new Rectangle(48, 38, Math.Max(1, Width - 65), Math.Max(1, Height - 75));
-            e.Graphics.DrawLine(Pens.Silver, plot.Left, plot.Bottom, plot.Right, plot.Bottom);
-            decimal max = _data.Max(x => x.Revenue);
-            float slot = plot.Width / (float)_data.Count;
-            float barWidth = Math.Max(5, slot * 0.62f);
-            using var brush = new LinearGradientBrush(plot, Color.SteelBlue, Color.DodgerBlue, 90F);
-            for (int i = 0; i < _data.Count; i++)
-            {
-                float height = (float)(_data[i].Revenue / max) * plot.Height;
-                float x = plot.Left + i * slot + (slot - barWidth) / 2;
-                e.Graphics.FillRectangle(brush, x, plot.Bottom - height, barWidth, height);
-                if (_data.Count <= 14 || i % Math.Max(1, _data.Count / 10) == 0)
-                    e.Graphics.DrawString(_data[i].Date.ToString("dd/MM"), labelFont, Brushes.DimGray, x, plot.Bottom + 4);
-            }
+                ChartType = SeriesChartType.Column,
+                XValueType = ChartValueType.DateTime,
+                YValueType = ChartValueType.Double,
+                Color = Color.SteelBlue,
+                ToolTip = "#VALX{dd/MM/yyyy}: #VALY{N0} đ"
+            });
+        }
+
+        public void SetData(IReadOnlyList<RevenuePointViewDto> data)
+        {
+            var series = Series[0];
+            series.Points.Clear();
+            foreach (var point in data)
+                series.Points.AddXY(point.Date, (double)point.Revenue);
+            Titles[0].Text = data.Count == 0 || data.All(p => p.Revenue == 0)
+                ? "Chưa có giao dịch trong khoảng đã chọn" : "Doanh thu theo ngày";
+            ChartAreas[0].RecalculateAxesScale();
         }
     }
 }

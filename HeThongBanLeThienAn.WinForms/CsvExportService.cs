@@ -16,7 +16,7 @@ internal static class CsvExportService
         {
             "BÁO CÁO HỆ THỐNG BÁN LẺ THIÊN ÂN",
             $"Từ ngày,{Cell(report.FromDate.ToString("dd/MM/yyyy"))},Đến ngày,{Cell(report.ToDate.ToString("dd/MM/yyyy"))}",
-            $"Tổng hóa đơn,{report.TotalOrders},Doanh thu,{report.RevenueToday}",
+            $"Tổng hóa đơn,{report.TotalOrders},Doanh thu trong kỳ,{report.RevenueSeries.Sum(x => x.Revenue)}",
             $"Khách hàng mới,{report.NewCustomers},Hàng sắp hết,{report.LowStockItems}",
             string.Empty,
             "Ngày,Số hóa đơn,Doanh thu"
