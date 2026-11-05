@@ -30,9 +30,10 @@ namespace MiniSupermarket.API.Controllers
         [HttpGet("paged")]
         [Authorize(Roles = "Admin,Cashier")]
         public async Task<IActionResult> GetPaged(
-            [FromQuery] string? keyword,
+            [FromQuery] string? keyword = null,
             [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 5)
+            [FromQuery] int pageSize = 5,
+            [FromQuery] int? customerId = null)
         {
             pageNumber = Math.Max(pageNumber, 1);
             pageSize = pageSize is >= 1 and <= 50 ? pageSize : 5;
@@ -40,6 +41,11 @@ namespace MiniSupermarket.API.Controllers
             var query = _context.Orders
                 .Include(o => o.Customer)
                 .AsNoTracking();
+
+            if (customerId.HasValue)
+            {
+                query = query.Where(o => o.CustomerId == customerId.Value);
+            }
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {

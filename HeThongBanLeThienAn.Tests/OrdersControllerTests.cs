@@ -59,6 +59,20 @@ namespace HeThongBanLeThienAn.Tests
         }
 
         [Fact]
+        public async Task GetPaged_WithCustomerId_FiltersCorrectly()
+        {
+            using var context = GetDbContext();
+            var controller = new OrdersController(context, null!);
+
+            // Test filtering by CustomerId = 1
+            var action = await controller.GetPaged(null, 1, 10, customerId: 1);
+            var result = Assert.IsType<OkObjectResult>(action);
+            var page = Assert.IsType<PagedResult<OrderSummaryDto>>(result.Value);
+
+            Assert.All(page.Items, item => Assert.Equal(1, item.CustomerId));
+        }
+
+        [Fact]
         public async Task GetById_ExistingOrder_ReturnsOrderDtoWithDetails()
         {
             using var context = GetDbContext();

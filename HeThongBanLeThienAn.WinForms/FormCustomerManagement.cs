@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -169,18 +169,27 @@ namespace MiniSupermarket.WinForms
             await LoadDataAsync();
         }
 
-        private void dgvCustomers_CellClick(object sender, DataGridViewCellEventArgs e)
+        private async void dgvCustomers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
                 return;
 
             DataGridViewRow row = dgvCustomers.Rows[e.RowIndex];
 
+            int customerId = 0;
+            string customerName = string.Empty;
+
             if (row.Cells["CustomerId"].Value != null)
+            {
                 txtCustomerId.Text = row.Cells["CustomerId"].Value.ToString();
+                int.TryParse(txtCustomerId.Text, out customerId);
+            }
 
             if (row.Cells["CustomerName"].Value != null)
+            {
                 txtCustomerName.Text = row.Cells["CustomerName"].Value.ToString();
+                customerName = txtCustomerName.Text;
+            }
 
             if (row.Cells["PhoneNumber"].Value != null)
                 txtPhoneNumber.Text = row.Cells["PhoneNumber"].Value.ToString();
@@ -195,6 +204,11 @@ namespace MiniSupermarket.WinForms
 
             if (row.Cells["MembershipRank"].Value != null)
                 cboMembershipRank.SelectedItem = row.Cells["MembershipRank"].Value.ToString();
+
+            if (customerId > 0)
+            {
+                await LoadCustomerOrdersAsync(customerId, customerName);
+            }
         }
 
         private async void btnAdd_Click(object sender, EventArgs e)
@@ -344,6 +358,119 @@ namespace MiniSupermarket.WinForms
             txtRewardPoints.Clear();
             if (cboMembershipRank.Items.Count > 0)
                 cboMembershipRank.SelectedIndex = 0;
+
+            dgvOrderHistory.DataSource = null;
+            dgvOrderHistory.Visible = false;
+            lblOrderHistoryInfo.Text = "← Chọn một khách hàng để xem lịch sử đơn hàng";
+            lblOrderHistoryInfo.ForeColor = Color.Gray;
+        }
+
+        private async Task LoadCustomerOrdersAsync(int customerId, string customerName)
+        {
+            lblOrderHistoryInfo.Text = $"Đang tải lịch sử đơn hàng của: {customerName}...";
+            lblOrderHistoryInfo.ForeColor = Color.DarkBlue;
+
+            try
+            {
+                var client = ApiClientService.Client;
+                string url = $"orders/paged?customerId={customerId}&pageNumber=1&pageSize=50";
+                var result = await client.GetFromJsonAsync<PagedViewResult<OrderSummaryDto>>(url);
+
+                if (result != null && result.Items.Count > 0)
+                {
+                    dgvOrderHistory.DataSource = result.Items;
+                    FormatOrderHistoryGrid();
+                    dgvOrderHistory.Visible = true;
+                    lblOrderHistoryInfo.Text = $"Lịch sử {result.TotalItems} đơn hàng của khách hàng: {customerName}";
+                    lblOrderHistoryInfo.ForeColor = Color.DarkGreen;
+                }
+                else
+                {
+                    dgvOrderHistory.DataSource = null;
+                    dgvOrderHistory.Visible = false;
+                    lblOrderHistoryInfo.Text = $"Khách hàng \"{customerName}\" chưa có đơn hàng nào.";
+                    lblOrderHistoryInfo.ForeColor = Color.DimGray;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblOrderHistoryInfo.Text = $"Lỗi khi tải lịch sử đơn hàng: {ex.Message}";
+                lblOrderHistoryInfo.ForeColor = Color.Red;
+            }
+        }
+
+        private void FormatOrderHistoryGrid()
+        {
+            if (dgvOrderHistory.Columns.Count == 0) return;
+
+            dgvOrderHistory.AutoGenerateColumns = true;
+            dgvOrderHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            if (dgvOrderHistory.Columns["OrderId"] != null)
+                dgvOrderHistory.Columns["OrderId"].Visible = false;
+
+            if (dgvOrderHistory.Columns["CustomerId"] != null)
+                dgvOrderHistory.Columns["CustomerId"].Visible = false;
+
+            if (dgvOrderHistory.Columns["CustomerName"] != null)
+                dgvOrderHistory.Columns["CustomerName"].Visible = false;
+
+            if (dgvOrderHistory.Columns["OrderCode"] != null)
+            {
+                dgvOrderHistory.Columns["OrderCode"].HeaderText = "Mã HĐ";
+                dgvOrderHistory.Columns["OrderCode"].Width = 130;
+            }
+
+            if (dgvOrderHistory.Columns["CreatedDate"] != null)
+            {
+                dgvOrderHistory.Columns["CreatedDate"].HeaderText = "Thời gian lập";
+                dgvOrderHistory.Columns["CreatedDate"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                dgvOrderHistory.Columns["CreatedDate"].Width = 140;
+            }
+
+            if (dgvOrderHistory.Columns["CashierUsername"] != null)
+            {
+                dgvOrderHistory.Columns["CashierUsername"].HeaderText = "Thu ngân";
+                dgvOrderHistory.Columns["CashierUsername"].Width = 100;
+            }
+
+            if (dgvOrderHistory.Columns["TotalItems"] != null)
+            {
+                dgvOrderHistory.Columns["TotalItems"].HeaderText = "Tổng SL";
+                dgvOrderHistory.Columns["TotalItems"].Width = 80;
+                dgvOrderHistory.Columns["TotalItems"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+
+            if (dgvOrderHistory.Columns["DiscountAmount"] != null)
+            {
+                dgvOrderHistory.Columns["DiscountAmount"].HeaderText = "Giảm giá (đ)";
+                dgvOrderHistory.Columns["DiscountAmount"].DefaultCellStyle.Format = "N0";
+                dgvOrderHistory.Columns["DiscountAmount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvOrderHistory.Columns["DiscountAmount"].Width = 110;
+            }
+
+            if (dgvOrderHistory.Columns["FinalAmount"] != null)
+            {
+                dgvOrderHistory.Columns["FinalAmount"].HeaderText = "Tổng tiền (đ)";
+                dgvOrderHistory.Columns["FinalAmount"].DefaultCellStyle.Format = "N0";
+                dgvOrderHistory.Columns["FinalAmount"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvOrderHistory.Columns["FinalAmount"].DefaultCellStyle.Font = new Font(dgvOrderHistory.Font, FontStyle.Bold);
+                dgvOrderHistory.Columns["FinalAmount"].Width = 120;
+            }
+
+            if (dgvOrderHistory.Columns["RewardPoints"] != null)
+            {
+                dgvOrderHistory.Columns["RewardPoints"].HeaderText = "+ Điểm";
+                dgvOrderHistory.Columns["RewardPoints"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvOrderHistory.Columns["RewardPoints"].Width = 80;
+            }
+
+            if (dgvOrderHistory.Columns["RedeemedPoints"] != null)
+            {
+                dgvOrderHistory.Columns["RedeemedPoints"].HeaderText = "- Điểm dùng";
+                dgvOrderHistory.Columns["RedeemedPoints"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvOrderHistory.Columns["RedeemedPoints"].Width = 90;
+            }
         }
 
         private int ParseRewardPoints()

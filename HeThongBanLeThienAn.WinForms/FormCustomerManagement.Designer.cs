@@ -36,6 +36,9 @@ namespace MiniSupermarket.WinForms
             grpSearch = new GroupBox();
             grpCustomerList = new GroupBox();
             grpCustomerInfo = new GroupBox();
+            grpOrderHistory = new GroupBox();
+            dgvOrderHistory = new DataGridView();
+            lblOrderHistoryInfo = new Label();
             lblCustomerId = new Label();
             lblCustomerName = new Label();
             lblPhoneNumber = new Label();
@@ -44,9 +47,11 @@ namespace MiniSupermarket.WinForms
             lblMembershipRank = new Label();
 
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvOrderHistory).BeginInit();
             grpSearch.SuspendLayout();
             grpCustomerList.SuspendLayout();
             grpCustomerInfo.SuspendLayout();
+            grpOrderHistory.SuspendLayout();
             SuspendLayout();
 
             //
@@ -251,24 +256,69 @@ namespace MiniSupermarket.WinForms
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += btnDelete_Click;
 
+            //
+            // grpOrderHistory
+            //
+            grpOrderHistory.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grpOrderHistory.Controls.Add(lblOrderHistoryInfo);
+            grpOrderHistory.Controls.Add(dgvOrderHistory);
+            grpOrderHistory.Location = new Point(20, 625);
+            grpOrderHistory.Name = "grpOrderHistory";
+            grpOrderHistory.Size = new Size(910, 240);
+            grpOrderHistory.TabIndex = 3;
+            grpOrderHistory.TabStop = false;
+            grpOrderHistory.Text = "Lịch sử đơn hàng";
+
+            //
+            // lblOrderHistoryInfo
+            //
+            lblOrderHistoryInfo.AutoSize = true;
+            lblOrderHistoryInfo.ForeColor = Color.Gray;
+            lblOrderHistoryInfo.Location = new Point(10, 25);
+            lblOrderHistoryInfo.Name = "lblOrderHistoryInfo";
+            lblOrderHistoryInfo.Text = "← Chọn một khách hàng để xem lịch sử đơn hàng";
+
+            //
+            // dgvOrderHistory
+            //
+            dgvOrderHistory.AllowUserToAddRows = false;
+            dgvOrderHistory.AllowUserToDeleteRows = false;
+            dgvOrderHistory.BackgroundColor = Color.White;
+            dgvOrderHistory.BorderStyle = BorderStyle.Fixed3D;
+            dgvOrderHistory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvOrderHistory.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvOrderHistory.Location = new Point(10, 45);
+            dgvOrderHistory.Name = "dgvOrderHistory";
+            dgvOrderHistory.ReadOnly = true;
+            dgvOrderHistory.RowHeadersWidth = 40;
+            dgvOrderHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvOrderHistory.Size = new Size(890, 180);
+            dgvOrderHistory.TabIndex = 1;
+            dgvOrderHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvOrderHistory.Visible = false;
+
             // Form
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(950, 640);
+            ClientSize = new Size(950, 880);
             Controls.Add(grpSearch);
             Controls.Add(grpCustomerList);
             Controls.Add(grpCustomerInfo);
+            Controls.Add(grpOrderHistory);
             Name = "FormCustomerManagement";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Quản lý Khách hàng - Thiên Ân";
             Load += FormCustomerManagement_Load;
 
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvOrderHistory).EndInit();
             grpSearch.ResumeLayout(false);
             grpSearch.PerformLayout();
             grpCustomerList.ResumeLayout(false);
             grpCustomerInfo.ResumeLayout(false);
             grpCustomerInfo.PerformLayout();
+            grpOrderHistory.ResumeLayout(false);
+            grpOrderHistory.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -293,6 +343,9 @@ namespace MiniSupermarket.WinForms
         private GroupBox grpSearch;
         private GroupBox grpCustomerList;
         private GroupBox grpCustomerInfo;
+        private GroupBox grpOrderHistory;
+        private DataGridView dgvOrderHistory;
+        private Label lblOrderHistoryInfo;
         private Label lblCustomerId;
         private Label lblCustomerName;
         private Label lblPhoneNumber;

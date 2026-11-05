@@ -325,9 +325,19 @@ namespace MiniSupermarket.WinForms
                     }
                     decimal finalAmount = receipt.FinalAmount;
                     decimal discount = receipt.DiscountAmount;
+                    decimal change = Math.Max(0, cashReceived - finalAmount);
                     MessageBox.Show(
-                        $"Thanh toán thành công!\nTạm tính: {subtotal:N0} đ\nGiảm từ điểm: {discount:N0} đ\nThanh toán: {finalAmount:N0} đ\nĐã xuất hóa đơn và cập nhật kho hàng.",
-                        "Thành công",
+                        $"Thanh toán thành công!\n" +
+                        $"----------------------------------------\n" +
+                        $"Mã hóa đơn: {receipt.OrderCode}\n" +
+                        $"Tạm tính: {subtotal:N0} đ\n" +
+                        $"Giảm giá từ điểm: {discount:N0} đ\n" +
+                        $"Tổng thanh toán: {finalAmount:N0} đ\n" +
+                        $"Tiền khách đưa: {cashReceived:N0} đ\n" +
+                        $"Tiền thối trả khách: {change:N0} đ\n" +
+                        $"----------------------------------------\n" +
+                        $"Đã xuất hóa đơn và cập nhật tồn kho thành công.",
+                        "Thanh toán thành công",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
