@@ -7,7 +7,7 @@ Dự án này là một mẫu kiến trúc **Client - Server (3-Tier SOA)** sử
 - **Backend**: `HeThongBanLeThienAn.API`
 - **Frontend**: `HeThongBanLeThienAn.WinForms`
 - **Cơ sở dữ liệu**: Microsoft SQL Server Express (`localhost\SQLEXPRESS`, database `MiniSupermarketDb`)
-- **Công nghệ**: .NET 8, ASP.NET Core Web API, JWT Bearer Authentication, Windows Forms (.NET 8), Entity Framework Core 8, ADO.NET (`Microsoft.Data.SqlClient`), GDI+
+- **Công nghệ**: .NET 8, ASP.NET Core Web API, JWT Bearer Authentication, Windows Forms (.NET 8), Entity Framework Core 8, ADO.NET (`Microsoft.Data.SqlClient`), System.Windows.Forms.DataVisualization.Charting.Chart
 - **Chức năng chính**:
   - Đăng nhập xác thực tài khoản nhân sự với chuẩn băm mật khẩu an toàn **PBKDF2-SHA256** (120.000 vòng lặp, salt 16 bytes).
   - Cấp phát chuỗi **JSON Web Token (JWT)** chứa các Claims danh tính và vai trò.
@@ -17,7 +17,7 @@ Dự án này là một mẫu kiến trúc **Client - Server (3-Tier SOA)** sử
   - Quản lý danh mục 15 nhóm ngành hàng và 100 sản phẩm mã vạch, phân trang phía máy chủ bằng LINQ `.Skip().Take()`.
   - Quầy thu ngân **POS** bán hàng quét mã vạch, tích lũy điểm thành viên, đổi điểm chiết khấu tiền mặt, giao dịch nguyên tử **ACID** qua `DbTransaction` và cơ chế chống bán âm kho `AND StockQuantity >= @Qty`.
   - Quản lý khách hàng tự động xếp hạng thẻ (Đồng, Bạc, Vàng, Kim Cương), quản lý tài khoản nhân viên.
-  - Báo cáo thống kê điều hành: 4 chỉ số KPI, tự động vẽ biểu đồ cột doanh thu bằng **GDI+** và Top 5 sản phẩm bán chạy qua Stored Procedures SQL Server.
+  - Báo cáo thống kê điều hành: 4 chỉ số KPI, tự động vẽ biểu đồ cột doanh thu bằng **System.Windows.Forms.DataVisualization.Charting.Chart** và Top 5 sản phẩm bán chạy qua Stored Procedures SQL Server.
   - Xuất dữ liệu DataGridView ra tệp CSV chuẩn UTF-8 BOM xem trực tiếp trên Microsoft Excel không bị lỗi font tiếng Việt.
 
 ## Kiến trúc hệ thống
@@ -51,7 +51,7 @@ FormMainShell (Single-Form Shell Workspace)
   ├─ [Admin, Warehouse] ──► FormCategoryManagement (Gọi /api/categories, CRUD nhóm hàng)
   ├─ [Admin, Cashier]   ──► FormCustomerManagement (Gọi /api/customers/paged, tích & đổi điểm)
   ├─ [Admin]           ──► FormUserManagement (Gọi /api/users, phân quyền, khóa tài khoản)
-  └─ [Admin]           ──► FormQuickReport (Gọi /api/reports, vẽ biểu đồ doanh thu GDI+)
+  └─ [Admin]           ──► FormQuickReport (Gọi /api/reports, vẽ biểu đồ doanh thu System.Windows.Forms.DataVisualization.Charting.Chart)
   │
   ▼
 Backend Web API Controllers (ASP.NET Core)
@@ -82,7 +82,7 @@ Microsoft SQL Server Express (MiniSupermarketDb)
 - **Frontend Client**:
   - Windows Forms (.NET 8)
   - Giao diện bàn làm việc đơn Single-Form Shell Workspace
-  - `System.Drawing` (GDI+) vẽ biểu đồ thống kê doanh thu
+  - `System.Drawing` (System.Windows.Forms.DataVisualization.Charting.Chart) vẽ biểu đồ thống kê doanh thu
   - `HttpClient` tập trung quản lý vòng đời socket
 - **Kiểm thử & Tài liệu hóa**:
   - Swagger UI (`Swashbuckle.AspNetCore`)
@@ -280,11 +280,11 @@ Kết quả mong đợi: Nhận được chuỗi JWT Bearer Token, thời gian h
 3. Mở giao diện bàn làm việc chính **`FormMainShell`**, tự động ẩn/hiện các menu chức năng tương ứng với quyền hạn của tài khoản:
    - Thu ngân: hiển thị màn hình **POS Bán hàng**, hỗ trợ quét mã vạch, thanh toán và in hóa đơn.
    - Thủ kho: hiển thị màn hình **Quản lý Sản phẩm**, hỗ trợ phân trang máy chủ, lọc nhóm hàng, tô đỏ tồn kho $\le 10$ và xuất CSV UTF-8.
-   - Quản trị viên: toàn quyền truy cập phân hệ **Báo cáo Doanh thu** với biểu đồ GDI+ và quản lý người dùng.
+   - Quản trị viên: toàn quyền truy cập phân hệ **Báo cáo Doanh thu** với biểu đồ System.Windows.Forms.DataVisualization.Charting.Chart và quản lý người dùng.
 
 ## Lưu ý triển khai & Báo cáo đồ án
 
-- Cơ sở dữ liệu hoạt động trực tiếp trên **Microsoft SQL Server Express** với đầy đủ ràng buộc khóa chính, khóa ngoại, chỉ mục duy nhất và 3 Stored Procedures.
+- Cơ sở dữ liệu hoạt động trực tiếp trên **Microsoft SQL Server Express** với đầy đủ ràng buộc khóa chính, khóa ngoại, chỉ mục duy nhất và 4 Stored Procedures.
 - Khóa JWT trong `appsettings.json` chỉ là cấu hình demo. Khi triển khai thật phải chuyển sang User Secrets, biến môi trường hoặc kho bí mật và thay khóa mặc định.
 - **Báo cáo đồ án**: Bản Word/PDF chính thức có mục lục, danh mục hình ảnh - bảng biểu, phân tích lý thuyết và kết quả kiểm thử; báo cáo được nộp riêng cho giảng viên, không lưu trong repository.
 
