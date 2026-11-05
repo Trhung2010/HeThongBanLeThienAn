@@ -259,6 +259,7 @@ namespace MiniSupermarket.WinForms
             // 
             panelMainContent.BackColor = Color.FromArgb(244, 245, 247);
             panelMainContent.Dock = DockStyle.Fill;
+            panelMainContent.AutoScroll = true;
             panelMainContent.Location = new Point(230, 60);
             panelMainContent.Name = "panelMainContent";
             panelMainContent.Size = new Size(1050, 660);

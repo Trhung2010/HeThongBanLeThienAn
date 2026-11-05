@@ -360,9 +360,32 @@ namespace MiniSupermarket.WinForms
                 cboMembershipRank.SelectedIndex = 0;
 
             dgvOrderHistory.DataSource = null;
-            dgvOrderHistory.Visible = false;
+            tabOrderHistory.Text = "📜 Lịch sử Đơn hàng";
             lblOrderHistoryInfo.Text = "← Chọn một khách hàng để xem lịch sử đơn hàng";
             lblOrderHistoryInfo.ForeColor = Color.Gray;
+        }
+
+        private void btnViewHistory_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtCustomerId.Text))
+            {
+                MessageBox.Show("Vui lòng chọn một khách hàng trong danh sách trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            tabControlCustomer.SelectedTab = tabOrderHistory;
+        }
+
+        private void btnBackToList_Click(object sender, EventArgs e)
+        {
+            tabControlCustomer.SelectedTab = tabCustomerList;
+        }
+
+        private void dgvCustomers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                tabControlCustomer.SelectedTab = tabOrderHistory;
+            }
         }
 
         private async Task LoadCustomerOrdersAsync(int customerId, string customerName)
@@ -381,13 +404,15 @@ namespace MiniSupermarket.WinForms
                     dgvOrderHistory.DataSource = result.Items;
                     FormatOrderHistoryGrid();
                     dgvOrderHistory.Visible = true;
-                    lblOrderHistoryInfo.Text = $"Lịch sử {result.TotalItems} đơn hàng của khách hàng: {customerName}";
+                    tabOrderHistory.Text = $"📜 Lịch sử ({result.TotalItems})";
+                    lblOrderHistoryInfo.Text = $"Khách hàng: {customerName} ({result.TotalItems} đơn hàng)";
                     lblOrderHistoryInfo.ForeColor = Color.DarkGreen;
                 }
                 else
                 {
                     dgvOrderHistory.DataSource = null;
                     dgvOrderHistory.Visible = false;
+                    tabOrderHistory.Text = "📜 Lịch sử (0)";
                     lblOrderHistoryInfo.Text = $"Khách hàng \"{customerName}\" chưa có đơn hàng nào.";
                     lblOrderHistoryInfo.ForeColor = Color.DimGray;
                 }
