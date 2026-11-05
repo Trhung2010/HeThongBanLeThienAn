@@ -50,23 +50,23 @@ Hệ thống được tổ chức thành 3 tầng độc lập, giao tiếp vớ
 
 ```mermaid
 flowchart TD
-    subgraph Presentation_Layer["1. TẦNG TRÌNH DIỄN (Presentation Tier)"]
-        WF["WinForms Client (.NET 8 Windows)\n- FormLogin (Xác thực)\n- FormMainShell (Khung điều khiển trung tâm)\n- FormPOS, FormProduct, FormCategory, FormCustomer, FormQuickReport\n- ApiClientService (Tái sử dụng HttpClient + JWT Bearer)"]
+    subgraph Presentation_Layer["1. TẦNG TRÌNH DIỄN - Presentation Tier"]
+        WF["WinForms Client .NET 8 Windows<br/>- FormLogin<br/>- FormMainShell<br/>- ApiClientService"]
     end
 
-    subgraph Service_Layer["2. TẦNG NGHIỆP VỤ & DỊCH VỤ (Business / API Tier)"]
-        API["ASP.NET Core 8 Web API (Port 5167)\n- Authentication & RBAC Middleware\n- DatabaseConstraintFilter (Bắt lỗi SQL & Concurrency)\n- 9 Controllers (100% Async Task<IActionResult>)\n- CheckoutService (ACID Transaction Logic)"]
+    subgraph Service_Layer["2. TẦNG NGHIỆP VỤ VA DICH VU - Business API Tier"]
+        API["ASP.NET Core 8 Web API - Port 5167<br/>- Authentication & RBAC Middleware<br/>- DatabaseConstraintFilter<br/>- 9 Controllers Async<br/>- CheckoutService ACID"]
     end
 
-    subgraph Data_Layer["3. TẦNG DỮ LIỆU (Data Access Tier)"]
-        ORM["Data Access Layer\n- Entity Framework Core 8 (Code-First Migrations, LINQ Paging)\n- ADO.NET thuần (DbConnectionFactory, SqlDataReader, DataTable, Stored Procedures)"]
-        DB[("Microsoft SQL Server Express\n(localhost\\SQLEXPRESS -> MiniSupermarketDb)\n- 6 Bảng quan hệ\n- 4 Stored Procedures\n- Ràng buộc khóa ngoại & Unique Indexes")]
+    subgraph Data_Layer["3. TẦNG DỮ LIỆU - Data Access Tier"]
+        ORM["Data Access Layer<br/>- Entity Framework Core 8<br/>- ADO.NET thuan DbConnectionFactory"]
+        DB[("Microsoft SQL Server Express<br/>MiniSupermarketDb")]
     end
 
-    WF -- "HTTP REST Requests\nAuthorization: Bearer <JWT>" --> API
-    API -- "LINQ / EF Core 8" --> ORM
-    API -- "ADO.NET Command / Transaction" --> ORM
-    ORM -- "T-SQL / TDS Protocol" --> DB
+    WF -->|HTTP REST Requests - Bearer Token| API
+    API -->|LINQ / EF Core 8| ORM
+    API -->|ADO.NET Command / Transaction| ORM
+    ORM -->|T-SQL / TDS Protocol| DB
 ```
 
 ---
@@ -99,67 +99,67 @@ flowchart TD
 
 ```mermaid
 erDiagram
-    Categories ||--o{ Products : "chứa (1-N)"
+    Categories ||--o{ Products : contains
     Categories {
-        int CategoryId PK "Tự tăng (Identity)"
-        nvarchar CategoryName "Tên nhóm hàng (Tối đa 100)"
-        nvarchar Description "Mô tả chi tiết"
+        int CategoryId PK
+        string CategoryName
+        string Description
     }
 
-    Products ||--o{ OrderDetails : "thuộc chi tiết hóa đơn (1-N)"
+    Products ||--o{ OrderDetails : details
     Products {
-        int ProductId PK "Tự tăng (Identity)"
-        nvarchar Barcode UK "Mã vạch duy nhất (Tối đa 50)"
-        nvarchar ProductName "Tên sản phẩm (Tối đa 150)"
-        decimal Price "Đơn giá niêm yết (18, 2)"
-        int StockQuantity "Số lượng tồn kho (>= 0)"
-        int CategoryId FK "Liên kết Categories"
-        nvarchar DataSource "Nguồn nhập hàng"
+        int ProductId PK
+        string Barcode UK
+        string ProductName
+        decimal Price
+        int StockQuantity
+        int CategoryId FK
+        string DataSource
     }
 
-    Users ||--o{ Orders : "lập hóa đơn (1-N)"
+    Users ||--o{ Orders : creates
     Users {
-        int UserId PK "Tự tăng (Identity)"
-        nvarchar Username UK "Tên đăng nhập duy nhất (Tối đa 50)"
-        nvarchar PasswordHash "Chuỗi mật khẩu băm PBKDF2"
-        nvarchar FullName "Họ và tên nhân viên"
-        nvarchar Role "Vai trò (Admin/Cashier/Warehouse)"
-        bit IsActive "Trạng thái hoạt động (1: Mở, 0: Khóa)"
+        int UserId PK
+        string Username UK
+        string PasswordHash
+        string FullName
+        string Role
+        boolean IsActive
     }
 
-    Customers ||--o{ Orders : "được lập cho (0..1-N)"
+    Customers ||--o{ Orders : places
     Customers {
-        int CustomerId PK "Tự tăng (Identity)"
-        nvarchar CustomerName "Họ tên khách hàng (Tối đa 100)"
-        nvarchar PhoneNumber UK "Số điện thoại duy nhất (Tối đa 20)"
-        nvarchar Address "Địa chỉ liên hệ"
-        int RewardPoints "Điểm tích lũy hiện tại (>= 0)"
-        nvarchar MembershipRank "Hạng thẻ (Đồng/Bạc/Vàng/Kim Cương)"
-        datetime CreatedDate "Ngày đăng ký thành viên"
+        int CustomerId PK
+        string CustomerName
+        string PhoneNumber UK
+        string Address
+        int RewardPoints
+        string MembershipRank
+        datetime CreatedDate
     }
 
-    Orders ||--|{ OrderDetails : "chứa các dòng sản phẩm (1-N)"
+    Orders ||--|{ OrderDetails : contains
     Orders {
-        int OrderId PK "Tự tăng (Identity)"
-        nvarchar OrderCode UK "Mã hóa đơn duy nhất (VD: HD20261105...)"
-        datetime CreatedDate "Thời điểm giao dịch"
-        nvarchar CashierUsername "Tên thu ngân thực hiện"
-        int CustomerId FK "Liên kết Customers (Nullable)"
-        int TotalItems "Tổng số lượng hàng"
-        decimal Subtotal "Tiền hàng trước giảm"
-        decimal DiscountAmount "Tiền chiết khấu đổi điểm"
-        decimal FinalAmount "Tổng tiền thanh toán cuối cùng"
-        int RewardPoints "Điểm thưởng cộng thêm từ đơn hàng"
-        int RedeemedPoints "Số điểm đã dùng để giảm giá"
+        int OrderId PK
+        string OrderCode UK
+        datetime CreatedDate
+        string CashierUsername
+        int CustomerId FK
+        int TotalItems
+        decimal Subtotal
+        decimal DiscountAmount
+        decimal FinalAmount
+        int RewardPoints
+        int RedeemedPoints
     }
 
     OrderDetails {
-        int OrderDetailId PK "Tự tăng (Identity)"
-        int OrderId FK "Liên kết Orders (Khóa ngoại)"
-        int ProductId FK "Liên kết Products (Khóa ngoại)"
-        int Quantity "Số lượng mua (> 0)"
-        decimal UnitPrice "Đơn giá tại thời điểm bán"
-        decimal LineTotal "Thành tiền (Quantity * UnitPrice)"
+        int OrderDetailId PK
+        int OrderId FK
+        int ProductId FK
+        int Quantity
+        decimal UnitPrice
+        decimal LineTotal
     }
 ```
 
@@ -248,35 +248,35 @@ Quá trình thanh toán tại quầy POS là phân hệ nhạy cảm nhất về
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Cashier as Thu ngân (WinForms POS)
+    actor Cashier as Thu Ngan - WinForms POS
     participant API as CheckoutController
     participant Service as CheckoutService
-    participant DB as SQL Server (MiniSupermarketDb)
+    participant DB as SQL Server - MiniSupermarketDb
 
-    Cashier->>API: POST /api/checkout (Giỏ hàng + CustomerId + RedeemPoints)
+    Cashier->>API: POST /api/checkout - Gui gio hang va thong tin khach
     API->>Service: Checkout(cashier, customerId, items, redeem)
-    Service->>DB: BeginTransaction(IsolationLevel.ReadCommitted)
+    Service->>DB: BeginTransaction - ReadCommitted
 
-    loop Duyệt từng mặt hàng trong giỏ
-        Service->>DB: UPDATE Products SET StockQuantity = StockQuantity - @Qty WHERE ProductId = @Id AND StockQuantity >= @Qty
-        DB-->>Service: Kiểm tra RowsAffected
-        alt RowsAffected == 0 (Hết hàng hoặc không đủ tồn kho)
+    loop Duyet tung san pham trong gio
+        Service->>DB: UPDATE Products SET StockQuantity = StockQuantity - Qty WHERE ProductId = Id
+        DB-->>Service: Tra ve RowsAffected
+        alt RowsAffected == 0: Het hang hoac khong du ton kho
             Service->>DB: ROLLBACK TRANSACTION
-            Service-->>API: Ném ngoại lệ InvalidOperationException
-            API-->>Cashier: HTTP 400 Bad Request ("Sản phẩm hết hàng; Hủy giao dịch!")
+            Service-->>API: Nem ngoai le InvalidOperationException
+            API-->>Cashier: HTTP 400 Bad Request - San pham het hang
         end
     end
 
-    Service->>DB: INSERT INTO Orders (...) VALUES (...) -> OUTPUT INSERTED.OrderId
-    Service->>DB: INSERT INTO OrderDetails (OrderId, ProductId, Quantity, UnitPrice, LineTotal)
+    Service->>DB: INSERT INTO Orders
+    Service->>DB: INSERT INTO OrderDetails
     
-    opt Nếu có thông tin khách hàng thành viên
-        Service->>DB: UPDATE Customers SET RewardPoints = RewardPoints - Redeem + Earned, MembershipRank = @NewRank WHERE CustomerId = @Id
+    opt Neu co khach hang thanh vien
+        Service->>DB: UPDATE Customers - Cap nhat diem va hang the
     end
 
     Service->>DB: COMMIT TRANSACTION
-    Service-->>API: Trả về CheckoutReceiptDto
-    API-->>Cashier: HTTP 200 OK (Mã hóa đơn, Tiền thanh toán, Biên lai in)
+    Service-->>API: Tra ve CheckoutReceiptDto
+    API-->>Cashier: HTTP 200 OK - Thanh toan thanh cong
 ```
 
 ---
