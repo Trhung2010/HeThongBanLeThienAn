@@ -48,7 +48,7 @@ namespace MiniSupermarket.API.Controllers
         // GET: api/reports/revenue-by-cashier
         // =========================================================================
         [HttpGet("revenue-by-cashier")]
-        public IActionResult GetRevenueByCashier()
+        public async Task<IActionResult> GetRevenueByCashier()
         {
             var reportList = new List<CashierRevenueDto>();
 
@@ -79,10 +79,10 @@ namespace MiniSupermarket.API.Controllers
 
                     try
                     {
-                        connection.Open();
-                        using (DbDataReader reader = command.ExecuteReader())
+                        await connection.OpenAsync();
+                        using (DbDataReader reader = await command.ExecuteReaderAsync())
                         {
-                            while (reader.Read())
+                            while (await reader.ReadAsync())
                             {
                                 var item = new CashierRevenueDto
                                 {
@@ -122,7 +122,7 @@ namespace MiniSupermarket.API.Controllers
         // GET: api/reports/revenue-by-date?fromDate=2026-10-01&toDate=2026-10-31
         // =========================================================================
         [HttpGet("revenue-by-date")]
-        public IActionResult GetRevenueByDateRange([FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate)
+        public async Task<IActionResult> GetRevenueByDateRange([FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate)
         {
             var start = fromDate ?? DateTime.Today.AddDays(-30);
             var end = (toDate ?? DateTime.Today).Date.AddDays(1);
@@ -159,10 +159,10 @@ namespace MiniSupermarket.API.Controllers
 
                     try
                     {
-                        connection.Open();
-                        using (DbDataReader reader = command.ExecuteReader())
+                        await connection.OpenAsync();
+                        using (DbDataReader reader = await command.ExecuteReaderAsync())
                         {
-                            while (reader.Read())
+                            while (await reader.ReadAsync())
                             {
                                 reportList.Add(new CashierRevenueDto
                                 {
@@ -201,7 +201,7 @@ namespace MiniSupermarket.API.Controllers
         // GET: api/reports/top-selling-products
         // =========================================================================
         [HttpGet("top-selling-products")]
-        public IActionResult GetTop5SellingProducts()
+        public async Task<IActionResult> GetTop5SellingProducts()
         {
             var topList = new List<TopSellingProductDto>();
 
@@ -234,10 +234,10 @@ namespace MiniSupermarket.API.Controllers
 
                     try
                     {
-                        connection.Open();
-                        using (DbDataReader reader = command.ExecuteReader())
+                        await connection.OpenAsync();
+                        using (DbDataReader reader = await command.ExecuteReaderAsync())
                         {
-                            while (reader.Read())
+                            while (await reader.ReadAsync())
                             {
                                 topList.Add(new TopSellingProductDto
                                 {
@@ -322,13 +322,35 @@ namespace MiniSupermarket.API.Controllers
                 .Take(5)
                 .ToList();
 
-            var revenueByDate = orders
-                .GroupBy(o => o.CreatedDate.Date)
-                .ToDictionary(g => g.Key, g => new
+            var revenueByDate = new Dictionary<DateTime, RevenuePointDto>();
+            if (_context.Database.IsSqlServer())
+            {
+                using var connection = _connectionFactory.CreateConnection();
+                using var command = connection.CreateCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "dbo.sp_GetDailyRevenue";
+                command.Parameters.Add(_connectionFactory.CreateParameter("@FromDate", start));
+                command.Parameters.Add(_connectionFactory.CreateParameter("@ToDate", endExclusive));
+                await connection.OpenAsync();
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
                 {
-                    Revenue = g.Sum(o => o.FinalAmount),
-                    Orders = g.Count()
-                });
+                    var date = reader.GetDateTime(0).Date;
+                    revenueByDate[date] = new RevenuePointDto
+                    {
+                        Date = date, Orders = reader.GetInt32(1), Revenue = reader.GetDecimal(2)
+                    };
+                }
+            }
+            else
+            {
+                // Test provider has no stored procedures.
+                revenueByDate = orders.GroupBy(o => o.CreatedDate.Date)
+                    .ToDictionary(g => g.Key, g => new RevenuePointDto
+                    {
+                        Date = g.Key, Revenue = g.Sum(o => o.FinalAmount), Orders = g.Count()
+                    });
+            }
 
             var series = new List<RevenuePointDto>();
             for (DateTime day = start; day <= endInclusive; day = day.AddDays(1))
@@ -342,11 +364,17 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
+            var todayAmounts = await _context.Orders.AsNoTracking()
+                .Where(o => o.CreatedDate >= today && o.CreatedDate < tomorrow)
+                .Select(o => o.FinalAmount).ToListAsync();
+
             return Ok(new DashboardSummaryDto
             {
                 FromDate = start,
                 ToDate = endInclusive,
-                RevenueToday = orders.Sum(o => o.FinalAmount),
+                RevenueToday = todayAmounts.Sum(),
                 TotalOrders = orders.Count,
                 NewCustomers = await _context.Customers.AsNoTracking()
                     .CountAsync(c => c.CreatedDate >= start && c.CreatedDate < endExclusive),
@@ -372,7 +400,7 @@ namespace MiniSupermarket.API.Controllers
             return Ok(new QuickReportDto
             {
                 TotalOrders = dashboard.TotalOrders,
-                TotalRevenue = dashboard.RevenueToday,
+                TotalRevenue = dashboard.RevenueSeries.Sum(point => point.Revenue),
                 BestSeller = dashboard.TopSellingProducts.FirstOrDefault()?.ProductName ?? "Chưa có dữ liệu",
                 NewCustomers = dashboard.NewCustomers,
                 LowStockItems = dashboard.LowStockItems

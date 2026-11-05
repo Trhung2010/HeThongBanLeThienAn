@@ -153,6 +153,8 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            if (await _context.Categories.AnyAsync(c => c.CategoryName == request.CategoryName.Trim()))
+                return Conflict(new { message = "Tên nhóm hàng đã tồn tại." });
             var category = new Category
             {
                 CategoryName = request.CategoryName.Trim(),
@@ -189,6 +191,8 @@ namespace MiniSupermarket.API.Controllers
                 return BadRequest(new { message = "Tên không được trống!" });
             }
 
+            if (await _context.Categories.AnyAsync(c => c.CategoryId != id && c.CategoryName == request.CategoryName.Trim()))
+                return Conflict(new { message = "Tên nhóm hàng đã tồn tại." });
             cat.CategoryName = request.CategoryName.Trim();
             cat.Description = request.Description?.Trim();
 
@@ -213,6 +217,8 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            if (await _context.Products.AnyAsync(p => p.CategoryId == id))
+                return Conflict(new { message = "Nhóm hàng còn sản phẩm. Hãy chuyển sản phẩm sang nhóm khác trước khi xóa." });
             _context.Categories.Remove(cat);
             await _context.SaveChangesAsync();
 
@@ -222,10 +228,12 @@ namespace MiniSupermarket.API.Controllers
         // 7. Kiểm tra quyền Admin
         [HttpGet("admin-dashboard")]
         [Authorize(Roles = "Admin")]
-        public IActionResult GetAdminDashboard()
+        public async Task<IActionResult> GetAdminDashboard()
         {
+            var totalProducts = await _context.Products.CountAsync();
             return Ok(new
             {
+                totalProducts,
                 message = "Chào mừng Admin! Bạn có toàn quyền quản trị hệ thống siêu thị mini."
             });
         }
@@ -233,10 +241,12 @@ namespace MiniSupermarket.API.Controllers
         // 8. Kiểm tra quyền chung cho nhân viên
         [HttpGet("staff-pos")]
         [Authorize(Roles = "Admin,Cashier")]
-        public IActionResult GetStaffPos()
+        public async Task<IActionResult> GetStaffPos()
         {
+            var availableProducts = await _context.Products.CountAsync(p => p.StockQuantity > 0);
             return Ok(new
             {
+                availableProducts,
                 message = "Màn hình POS Thu ngân sẵn sàng phục vụ bán hàng."
             });
         }

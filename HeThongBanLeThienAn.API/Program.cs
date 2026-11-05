@@ -7,7 +7,6 @@ using MiniSupermarket.API.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Thiếu cấu hình ConnectionStrings:DefaultConnection.");
 builder.Services.AddDbContext<SqlServerSupermarketDbContext>(options =>
@@ -38,7 +37,7 @@ builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
 
 // Cấu hình dịch vụ và middleware khác
 builder.Services.AddScoped<CheckoutService>();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add<DatabaseConstraintFilter>());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {

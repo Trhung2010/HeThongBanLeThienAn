@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniSupermarket.API.Data;
 using MiniSupermarket.API.Models;
@@ -111,18 +111,20 @@ namespace MiniSupermarket.API.Controllers
 
         // GET: /api/users
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             if (_context != null)
             {
-                var dbUserDtos = _context.Users.Select(u => new UserDto
-                {
-                    Id = u.UserId,
-                    Username = u.Username,
-                    FullName = u.FullName,
-                    Role = u.Role,
-                    IsActive = u.IsActive
-                }).ToList();
+                var dbUserDtos = await _context.Users
+                    .AsNoTracking()
+                    .Select(u => new UserDto
+                    {
+                        Id = u.UserId,
+                        Username = u.Username,
+                        FullName = u.FullName,
+                        Role = u.Role,
+                        IsActive = u.IsActive
+                    }).ToListAsync();
 
                 return Ok(dbUserDtos);
             }
@@ -184,7 +186,7 @@ namespace MiniSupermarket.API.Controllers
 
         // POST: /api/users
         [HttpPost]
-        public IActionResult Create([FromBody] CreateUserDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
         {
             if (dto == null || string.IsNullOrWhiteSpace(dto.Username) || string.IsNullOrWhiteSpace(dto.Password))
             {
@@ -192,8 +194,9 @@ namespace MiniSupermarket.API.Controllers
             }
 
             string username = dto.Username.Trim();
-            if ((_context != null && _context.Users.Any(u => u.Username.ToLower() == username.ToLower())) ||
-                UserDataStore.Users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)))
+            bool duplicate = (_context != null && await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower()))
+                             || UserDataStore.Users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            if (duplicate)
             {
                 return BadRequest(new { message = "Tên đăng nhập đã tồn tại trong hệ thống!" });
             }
@@ -221,7 +224,7 @@ namespace MiniSupermarket.API.Controllers
                     IsActive = true
                 };
                 _context.Users.Add(dbNewUser);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 createdId = dbNewUser.UserId;
             }
             else

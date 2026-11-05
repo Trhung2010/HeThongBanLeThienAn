@@ -14,12 +14,12 @@ public class CheckoutController : ControllerBase
     public CheckoutController(IConfiguration configuration, IDbConnectionFactory factory) => _service = new(factory);
 
     [HttpPost]
-    public IActionResult ProcessCheckout([FromBody] PosCheckoutRequestDto request)
+    public async Task<IActionResult> ProcessCheckout([FromBody] PosCheckoutRequestDto request)
     {
         try
         {
             string cashier = User?.Identity?.Name ?? request.CashierUsername;
-            var r = _service.Checkout(cashier, request.CustomerId, request.CustomerPhone, request.Items, request.RedeemPoints);
+            var r = await _service.Checkout(cashier, request.CustomerId, request.CustomerPhone, request.Items, request.RedeemPoints);
             return Ok(new CheckoutResponseDto
             {
                 Success = true,
@@ -43,9 +43,9 @@ public class CheckoutController : ControllerBase
 
     [HttpDelete("cancel/{orderId}")]
     [Authorize(Roles = "Admin")]
-    public IActionResult CancelOrder(int orderId)
+    public async Task<IActionResult> CancelOrder(int orderId)
     {
-        try { _service.Cancel(orderId); return Ok(new { success = true, message = "Đã hủy hóa đơn và hoàn trả kho, điểm." }); }
+        try { await _service.Cancel(orderId); return Ok(new { success = true, message = "Đã hủy hóa đơn và hoàn trả kho, điểm." }); }
         catch (Exception ex) when (ex is InvalidOperationException or System.Data.Common.DbException)
         { return BadRequest(new { success = false, message = "Hủy hóa đơn thất bại; không lưu thay đổi.", errorDetail = ex.Message }); }
     }

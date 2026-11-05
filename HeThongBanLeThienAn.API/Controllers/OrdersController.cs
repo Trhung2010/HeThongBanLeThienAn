@@ -172,11 +172,11 @@ namespace MiniSupermarket.API.Controllers
         // Compatibility route for existing clients; shares the same ADO.NET transaction.
         [HttpPost("checkout")]
         [Authorize(Roles = "Admin,Cashier")]
-        public IActionResult Checkout([FromBody] PosCheckoutRequestDto request)
+        public async Task<IActionResult> Checkout([FromBody] PosCheckoutRequestDto request)
         {
             try
             {
-                var r = _checkout.Checkout(User?.Identity?.Name ?? request.CashierUsername,
+                var r = await _checkout.Checkout(User?.Identity?.Name ?? request.CashierUsername,
                     request.CustomerId, request.CustomerPhone,
                     request.Items,
                     request.RedeemPoints);

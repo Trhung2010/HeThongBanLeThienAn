@@ -37,7 +37,7 @@ namespace MiniSupermarket.API.Controllers
         // =========================================================================
         // GET: api/ado-products/barcode/893456789001
         [HttpGet("barcode/{barcode}")]
-        public IActionResult GetProductByBarcode(string barcode)
+        public async Task<IActionResult> GetProductByBarcode(string barcode)
         {
             // 1. Kiểm tra tính hợp lệ của tham số đầu vào
             if (string.IsNullOrWhiteSpace(barcode))
@@ -64,13 +64,13 @@ namespace MiniSupermarket.API.Controllers
                     try
                     {
                         // 5. Mở kết nối vật lý tới CSDL
-                        connection.Open();
+                        await connection.OpenAsync();
 
                         // 6. Khởi tạo luồng đọc nhanh Forward-Only DataReader
-                        using (DbDataReader reader = command.ExecuteReader())
+                        using (DbDataReader reader = await command.ExecuteReaderAsync())
                         {
-                            // 7. Đọc bản ghi: reader.Read() trả về true nếu tìm thấy dòng dữ liệu
-                            if (reader.Read())
+                            // 7. Đọc bản ghi: await reader.ReadAsync() trả về true nếu tìm thấy dòng dữ liệu
+                            if (await reader.ReadAsync())
                             {
                                 var productDto = new ProductLookupDto
                                 {
@@ -103,7 +103,7 @@ namespace MiniSupermarket.API.Controllers
         // =========================================================================
         // GET: api/ado-products/disconnected-cache
         [HttpGet("disconnected-cache")]
-        public IActionResult GetProductsDisconnected()
+        public async Task<IActionResult> GetProductsDisconnected()
         {
             // 1. Khởi tạo bảng ảo DataTable trên RAM
             DataTable productTable = new DataTable("CachedProducts");
@@ -119,20 +119,15 @@ namespace MiniSupermarket.API.Controllers
                 {
                     command.CommandText = query;
 
-                    if (_connectionFactory.IsSqlServer && command is SqlCommand sqlCmd)
+                    await connection.OpenAsync();
+                    using var reader = await command.ExecuteReaderAsync();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        productTable.Columns.Add(reader.GetName(i), reader.GetFieldType(i));
+                    while (await reader.ReadAsync())
                     {
-                        using (SqlDataAdapter adapter = new SqlDataAdapter(sqlCmd))
-                        {
-                            adapter.Fill(productTable);
-                        }
-                    }
-                    else
-                    {
-                        connection.Open();
-                        using (DbDataReader reader = command.ExecuteReader())
-                        {
-                            productTable.Load(reader);
-                        }
+                        var values = new object[reader.FieldCount];
+                        reader.GetValues(values);
+                        productTable.Rows.Add(values);
                     }
                 }
             } // Tại đây, kết nối CSDL ĐÃ ĐƯỢC ĐÓNG HOÀN TOÀN!
@@ -166,7 +161,7 @@ namespace MiniSupermarket.API.Controllers
         // =========================================================================
         // GET: api/ado-products/filter-stock?minStock=50
         [HttpGet("filter-stock")]
-        public IActionResult FilterStock([FromQuery] int minStock = 50)
+        public async Task<IActionResult> FilterStock([FromQuery] int minStock = 50)
         {
             var resultList = new List<ProductLookupDto>();
 
@@ -184,10 +179,10 @@ namespace MiniSupermarket.API.Controllers
 
                     try
                     {
-                        connection.Open();
-                        using (DbDataReader reader = command.ExecuteReader())
+                        await connection.OpenAsync();
+                        using (DbDataReader reader = await command.ExecuteReaderAsync())
                         {
-                            while (reader.Read())
+                            while (await reader.ReadAsync())
                             {
                                 resultList.Add(new ProductLookupDto
                                 {
@@ -220,7 +215,7 @@ namespace MiniSupermarket.API.Controllers
         // =========================================================================
         // GET: api/ado-products/count-by-category
         [HttpGet("count-by-category")]
-        public IActionResult CountByCategory()
+        public async Task<IActionResult> CountByCategory()
         {
             DataTable categoryTable = new DataTable("CategoryProductCount");
 
@@ -235,20 +230,15 @@ namespace MiniSupermarket.API.Controllers
                 {
                     command.CommandText = query;
 
-                    if (_connectionFactory.IsSqlServer && command is SqlCommand sqlCmd)
+                    await connection.OpenAsync();
+                    using var reader = await command.ExecuteReaderAsync();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        categoryTable.Columns.Add(reader.GetName(i), reader.GetFieldType(i));
+                    while (await reader.ReadAsync())
                     {
-                        using (SqlDataAdapter adapter = new SqlDataAdapter(sqlCmd))
-                        {
-                            adapter.Fill(categoryTable);
-                        }
-                    }
-                    else
-                    {
-                        connection.Open();
-                        using (DbDataReader reader = command.ExecuteReader())
-                        {
-                            categoryTable.Load(reader);
-                        }
+                        var values = new object[reader.FieldCount];
+                        reader.GetValues(values);
+                        categoryTable.Rows.Add(values);
                     }
                 }
             }

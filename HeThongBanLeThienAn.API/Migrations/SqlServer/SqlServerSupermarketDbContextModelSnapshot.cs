@@ -1882,7 +1882,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                     b.HasOne("MiniSupermarket.API.Models.Product", "Product")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -1895,7 +1895,7 @@ namespace HeThongBanLeThienAn.API.Migrations.SqlServer
                     b.HasOne("MiniSupermarket.API.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Category");

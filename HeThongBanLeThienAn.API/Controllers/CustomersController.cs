@@ -189,13 +189,15 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            if (await _context.Customers.AnyAsync(c => c.PhoneNumber == request.PhoneNumber.Trim()))
+                return Conflict(new { message = "Số điện thoại đã được đăng ký." });
             var customer = new Customer
             {
                 CustomerName = request.CustomerName.Trim(),
                 PhoneNumber = request.PhoneNumber.Trim(),
                 Address = request.Address?.Trim(),
-                RewardPoints = request.RewardPoints,
-                MembershipRank = string.IsNullOrWhiteSpace(request.MembershipRank) ? "Chuẩn" : request.MembershipRank.Trim(),
+                RewardPoints = User?.IsInRole("Admin") == true ? request.RewardPoints : 0,
+                MembershipRank = User?.IsInRole("Admin") == true && !string.IsNullOrWhiteSpace(request.MembershipRank) ? request.MembershipRank.Trim() : "Chuẩn",
                 CreatedDate = DateTime.Now
             };
 
@@ -248,11 +250,17 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            if (await _context.Customers.AnyAsync(c => c.CustomerId != id && c.PhoneNumber == request.PhoneNumber.Trim()))
+                return Conflict(new { message = "Số điện thoại đã được đăng ký." });
             customer.CustomerName = request.CustomerName.Trim();
             customer.PhoneNumber = request.PhoneNumber.Trim();
             customer.Address = request.Address?.Trim();
-            customer.RewardPoints = request.RewardPoints;
-            customer.MembershipRank = string.IsNullOrWhiteSpace(request.MembershipRank) ? "Chuẩn" : request.MembershipRank.Trim();
+            // Cashiers may edit contact details, never the balance used as money at POS.
+            if (User?.IsInRole("Admin") == true)
+            {
+                customer.RewardPoints = request.RewardPoints;
+                customer.MembershipRank = string.IsNullOrWhiteSpace(request.MembershipRank) ? "Chuẩn" : request.MembershipRank.Trim();
+            }
 
             await _context.SaveChangesAsync();
 
@@ -275,6 +283,8 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            if (await _context.Orders.AnyAsync(o => o.CustomerId == id))
+                return Conflict(new { message = "Khách hàng đã có hóa đơn, không thể xóa." });
             _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
 

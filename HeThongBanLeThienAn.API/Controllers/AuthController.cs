@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MiniSupermarket.API.Data;
@@ -27,7 +27,7 @@ namespace MiniSupermarket.API.Controllers
 
         // Endpoint Đăng nhập: POST /api/auth/login
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequestDto request)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
             if (request == null || string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
             {
@@ -35,12 +35,12 @@ namespace MiniSupermarket.API.Controllers
             }
 
             string inputUsername = request.Username.Trim();
-            string inputPassword = request.Password.Trim();
+            string inputPassword = request.Password;
 
             // 1. Kiểm tra trong CSDL (Bảng Users)
             if (_context != null)
             {
-                var dbUser = _context.Users.FirstOrDefault(u =>
+                var dbUser = await _context.Users.FirstOrDefaultAsync(u =>
                     u.Username.ToLower() == inputUsername.ToLower());
 
                 if (dbUser != null)
@@ -114,3 +114,5 @@ namespace MiniSupermarket.API.Controllers
         }
     }
 }
+
+

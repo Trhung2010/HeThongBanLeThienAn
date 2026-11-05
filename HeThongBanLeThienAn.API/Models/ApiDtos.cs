@@ -64,6 +64,9 @@ public sealed class ProductDto
 
 public sealed class ProductUpsertDto
 {
+    // Required for PUT: stock observed when the editor was opened.
+    [Range(0, int.MaxValue)]
+    public int? ExpectedStockQuantity { get; set; }
     [Required, StringLength(50), RegularExpression(@"^[0-9]+$")]
     public string Barcode { get; set; } = string.Empty;
 

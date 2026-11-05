@@ -20,8 +20,6 @@ namespace MiniSupermarket.API.Controllers
 
         private static bool IsNumericBarcode(string barcode) =>
             barcode.All(character => character is >= '0' and <= '9');
-
-        // BUỔI 6: Phân trang phía máy chủ, tìm kiếm và lọc theo nhóm hàng.
         // GET /api/products/paged?keyword=Coca&categoryId=2&pageNumber=1&pageSize=5
         [HttpGet("paged")]
         [Authorize(Roles = "Admin,Cashier,Warehouse")]
@@ -246,7 +244,6 @@ namespace MiniSupermarket.API.Controllers
 
             return Ok(result);
         }
-
         // 5. CREATE: Thêm mới sản phẩm (Admin và Warehouse)
         // POST /api/products
         [HttpPost]
@@ -294,6 +291,11 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            if (!await _context.Categories.AnyAsync(c => c.CategoryId == request.CategoryId))
+                return BadRequest(new { message = "Nhóm hàng không tồn tại." });
+            if (await _context.Products.AnyAsync(p => p.Barcode == request.Barcode))
+                return Conflict(new { message = "Mã vạch đã được sử dụng." });
+
             var product = new Product
             {
                 Barcode = request.Barcode,
@@ -312,7 +314,6 @@ namespace MiniSupermarket.API.Controllers
                 new { id = product.ProductId },
                 product.ToDto());
         }
-
         // 6. UPDATE: Cập nhật thông tin sản phẩm (Admin và Warehouse)
         // PUT /api/products/{id}
         [HttpPut("{id}")]
@@ -370,10 +371,22 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            if (!await _context.Categories.AnyAsync(c => c.CategoryId == request.CategoryId))
+                return BadRequest(new { message = "Nhóm hàng không tồn tại." });
+            if (await _context.Products.AnyAsync(p => p.ProductId != id && p.Barcode == request.Barcode))
+                return Conflict(new { message = "Mã vạch đã được sử dụng." });
+
+            if (!request.ExpectedStockQuantity.HasValue)
+                return BadRequest(new { message = "Thiếu tồn kho gốc. Vui lòng tải lại sản phẩm trước khi sửa." });
+            if (product.StockQuantity != request.ExpectedStockQuantity.Value)
+                return Conflict(new { message = "Tồn kho đã thay đổi. Vui lòng tải lại sản phẩm trước khi sửa." });
+            _context.Entry(product).Property(p => p.StockQuantity).OriginalValue = request.ExpectedStockQuantity.Value;
             product.ProductName = request.ProductName.Trim();
             product.Barcode = request.Barcode;
             product.Price = request.Price;
             product.StockQuantity = request.StockQuantity;
+            // Include the stock guard even for a metadata-only edit.
+            _context.Entry(product).Property(p => p.StockQuantity).IsModified = true;
             if (request.CategoryId > 0)
             {
                 product.CategoryId = request.CategoryId;
@@ -383,7 +396,6 @@ namespace MiniSupermarket.API.Controllers
 
             return NoContent();
         }
-
         // 7. DELETE: Xóa sản phẩm theo ID (Admin và Warehouse)
         // DELETE /api/products/{id}
         [HttpDelete("{id}")]
@@ -400,6 +412,8 @@ namespace MiniSupermarket.API.Controllers
                 });
             }
 
+            if (await _context.OrderDetails.AnyAsync(d => d.ProductId == id))
+                return Conflict(new { message = "Sản phẩm đã có trong hóa đơn, không thể xóa lịch sử bán hàng." });
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
 

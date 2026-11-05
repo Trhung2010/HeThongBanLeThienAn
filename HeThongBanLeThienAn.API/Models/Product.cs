@@ -38,6 +38,7 @@ namespace MiniSupermarket.API.Models
 
         // 5. Số lượng hàng hóa hiện còn trong kho
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng tồn kho không được âm!")]
+        [ConcurrencyCheck]
         public int StockQuantity { get; set; }
 
         // 6. Khóa ngoại tham chiếu đến bảng Categories (CategoryId)

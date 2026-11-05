@@ -24,6 +24,11 @@ namespace MiniSupermarket.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            // Preserve invoice history even when deletion races with a checkout.
+            modelBuilder.Entity<Product>().HasOne(p => p.Category).WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<OrderDetail>().HasOne(d => d.Product).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.ProductId).OnDelete(DeleteBehavior.NoAction);
 
             // =========================================================================
             // A. CẤU HÌNH RÀNG BUỘC CHỈ MỤC DUY NHẤT (UNIQUE INDEX)
@@ -37,7 +42,6 @@ namespace MiniSupermarket.API.Data
             // =========================================================================
             // B. DATA SEEDING CHO 6 BẢNG (MỖI BẢNG TỐI THIỂU 15 DÒNG)
             // =========================================================================
-
             // 1. DATA SEEDING: BẢNG USERS (15 Nhân viên thuộc 3 bộ phận: Admin, Cashier, Warehouse)
             modelBuilder.Entity<User>().HasData(
                 new User { UserId = 1, Username = "admin", PasswordHash = "PBKDF2$120000$fNDfJNL02Yi7roCaKIU0ig==$bFig0dj3BTLMsOZMhdOg6rtg8XBfiEN4lxtuhtbpKjg=", FullName = "Vương Nguyễn Trường Hưng", Role = "Admin", IsActive = true },

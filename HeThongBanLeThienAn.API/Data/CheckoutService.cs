@@ -16,7 +16,7 @@ public sealed class CheckoutService(IDbConnectionFactory factory)
         return command;
     }
 
-    public CheckoutReceipt Checkout(string cashier, int? customerId, string? phone,
+    public async Task<CheckoutReceipt> Checkout(string cashier, int? customerId, string? phone,
         List<CartItemCheckoutDto> items, int redeemPoints = 0)
     {
         if (items == null || items.Count == 0 || items.Any(i => i == null || i.ProductId <= 0 || i.Quantity <= 0))
@@ -25,20 +25,20 @@ public sealed class CheckoutService(IDbConnectionFactory factory)
         if (redeemPoints < 0 || redeemPoints % 50 != 0)
             throw new InvalidOperationException("Điểm đổi phải bằng 0 hoặc là bội số của 50 điểm.");
         using var connection = factory.CreateConnection();
-        connection.Open();
-        using var transaction = connection.BeginTransaction();
+        await connection.OpenAsync();
+        using var transaction = await connection.BeginTransactionAsync();
         try
         {
             using (var user = Command(connection, transaction,
                 "SELECT COUNT(*) FROM Users WHERE Username = @Name AND IsActive = 1 AND Role IN ('Admin', 'Cashier')", ("@Name", cashier)))
-                if (Convert.ToInt32(user.ExecuteScalar()) != 1) throw new InvalidOperationException("Tài khoản không có quyền bán hàng.");
+                if (Convert.ToInt32(await user.ExecuteScalarAsync()) != 1) throw new InvalidOperationException("Tài khoản không có quyền bán hàng.");
 
             string customerName = "Khách vãng lai";
             int availablePoints = 0;
             if (!string.IsNullOrWhiteSpace(phone))
             {
                 using var lookup = Command(connection, transaction, "SELECT CustomerId FROM Customers WHERE PhoneNumber = @Phone", ("@Phone", phone.Trim()));
-                var found = lookup.ExecuteScalar();
+                var found = await lookup.ExecuteScalarAsync();
                 if (found == null) throw new InvalidOperationException("Số điện thoại chưa được đăng ký. Hãy đăng ký hoặc để trống để bán khách vãng lai.");
                 customerId = Convert.ToInt32(found);
             }
@@ -46,8 +46,8 @@ public sealed class CheckoutService(IDbConnectionFactory factory)
             {
                 using var customer = Command(connection, transaction,
                     "SELECT CustomerName, RewardPoints FROM Customers WHERE CustomerId = @Id", ("@Id", customerId));
-                using var customerReader = customer.ExecuteReader();
-                if (!customerReader.Read()) throw new InvalidOperationException("Không tìm thấy khách hàng.");
+                using var customerReader = await customer.ExecuteReaderAsync();
+                if (!await customerReader.ReadAsync()) throw new InvalidOperationException("Không tìm thấy khách hàng.");
                 customerName = customerReader.GetString(0);
                 availablePoints = customerReader.GetInt32(1);
             }
@@ -60,8 +60,8 @@ public sealed class CheckoutService(IDbConnectionFactory factory)
             {
                 int quantity = group.Sum(i => i.Quantity);
                 using var product = Command(connection, transaction, "SELECT Price, StockQuantity FROM Products WHERE ProductId = @Id", ("@Id", group.Key));
-                using var reader = product.ExecuteReader();
-                if (!reader.Read()) throw new InvalidOperationException($"Không tìm thấy sản phẩm {group.Key}.");
+                using var reader = await product.ExecuteReaderAsync();
+                if (!await reader.ReadAsync()) throw new InvalidOperationException($"Không tìm thấy sản phẩm {group.Key}.");
                 decimal price = Convert.ToDecimal(reader["Price"]);
                 if (price <= 0 || Convert.ToInt32(reader["StockQuantity"]) < quantity)
                     throw new InvalidOperationException($"Sản phẩm {group.Key} không đủ tồn kho hoặc giá không hợp lệ.");
@@ -83,68 +83,68 @@ public sealed class CheckoutService(IDbConnectionFactory factory)
                 : "INSERT INTO Orders (OrderCode, CreatedDate, CashierUsername, CustomerId, TotalItems, FinalAmount, RewardPoints, RedeemedPoints, DiscountAmount) VALUES (@Code,@Date,@Cashier,@Customer,@Count,@Total,@Points,@Redeemed,@Discount); SELECT last_insert_rowid();";
             int id;
             using (var order = Command(connection, transaction, insert, ("@Code", code), ("@Date", created), ("@Cashier", cashier), ("@Customer", customerId), ("@Count", count), ("@Total", total), ("@Points", points), ("@Redeemed", redeemPoints), ("@Discount", discount)))
-                id = Convert.ToInt32(order.ExecuteScalar());
+                id = Convert.ToInt32(await order.ExecuteScalarAsync());
             foreach (var line in lines)
             {
                 using var stock = Command(connection, transaction,
                     "UPDATE Products SET StockQuantity = StockQuantity - @Qty WHERE ProductId = @Id AND StockQuantity >= @Qty",
                     ("@Qty", line.Quantity), ("@Id", line.ProductId));
-                if (stock.ExecuteNonQuery() != 1) throw new InvalidOperationException("Tồn kho đã thay đổi, vui lòng thử lại.");
+                if (await stock.ExecuteNonQueryAsync() != 1) throw new InvalidOperationException("Tồn kho đã thay đổi, vui lòng thử lại.");
                 using var detail = Command(connection, transaction,
                     "INSERT INTO OrderDetails (OrderId,ProductId,Quantity,UnitPrice,LineTotal) VALUES (@Order,@Product,@Qty,@Price,@Total)",
                     ("@Order", id), ("@Product", line.ProductId), ("@Qty", line.Quantity), ("@Price", line.Price), ("@Total", line.Price * line.Quantity));
-                detail.ExecuteNonQuery();
+                await detail.ExecuteNonQueryAsync();
             }
             if (customerId.HasValue)
             {
                 using var update = Command(connection, transaction,
                     "UPDATE Customers SET RewardPoints = RewardPoints - @Redeemed + @Points, MembershipRank = CASE WHEN RewardPoints - @Redeemed + @Points >= 1000 THEN 'Bạch Kim' WHEN RewardPoints - @Redeemed + @Points >= 500 THEN 'Vàng' WHEN RewardPoints - @Redeemed + @Points >= 200 THEN 'Bạc' ELSE 'Chuẩn' END WHERE CustomerId = @Id AND RewardPoints >= @Redeemed",
                     ("@Redeemed", redeemPoints), ("@Points", points), ("@Id", customerId));
-                if (update.ExecuteNonQuery() != 1) throw new InvalidOperationException("Không cập nhật được khách hàng.");
+                if (await update.ExecuteNonQueryAsync() != 1) throw new InvalidOperationException("Không cập nhật được khách hàng.");
             }
-            transaction.Commit();
+            await transaction.CommitAsync();
             return new(id, code, count, subtotal, discount, total, points, redeemPoints, cashier, customerName, created);
         }
-        catch { transaction.Rollback(); throw; }
+        catch { await transaction.RollbackAsync(); throw; }
     }
 
-    public void Cancel(int orderId)
+    public async Task Cancel(int orderId)
     {
         using var connection = factory.CreateConnection();
-        connection.Open();
-        using var transaction = connection.BeginTransaction();
+        await connection.OpenAsync();
+        using var transaction = await connection.BeginTransactionAsync();
         try
         {
             int? customerId; int points; int redeemedPoints;
             using (var order = Command(connection, transaction, "SELECT CustomerId,RewardPoints,RedeemedPoints FROM Orders WHERE OrderId=@Id", ("@Id", orderId)))
-            using (var reader = order.ExecuteReader())
+            using (var reader = await order.ExecuteReaderAsync())
             {
-                if (!reader.Read()) throw new InvalidOperationException("Không tìm thấy hóa đơn để hủy.");
+                if (!await reader.ReadAsync()) throw new InvalidOperationException("Không tìm thấy hóa đơn để hủy.");
                 customerId = reader.IsDBNull(0) ? null : reader.GetInt32(0);
                 points = reader.GetInt32(1);
                 redeemedPoints = reader.GetInt32(2);
             }
             var lines = new List<(int Id, int Qty)>();
             using (var details = Command(connection, transaction, "SELECT ProductId,Quantity FROM OrderDetails WHERE OrderId=@Id", ("@Id", orderId)))
-            using (var reader = details.ExecuteReader())
-                while (reader.Read()) lines.Add((reader.GetInt32(0), reader.GetInt32(1)));
+            using (var reader = await details.ExecuteReaderAsync())
+                while (await reader.ReadAsync()) lines.Add((reader.GetInt32(0), reader.GetInt32(1)));
             foreach (var line in lines)
             {
                 using var restore = Command(connection, transaction, "UPDATE Products SET StockQuantity=StockQuantity+@Qty WHERE ProductId=@Id", ("@Qty", line.Qty), ("@Id", line.Id));
-                if (restore.ExecuteNonQuery() != 1) throw new InvalidOperationException("Không hoàn trả được tồn kho.");
+                if (await restore.ExecuteNonQueryAsync() != 1) throw new InvalidOperationException("Không hoàn trả được tồn kho.");
             }
             if (customerId.HasValue)
             {
                 using var customer = Command(connection, transaction,
-                    "UPDATE Customers SET RewardPoints=CASE WHEN RewardPoints >= @Points THEN RewardPoints-@Points+@Redeemed ELSE @Redeemed END, MembershipRank=CASE WHEN (CASE WHEN RewardPoints >= @Points THEN RewardPoints-@Points+@Redeemed ELSE @Redeemed END) >= 1000 THEN 'Bạch Kim' WHEN (CASE WHEN RewardPoints >= @Points THEN RewardPoints-@Points+@Redeemed ELSE @Redeemed END) >= 500 THEN 'Vàng' WHEN (CASE WHEN RewardPoints >= @Points THEN RewardPoints-@Points+@Redeemed ELSE @Redeemed END) >= 200 THEN 'Bạc' ELSE 'Chuẩn' END WHERE CustomerId=@Id", ("@Points", points), ("@Redeemed", redeemedPoints), ("@Id", customerId));
-                if (customer.ExecuteNonQuery() != 1) throw new InvalidOperationException("Không hoàn trả được điểm khách hàng.");
+                    "UPDATE Customers SET RewardPoints=RewardPoints-@Points+@Redeemed, MembershipRank=CASE WHEN (RewardPoints-@Points+@Redeemed) >= 1000 THEN 'Bạch Kim' WHEN (RewardPoints-@Points+@Redeemed) >= 500 THEN 'Vàng' WHEN (RewardPoints-@Points+@Redeemed) >= 200 THEN 'Bạc' ELSE 'Chuẩn' END WHERE CustomerId=@Id AND RewardPoints + @Redeemed >= @Points", ("@Points", points), ("@Redeemed", redeemedPoints), ("@Id", customerId));
+                if (await customer.ExecuteNonQueryAsync() != 1) throw new InvalidOperationException("Không thể hủy: điểm thưởng của hóa đơn đã được sử dụng hoặc khách hàng không còn tồn tại.");
             }
-            using (var details = Command(connection, transaction, "DELETE FROM OrderDetails WHERE OrderId=@Id", ("@Id", orderId))) details.ExecuteNonQuery();
+            using (var details = Command(connection, transaction, "DELETE FROM OrderDetails WHERE OrderId=@Id", ("@Id", orderId))) await details.ExecuteNonQueryAsync();
             using (var order = Command(connection, transaction, "DELETE FROM Orders WHERE OrderId=@Id", ("@Id", orderId)))
-                if (order.ExecuteNonQuery() != 1) throw new InvalidOperationException("Hóa đơn đã được hủy.");
-            transaction.Commit();
+                if (await order.ExecuteNonQueryAsync() != 1) throw new InvalidOperationException("Hóa đơn đã được hủy.");
+            await transaction.CommitAsync();
         }
-        catch { transaction.Rollback(); throw; }
+        catch { await transaction.RollbackAsync(); throw; }
     }
 }
 public record CheckoutReceipt(int OrderId, string OrderCode, int TotalItems, decimal Subtotal,
