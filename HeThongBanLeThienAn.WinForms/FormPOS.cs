@@ -196,6 +196,18 @@ namespace MiniSupermarket.WinForms
             }
         }
 
+                private async void btnOpenCustomer_Click(object sender, EventArgs e)
+        {
+            using var customerForm = new FormCustomerManagement();
+            customerForm.StartPosition = FormStartPosition.CenterParent;
+            customerForm.ShowDialog(this);
+
+            if (!string.IsNullOrWhiteSpace(txtCustomerPhone.Text))
+            {
+                await LookupCustomerAsync();
+            }
+        }
+
         private async void btnLookupCustomer_Click(object sender, EventArgs e)
         {
             await LookupCustomerAsync();

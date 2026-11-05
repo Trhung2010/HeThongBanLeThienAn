@@ -34,7 +34,8 @@ namespace MiniSupermarket.WinForms
             lblTotalAmount = new Label();
             lblTotalTitle = new Label();
             grpCustomer = new GroupBox();
-            btnLookupCustomer = new Button();
+            btnLookupCustomer = new Button();
+            btnOpenCustomer = new Button();
             lblCustomerName = new Label();
             txtCustomerPhone = new TextBox();
             lblCustomerPhone = new Label();
@@ -156,7 +157,8 @@ namespace MiniSupermarket.WinForms
             // 
             // grpCustomer
             // 
-            grpCustomer.Controls.Add(btnLookupCustomer);
+            grpCustomer.Controls.Add(btnLookupCustomer);
+            grpCustomer.Controls.Add(btnOpenCustomer);
             grpCustomer.Controls.Add(lblCustomerName);
             grpCustomer.Controls.Add(txtCustomerPhone);
             grpCustomer.Controls.Add(lblCustomerPhone);
@@ -199,7 +201,15 @@ namespace MiniSupermarket.WinForms
             btnLookupCustomer.TabIndex = 2;
             btnLookupCustomer.Text = "Tìm";
             btnLookupCustomer.UseVisualStyleBackColor = true;
-            btnLookupCustomer.Click += btnLookupCustomer_Click;
+            btnLookupCustomer.Click += btnLookupCustomer_Click;
+            // btnOpenCustomer
+            btnOpenCustomer.Location = new Point(258, 92);
+            btnOpenCustomer.Name = "btnOpenCustomer";
+            btnOpenCustomer.Size = new Size(76, 32);
+            btnOpenCustomer.TabIndex = 4;
+            btnOpenCustomer.Text = "+ Thêm";
+            btnOpenCustomer.UseVisualStyleBackColor = true;
+            btnOpenCustomer.Click += btnOpenCustomer_Click;
 
             // 
             // lblCustomerName
@@ -359,7 +369,8 @@ namespace MiniSupermarket.WinForms
         private GroupBox grpCustomer;
         private Label lblCustomerPhone;
         private TextBox txtCustomerPhone;
-        private Button btnLookupCustomer;
+        private Button btnLookupCustomer;
+        private Button btnOpenCustomer;
         private Label lblCustomerName;
         private GroupBox grpPayment;
         private Label lblTotalTitle;
